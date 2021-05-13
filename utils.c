@@ -9,8 +9,8 @@ void removeCursor(void) {
 }
 
 // 커서를 x,y 좌표로 이동시킨다.
-void gotoxy(int x, int y)
+void goto2xy(int x, int y)
 {
-	COORD pos = { x, y };
+	COORD pos = { 2 * x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }

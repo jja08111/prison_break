@@ -1,33 +1,41 @@
-#ifndef __MAP_H__
+ï»¿#ifndef __MAP_H__
 #define __MAP_H__
 
 #include "stage.h"
+#include "icons.h"
+#include "colors.h"
+
+#include <time.h>
+#include <string.h>
 
 #define MAX_HEIGHT 91
 #define MAX_WIDTH 91
-#define WALL "¡á"
-#define EMPTY_CELL "  "
 
 enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED };
 
-// ¸Ê µ¥ÀÌÅÍ ±¸Á¶ÀÌ´Ù. 
+// ë§µ ë°ì´í„° êµ¬ì¡°ì´ë‹¤. 
 // 
-// grid¿¡ ½ÇÁ¦ Á¤º¸¸¦ ÀúÀåÇÏ°í ³ôÀÌ¿Í ³Êºñ°ª¿¡ µû¶ó Å©±â°¡ Á¤ÇØÁø´Ù.
+// gridì— ì‹¤ì œ ì •ë³´ë¥¼ ì €ì¥í•˜ê³  ë†’ì´ì™€ ë„ˆë¹„ê°’ì— ë”°ë¼ í¬ê¸°ê°€ ì •í•´ì§„ë‹¤.
 typedef struct {
 	int grid[MAX_HEIGHT][MAX_WIDTH];
 	int height;
 	int width;
 } Map;
 
-// 0´Ü°è 51
-// 1´Ü°è 61
-// 2´Ü°è 71
-// 3´Ü°è 81
-// 4´Ü°è 91 
-int mapLineLengthOf(const Stage* const stage);
+// 0ë‹¨ê³„ 51
+// 1ë‹¨ê³„ 61
+// 2ë‹¨ê³„ 71
+// 3ë‹¨ê³„ 81
+// 4ë‹¨ê³„ 91 
+int _getMapLineLength(const Stage* const stage);
+int _shuffleArray(int array[], int size);
+int _inRange(int y, int x, const Map* const map);
+// ê¹Šì´ìš°ì„ íƒìƒ‰ì„ í•˜ë©´ì„œ ë§µì„ í˜•ì„±í•œë‹¤.
+void _dfs(int y, int x, Map* const map);
 
 void generateMap(Map* map, const Stage* const stage);
-
 void printMap(const Map* const map);
+
+int canPlace(COORD position, const Map* const map);
 
 #endif

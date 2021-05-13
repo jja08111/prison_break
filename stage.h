@@ -3,6 +3,9 @@
 
 #define MAX_LEVEL 4
 
+// 스테이지 정보를 가지고 있다.
+//
+// 멤버변수로 level, visionRange, timeLimit가 있다.
 typedef struct {
 	// 스테이지 레벨이다. 
 	//
@@ -17,6 +20,8 @@ typedef struct {
 	// 시간 제한이다.
 	int timeLimit;
 } Stage;
+
+void initStage(Stage* stage);
 
 // 0단계 10
 // 1단계 8

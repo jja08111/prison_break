@@ -1,5 +1,12 @@
 #include "stage.h"
 
+void initStage(Stage* stage)
+{
+	stage->level = 0;
+	stage->timeLimit = timeLimitOf(stage);
+	stage->visionRange = visionRangeOf(stage);
+}
+
 int visionRangeOf(const Stage* const stage)
 {
 	switch (stage->level) {

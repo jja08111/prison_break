@@ -4,6 +4,8 @@
 #include <Windows.h>
 
 void removeCursor(void);
-void gotoxy(int x, int y);
+
+// (y,2x) 위치로 이동한다.
+void goto2xy(int x, int y);
 
 #endif
