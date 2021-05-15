@@ -20,17 +20,17 @@ static int rangedNum(int num, int minNum, int maxNum)
 	return max(minNum, min(num, maxNum));
 }
 
-static int _ensureToBeWithinRange(const Map* const map, COORD* topLeft, COORD* bottomRight)
+static int _ensureToBeWithinRange(const Map* const map, SMALL_RECT* rect)
 {
 	// 한 칸도 겹치지 않는 경우
-	if (bottomRight->Y < 0 || bottomRight->X < 0 
-		|| topLeft->Y > map->height || topLeft->X > map->width)
+	if (rect->Bottom < 0 || rect->Right < 0
+		|| rect->Top > map->height || rect->Left > map->width)
 		return 0;
 
-	topLeft->Y = rangedNum(topLeft->Y, 0, map->height);
-	topLeft->X = rangedNum(topLeft->X, 0, map->width);
-	bottomRight->Y = rangedNum(bottomRight->Y, 0, map->height);
-	bottomRight->X = rangedNum(bottomRight->X, 0, map->width);
+	rect->Bottom = rangedNum(rect->Bottom, 0, map->height);
+	rect->Top = rangedNum(rect->Top, 0, map->height);
+	rect->Left = rangedNum(rect->Left, 0, map->width);
+	rect->Right = rangedNum(rect->Right, 0, map->width);
 	return 1;
 }
 
@@ -40,18 +40,18 @@ static void _drawEmptyIconAt(COORD position)
 	drawEmptyIcon();
 }
 
-static void _drawEmptyIconFromRect(const Map* const map, COORD topLeft, COORD bottomRight)
+static void _drawEmptyIconFromRect(const Map* const map, SMALL_RECT rect)
 {
-	assert(topLeft.X <= bottomRight.X && topLeft.Y <= bottomRight.Y);
+	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 	int y, x;
 
-	if (!_ensureToBeWithinRange(map, &topLeft, &bottomRight))
+	if (!_ensureToBeWithinRange(map, &rect))
 		return;
 
-	for (y = topLeft.Y;y <= bottomRight.Y;++y)
+	for (y = rect.Top;y <= rect.Bottom;++y)
 	{
-		goto2xy(topLeft.X, y);
-		for (x = topLeft.X;x <= bottomRight.X;++x)
+		goto2xy(rect.Left, y);
+		for (x = rect.Left;x <= rect.Right;++x)
 			drawEmptyIcon();
 	}
 }
@@ -69,18 +69,18 @@ static void _drawMapCellAt(const Map* const map, COORD position)
 	_drawMapCell(map, position);
 }
 
-static void _drawMapFromRect(const Map* const map, COORD topLeft, COORD bottomRight)
+static void _drawMapFromRect(const Map* const map, SMALL_RECT rect)
 {
-	assert(topLeft.X <= bottomRight.X && topLeft.Y <= bottomRight.Y);
+	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 	int y, x;
 
-	if (!_ensureToBeWithinRange(map, &topLeft, &bottomRight))
+	if (!_ensureToBeWithinRange(map, &rect))
 		return;
 
-	for (y = topLeft.Y;y <= bottomRight.Y;++y)
+	for (y = rect.Top;y <= rect.Bottom;++y)
 	{
-		goto2xy(topLeft.X, y);
-		for (x = topLeft.X;x <= bottomRight.X;++x)
+		goto2xy(rect.Left, y);
+		for (x = rect.Left;x <= rect.Right;++x)
 			_drawMapCell(map, (COORD) { x, y });
 	}	
 }
@@ -89,8 +89,8 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
-	_drawEmptyIconFromRect(map, (COORD) { 0, 0 }, (COORD) { map->width, map->height});
-	_drawMapFromRect(map, (COORD) { 0, 0 }, (COORD) { visionRange, visionRange});
+	_drawEmptyIconFromRect(map, (SMALL_RECT) { 0, 0, map->width, map->height});
+	_drawMapFromRect(map, (SMALL_RECT) { 0, 0, visionRange, visionRange});
 }
 
 static void _renderMap(const Map* const map, const Player* const player)
@@ -108,26 +108,26 @@ static void _renderMap(const Map* const map, const Player* const player)
 	// 위로 이동한 경우
 	if (position.Y < prevPosition.Y)
 	{
-		_drawEmptyIconFromRect(map, (COORD) { left, bottom + 1 }, (COORD) { right, bottom + 1 });
-		_drawMapFromRect(map, (COORD) { left, top }, (COORD) { right, top });
+		_drawEmptyIconFromRect(map, (SMALL_RECT) { left, bottom + 1, right, bottom + 1 });
+		_drawMapFromRect(map, (SMALL_RECT) { left, top, right, top });
 	}
 	// 아래로 이동한 경우
 	else if (position.Y > prevPosition.Y)
 	{
-		_drawEmptyIconFromRect(map, (COORD) { left, top - 1 }, (COORD) { right, top - 1 });
-		_drawMapFromRect(map, (COORD) { left, bottom }, (COORD) { right, bottom });
+		_drawEmptyIconFromRect(map, (SMALL_RECT) { left, top - 1, right, top - 1 });
+		_drawMapFromRect(map, (SMALL_RECT) { left, bottom, right, bottom });
 	}
 	// 좌측으로 이동한 경우
 	else if (position.X < prevPosition.X)
 	{
-		_drawEmptyIconFromRect(map, (COORD) { right + 1, top }, (COORD) { right + 1, bottom });
-		_drawMapFromRect(map, (COORD) { left, top }, (COORD) { left, bottom });
+		_drawEmptyIconFromRect(map, (SMALL_RECT) { right + 1, top, right + 1, bottom });
+		_drawMapFromRect(map, (SMALL_RECT) { left, top, left, bottom });
 	}
 	// 우측으로 이동한 경우
 	else if (position.X > prevPosition.X)
 	{
-		_drawEmptyIconFromRect(map, (COORD) { left - 1, top }, (COORD) { left - 1, bottom });
-		_drawMapFromRect(map, (COORD) { right, top }, (COORD) { right, bottom });
+		_drawEmptyIconFromRect(map, (SMALL_RECT) { left - 1, top, left - 1, bottom });
+		_drawMapFromRect(map, (SMALL_RECT) { right, top, right, bottom });
 	}
 }
 
@@ -141,6 +141,11 @@ static void _renderPlayer(const Player* const player)
 
 	gotoPosition(player->position);
 	drawPlayerIcon();
+}
+
+static void _drawCenterAlignedText(const char* str, SMALL_RECT rect)
+{
+
 }
 
 static void _renderInterface(const Stage* const stage, const Player* const player)

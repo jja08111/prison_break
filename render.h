@@ -16,13 +16,12 @@ static int rangedNum(int num, int minNum, int maxNum);
 // 사각형이 범위에 있지 않으면 범위에 들도록 수정한다.
 //
 // 만약 범위가 map에 한 칸도 겹치지 않으면 0을 반환한다.
-static int _ensureToBeWithinRange(const Map* const map, COORD* topLeft, COORD* bottomRight);
+static int _ensureToBeWithinRange(const Map* const map, SMALL_RECT* rect);
 
 static void _drawEmptyIconAt(COORD position);
 
 // 빈 공간을 사각형 모양으로 그린다.
-static void _drawEmptyIconFromRect(const Map* const map, COORD topLeft, COORD bottomRight);
-
+static void _drawEmptyIconFromRect(const Map* const map, SMALL_RECT rect);
 
 
 // map[y][x]를 그린다.
@@ -34,8 +33,10 @@ static void _drawMapCellAt(const Map* const map, COORD position);
 // 직사각형 범위만 맵을 그린다.
 //
 // topLeft는 좌측 상단이어야만 하고 bottomRight는 우측 하단이어야만 한다.
-static void _drawMapFromRect(const Map* const map, COORD topLeft, COORD bottomRight);
+static void _drawMapFromRect(const Map* const map, SMALL_RECT rect);
 
+
+static void _drawCenterAlignedText(const char* str, SMALL_RECT rect);
 
 
 // 초기 맵을 플레이어 시야에 맞춰 그린다. 
