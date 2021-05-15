@@ -13,50 +13,53 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\models">
-      <UniqueIdentifier>{f9c5cdf9-f9a0-40fc-a7ca-703aa95acc4a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\models">
       <UniqueIdentifier>{f842f254-ba43-43bf-8100-639b9200ce8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\game">
+      <UniqueIdentifier>{edd1eee9-3c7a-4d08-9164-2ad31089f477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\game">
+      <UniqueIdentifier>{5cff35b1-e75b-4408-9b0c-ac3358f3e989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\models">
+      <UniqueIdentifier>{a2ed6220-394f-4b92-829e-eea66d52da76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ui.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="utils.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="main_game.c">
+    <ClCompile Include="colors.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="map.c">
-      <Filter>소스 파일\models</Filter>
+    <ClCompile Include="icons.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="render.c">
+      <Filter>소스 파일\game</Filter>
+    </ClCompile>
+    <ClCompile Include="init.c">
+      <Filter>소스 파일\game</Filter>
+    </ClCompile>
+    <ClCompile Include="update.c">
+      <Filter>소스 파일\game</Filter>
+    </ClCompile>
+    <ClCompile Include="main_game.c">
+      <Filter>소스 파일\game</Filter>
     </ClCompile>
     <ClCompile Include="stage.c">
       <Filter>소스 파일\models</Filter>
     </ClCompile>
-    <ClCompile Include="player.c">
-      <Filter>소스 파일\models</Filter>
-    </ClCompile>
-    <ClCompile Include="icons.c">
-      <Filter>소스 파일\models</Filter>
-    </ClCompile>
-    <ClCompile Include="colors.c">
+    <ClCompile Include="map.c">
       <Filter>소스 파일\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ui.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="utils.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="main_game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="constants.h">
@@ -71,11 +74,23 @@
     <ClInclude Include="player.h">
       <Filter>헤더 파일\models</Filter>
     </ClInclude>
-    <ClInclude Include="colors.h">
-      <Filter>헤더 파일\models</Filter>
-    </ClInclude>
     <ClInclude Include="icons.h">
-      <Filter>헤더 파일\models</Filter>
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>헤더 파일\game</Filter>
+    </ClInclude>
+    <ClInclude Include="init.h">
+      <Filter>헤더 파일\game</Filter>
+    </ClInclude>
+    <ClInclude Include="update.h">
+      <Filter>헤더 파일\game</Filter>
+    </ClInclude>
+    <ClInclude Include="main_game.h">
+      <Filter>헤더 파일\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

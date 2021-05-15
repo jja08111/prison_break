@@ -15,13 +15,11 @@ typedef struct {
 	// 시야 범위이다.
 	//
 	// 초기 값은 10이다.
-	int visionRange;
+	int score;
 
 	// 시간 제한이다.
 	int timeLimit;
 } Stage;
-
-void initStage(Stage* stage);
 
 // 0단계 10
 // 1단계 8
@@ -36,7 +34,5 @@ int visionRangeOf(const Stage* const stage);
 // 3단계 120
 // 4단계 140 
 int timeLimitOf(const Stage* const stage);
-
-void levelUpStage(Stage* stage);
 
 #endif

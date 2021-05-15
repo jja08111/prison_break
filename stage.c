@@ -1,12 +1,5 @@
 #include "stage.h"
 
-void initStage(Stage* stage)
-{
-	stage->level = 0;
-	stage->timeLimit = timeLimitOf(stage);
-	stage->visionRange = visionRangeOf(stage);
-}
-
 int visionRangeOf(const Stage* const stage)
 {
 	switch (stage->level) {
@@ -21,7 +14,8 @@ int visionRangeOf(const Stage* const stage)
 
 int timeLimitOf(const Stage* const stage)
 {
-	switch (stage->level) {
+	switch (stage->level)
+	{
 	case 0: return 60;
 	case 1: return 80;
 	case 2: return 100;
@@ -29,9 +23,4 @@ int timeLimitOf(const Stage* const stage)
 	case MAX_LEVEL: return 140;
 	}
 	return 0;
-}
-
-void levelUpStage(Stage* stage)
-{
-
 }

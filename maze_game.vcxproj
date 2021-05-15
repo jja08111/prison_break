@@ -141,23 +141,26 @@
   <ItemGroup>
     <ClCompile Include="colors.c" />
     <ClCompile Include="icons.c" />
+    <ClCompile Include="init.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="main_game.c" />
     <ClCompile Include="map.c" />
-    <ClCompile Include="player.c" />
-    <ClCompile Include="ui.c" />
+    <ClCompile Include="render.c" />
     <ClCompile Include="stage.c" />
+    <ClCompile Include="update.c" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colors.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="icons.h" />
+    <ClInclude Include="init.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="ui.h" />
+    <ClInclude Include="render.h" />
     <ClInclude Include="stage.h" />
+    <ClInclude Include="update.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
