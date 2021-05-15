@@ -20,7 +20,7 @@ typedef struct {
 
 	short life;
 
-	int visionRange;
+	short visionRange;
 
 	enum VisionPattern visionPattern;
 } Player;

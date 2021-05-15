@@ -9,11 +9,11 @@ static const int DIR[4][2] = { {0,-2},{0,2},{-2,0},{2,0} };
 static int _getMapLineLength(const Stage* const stage)
 {
 	switch (stage->level) {
-	case 0: return 51;
-	case 1: return 61;
-	case 2: return 71;
-	case 3: return 81;
-	case MAX_LEVEL: return 91;
+	case 0: return 50;
+	case 1: return 60;
+	case 2: return 70;
+	case 3: return 80;
+	case MAX_LEVEL: return 90;
 	}
 	return 0;
 }
@@ -31,7 +31,7 @@ static int _shuffleArray(int array[], int size)
 
 static int _inRange(int y, int x, const Map* const map)
 {
-	return (y < map->height&& y >= 0) && (x < map->width&& x >= 0);
+	return (y <= map->height && y >= 0) && (x <= map->width && x >= 0);
 }
 
 // 깊이우선탐색을 하면서 맵을 형성한다.

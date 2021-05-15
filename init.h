@@ -8,11 +8,11 @@
 
 #include <time.h>
 
-// 0단계 51
-// 1단계 61
-// 2단계 71
-// 3단계 81
-// 4단계 91 
+// 0단계 50
+// 1단계 60
+// 2단계 70
+// 3단계 80
+// 4단계 90
 static int _getMapLineLength(const Stage* const stage);
 static int _shuffleArray(int array[], int size);
 static int _inRange(int y, int x, const Map* const map);

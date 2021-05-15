@@ -2,15 +2,14 @@
 #define __UTILS_H__
 
 #include <Windows.h>
-
-#define MIN(a,b) (((a)<(b)) ? (a) : (b))
-#define MAX(a,b) (((a)>(b)) ? (a) : (b))
+#include <stdlib.h> // min, max
 
 void removeCursor(void);
 
-// (y,2x) 위치로 이동한다.
+// 커서를 (2x, y) 좌표로 이동시킨다.
 void goto2xy(int x, int y);
 
+// 커서를 (2 * position.X, position.Y) 좌표로 이동시킨다.
 void gotoPosition(COORD position);
 
 // 같으면 1, 다르면 0을 반환

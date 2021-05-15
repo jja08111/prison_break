@@ -7,7 +7,7 @@
 
 int main()
 {
-	system("mode con cols=166 lines=56 | title Maze game v0.0.1");
+	system("mode con cols=166 lines=56 | title Maze game");
 
 	while (1)
 	{

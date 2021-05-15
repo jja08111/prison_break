@@ -9,6 +9,7 @@
 #define ICON_PLAYER "¡Ü"
 #define ICON_WALL "¡á"
 #define ICON_EMPTY "  "
+#define ICON_BOMB "¢À"
 
 void printPlayerIcon();
 void printWallIcon();
