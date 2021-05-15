@@ -20,6 +20,7 @@
 
 #define PRIMARY_COLOR		MAGENTA2
 #define SECONDARY_COLOR		YELLOW2
+#define ACCENT_COLOR		RED2
 
 // 문자의 (foreground, background) 색상 설정
 static void _textcolor(int color, int bgcolor);
@@ -27,5 +28,6 @@ static void _textcolor(int color, int bgcolor);
 void setPlayerIconColor();
 void setWallIconColor();
 void setEmptyIconColor();
+void setBombIconColor();
 
 #endif

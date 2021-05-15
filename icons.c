@@ -1,19 +1,25 @@
 #include "icons.h"
 
-void printPlayerIcon()
+void drawPlayerIcon()
 {
 	setPlayerIconColor();
 	printf("%s", ICON_PLAYER);
 }
 
-void printWallIcon()
+void drawWallIcon()
 {
 	setWallIconColor();
 	printf("%s", ICON_WALL);
 }
 
-void printEmptyIcon()
+void drawEmptyIcon()
 {
 	setEmptyIconColor();
 	printf("%s", ICON_EMPTY);
+}
+
+void drawBombIcon()
+{
+	setBombIconColor();
+	printf("%s", ICON_BOMB);
 }

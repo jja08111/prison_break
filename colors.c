@@ -22,3 +22,8 @@ void setEmptyIconColor()
 {
 	_textcolor(ON_SURFACE_COLOR, SURFACE_COLOR);
 }
+
+void setBombIconColor()
+{
+	_textcolor(ACCENT_COLOR, SURFACE_COLOR);
+}

@@ -37,7 +37,7 @@ static int _ensureToBeWithinRange(const Map* const map, COORD* topLeft, COORD* b
 static void _drawEmptyIconAt(COORD position)
 {
 	gotoPosition(position);
-	printEmptyIcon();
+	drawEmptyIcon();
 }
 
 static void _drawEmptyIconFromRect(const Map* const map, COORD topLeft, COORD bottomRight)
@@ -52,15 +52,15 @@ static void _drawEmptyIconFromRect(const Map* const map, COORD topLeft, COORD bo
 	{
 		goto2xy(topLeft.X, y);
 		for (x = topLeft.X;x <= bottomRight.X;++x)
-			printEmptyIcon();
+			drawEmptyIcon();
 	}
 }
 
 static void _drawMapCell(const Map* const map, COORD position)
 {
 	map->grid[position.Y][position.X] == FLAG_WALL
-		? printWallIcon()
-		: printEmptyIcon();
+		? drawWallIcon()
+		: drawEmptyIcon();
 }
 
 static void _drawMapCellAt(const Map* const map, COORD position)
@@ -140,7 +140,7 @@ static void _renderPlayer(const Player* const player)
 	}
 
 	gotoPosition(player->position);
-	printPlayerIcon();
+	drawPlayerIcon();
 }
 
 static void _renderInterface(const Stage* const stage, const Player* const player)

@@ -11,8 +11,9 @@
 #define ICON_EMPTY "  "
 #define ICON_BOMB "¢À"
 
-void printPlayerIcon();
-void printWallIcon();
-void printEmptyIcon();
+void drawPlayerIcon();
+void drawWallIcon();
+void drawEmptyIcon();
+void drawBombIcon();
 
 #endif
