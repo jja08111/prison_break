@@ -69,6 +69,7 @@ static void _generateMapUsingDFS(int y, int x, Map* const map)
 static void _initMap(Map* map, const Stage* const stage)
 {
 	map->height = map->width = _getMapLineLength(stage);
+	map->hasInitRendered = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
 	_generateMapUsingDFS(1, 1, map);
@@ -76,9 +77,10 @@ static void _initMap(Map* map, const Stage* const stage)
 
 static void _initPlayer(Player* player, const Stage* const stage)
 {
-	player->position = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
+	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->life = 5;
 	player->visionRange = visionRangeOf(stage);
+	player->visionPattern = VISION_DEFAULT;
 }
 
 static void _initStage(Stage* stage)

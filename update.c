@@ -14,6 +14,7 @@ void updatePlayerPosition(Player* player, const Map* const map, unsigned char ke
 
 	if (canPlace(newPosition, map))
 	{
+		player->prevPosition = player->position;
 		player->position = newPosition;
 	}
 }

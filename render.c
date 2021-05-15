@@ -1,5 +1,20 @@
 #include "render.h"
 
+// 플레이어 시야 범위내에 (x,y)가 위치했으면 1을, 아니면 0을 반환한다.
+static int _inVisionRange(int y, int x, const Map* const map, const Player* const player)
+{
+	int visionRange = player->visionRange;
+	int py = player->position.Y;
+	int px = player->position.X;
+
+	int minY = MAX(0, py - visionRange);
+	int minX = MAX(0, px - visionRange);
+	int maxY = MIN(map->height, py + visionRange);
+	int maxX = MIN(map->width, px + visionRange);
+	
+	return minY <= y && y <= maxY && minX <= x && x <= maxX;
+}
+
 static void _renderInitMap(const Map* const map, const Player* const player)
 {
 	int i, j;
@@ -9,7 +24,7 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 	{
 		for (j = 0;j < map->width;++j)
 		{
-			if (i <= visionRange && j <= visionRange && map->grid[i][j] == FLAG_WALL)
+			if (_inVisionRange(i, j, map, player) && map->grid[i][j] == FLAG_WALL)
 				printWallIcon();
 			else
 				printEmptyIcon();
@@ -18,17 +33,18 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 	}
 }
 
-static void _renderMap(const Map* const map, const Player* const player, COORD prevPosition)
+// 이동한 방향의 맵을 그리며, 이전 방향 부분의 맵은 지운다.
+static void _renderMap(const Map* const map, const Player* const player)
 {
 	
 }
 
-static void _renderPlayer(const Player* const player, COORD prevPosition)
+static void _renderPlayer(const Player* const player)
 {
 	// 이전 위치와 다르면 지운다.
-	if (!samePosition(player->position, prevPosition))
+	if (!samePosition(player->position, player->prevPosition))
 	{
-		gotoPosition(prevPosition);
+		gotoPosition(player->prevPosition);
 		printEmptyIcon();
 	}
 
@@ -36,25 +52,19 @@ static void _renderPlayer(const Player* const player, COORD prevPosition)
 	printPlayerIcon();
 }
 
-void render(const Stage* const stage, const Player* const player, const Map* const map)
+void render(const Stage* const stage, const Player* const player, Map* map)
 {
-	static int isInitDraw = 1;
-	static COORD prevPosition = { INIT_PLAYER_POS,INIT_PLAYER_POS };
-
-	// 초기 렌더링
-	if (isInitDraw)
+	if (!map->hasInitRendered)
 	{
 		_renderInitMap(map, player);
-		_renderPlayer(player, prevPosition);
-		isInitDraw = 0;
+		_renderPlayer(player);
+		map->hasInitRendered = 1;
 	}
 
 	// 플레이어가 이동한 경우 렌더링
-	if (!samePosition(player->position, prevPosition))
+	if (!samePosition(player->position, player->prevPosition))
 	{
-		_renderMap(map, player, prevPosition);
-		_renderPlayer(player, prevPosition);
-
-		prevPosition = player->position;
+		_renderMap(map, player);
+		_renderPlayer(player);
 	}
 }

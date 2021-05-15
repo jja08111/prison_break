@@ -12,6 +12,11 @@ enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED };
 // 
 // grid에 실제 정보를 저장하고 높이와 너비값에 따라 크기가 정해진다.
 typedef struct {
+	// 초기 맵이 그려졌는지 여부를 저장한다.
+	//
+	// release 과정에서 0으로 초기화 된다.
+	int hasInitRendered;
+
 	// 맵 데이터를 [y][x]로 가진 배열이다.
 	//
 	// FLAG_WALL인 경우 벽이며 그 외의 경우는 빈 공간이다.

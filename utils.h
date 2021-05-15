@@ -3,6 +3,9 @@
 
 #include <Windows.h>
 
+#define MIN(a,b) (((a)<(b)) ? (a) : (b))
+#define MAX(a,b) (((a)>(b)) ? (a) : (b))
+
 void removeCursor(void);
 
 // (y,2x) 위치로 이동한다.
