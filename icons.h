@@ -14,6 +14,7 @@
 void drawPlayerIcon();
 void drawWallIcon();
 void drawEmptyIcon();
+void drawDarknessIcon();
 void drawBombIcon();
 
 #endif

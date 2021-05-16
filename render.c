@@ -40,7 +40,7 @@ static void _drawEmptyIconAt(COORD position)
 	drawEmptyIcon();
 }
 
-static void _drawEmptyIconFromRect(const Map* const map, SMALL_RECT rect)
+static void _drawDarknessFromRect(const Map* const map, SMALL_RECT rect)
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 	int y, x;
@@ -52,7 +52,7 @@ static void _drawEmptyIconFromRect(const Map* const map, SMALL_RECT rect)
 	{
 		goto2xy(rect.Left, y);
 		for (x = rect.Left;x <= rect.Right;++x)
-			drawEmptyIcon();
+			drawDarknessIcon();
 	}
 }
 
@@ -89,7 +89,7 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
-	_drawEmptyIconFromRect(map, (SMALL_RECT) { 0, 0, map->width, map->height});
+	_drawDarknessFromRect(map, (SMALL_RECT) { 0, 0, map->width, map->height});
 	_drawMapFromRect(map, (SMALL_RECT) { 0, 0, visionRange, visionRange});
 }
 
@@ -108,25 +108,25 @@ static void _renderMap(const Map* const map, const Player* const player)
 	// 위로 이동한 경우
 	if (position.Y < prevPosition.Y)
 	{
-		_drawEmptyIconFromRect(map, (SMALL_RECT) { left, bottom + 1, right, bottom + 1 });
+		_drawDarknessFromRect(map, (SMALL_RECT) { left, bottom + 1, right, bottom + 1 });
 		_drawMapFromRect(map, (SMALL_RECT) { left, top, right, top });
 	}
 	// 아래로 이동한 경우
 	else if (position.Y > prevPosition.Y)
 	{
-		_drawEmptyIconFromRect(map, (SMALL_RECT) { left, top - 1, right, top - 1 });
+		_drawDarknessFromRect(map, (SMALL_RECT) { left, top - 1, right, top - 1 });
 		_drawMapFromRect(map, (SMALL_RECT) { left, bottom, right, bottom });
 	}
 	// 좌측으로 이동한 경우
 	else if (position.X < prevPosition.X)
 	{
-		_drawEmptyIconFromRect(map, (SMALL_RECT) { right + 1, top, right + 1, bottom });
+		_drawDarknessFromRect(map, (SMALL_RECT) { right + 1, top, right + 1, bottom });
 		_drawMapFromRect(map, (SMALL_RECT) { left, top, left, bottom });
 	}
 	// 우측으로 이동한 경우
 	else if (position.X > prevPosition.X)
 	{
-		_drawEmptyIconFromRect(map, (SMALL_RECT) { left - 1, top, left - 1, bottom });
+		_drawDarknessFromRect(map, (SMALL_RECT) { left - 1, top, left - 1, bottom });
 		_drawMapFromRect(map, (SMALL_RECT) { right, top, right, bottom });
 	}
 }
@@ -143,20 +143,33 @@ static void _renderPlayer(const Player* const player)
 	drawPlayerIcon();
 }
 
-static void _drawCenterAlignedText(const char* str, SMALL_RECT rect)
+static void _renderInterface(const Stage* const stage, const Player* const player, const Map* const map)
 {
+	int y = 4;
+	
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 
-}
+	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "SCORE");
+	printf("SCORE");
 
-static void _renderInterface(const Stage* const stage, const Player* const player)
-{
-	//goto2xy
+	y += 4;
+	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LeEVEL");
+	printf("LeEVEL");
+	y += 2; 
+	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "1");
+	printf("%d", stage->level + 1);
+
+	y += 4;
+	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LIFE");
+	printf("LIFE");
 }
 
 void render(const Stage* const stage, const Player* const player, Map* map)
 {
 	if (!map->hasInitRendered)
 	{
+		_renderInterface(stage, player, map);
+
 		_renderInitMap(map, player);
 		_renderPlayer(player);
 		map->hasInitRendered = 1;
@@ -165,6 +178,8 @@ void render(const Stage* const stage, const Player* const player, Map* map)
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
 	{
+		_renderInterface(stage, player, map);
+
 		_renderMap(map, player);
 		_renderPlayer(player);
 	}

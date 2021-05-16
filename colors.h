@@ -23,11 +23,6 @@
 #define ACCENT_COLOR		RED2
 
 // 문자의 (foreground, background) 색상 설정
-static void _textcolor(int color, int bgcolor);
-
-void setPlayerIconColor();
-void setWallIconColor();
-void setEmptyIconColor();
-void setBombIconColor();
+void textcolor(int color, int bgcolor);
 
 #endif

@@ -12,6 +12,8 @@ void goto2xy(int x, int y);
 // 커서를 (2 * position.X, position.Y) 좌표로 이동시킨다.
 void gotoPosition(COORD position);
 
+void gotoCenterForAlignString(SMALL_RECT rect, const char* str);
+
 // 같으면 1, 다르면 0을 반환
 int samePosition(COORD a, COORD b);
 

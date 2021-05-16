@@ -2,24 +2,30 @@
 
 void drawPlayerIcon()
 {
-	setPlayerIconColor();
+	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_PLAYER);
 }
 
 void drawWallIcon()
 {
-	setWallIconColor();
+	textcolor(ON_SURFACE_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_WALL);
 }
 
 void drawEmptyIcon()
 {
-	setEmptyIconColor();
+	textcolor(SURFACE_COLOR, SURFACE_COLOR);
+	printf("%s", ICON_EMPTY);
+}
+
+void drawDarknessIcon()
+{
+	textcolor(ON_SURFACE_COLOR, ON_SURFACE_COLOR);
 	printf("%s", ICON_EMPTY);
 }
 
 void drawBombIcon()
 {
-	setBombIconColor();
+	textcolor(ACCENT_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_BOMB);
 }

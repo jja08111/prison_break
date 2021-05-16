@@ -19,6 +19,13 @@ void gotoPosition(COORD position)
 	goto2xy(position.X, position.Y);
 }
 
+void gotoCenterForAlignString(SMALL_RECT rect, const char* str)
+{
+	int x = (rect.Left + rect.Right) / 2 - (strlen(str) / 2);
+
+	gotoPosition((COORD) { x, rect.Top });
+}
+
 int samePosition(COORD a, COORD b)
 {
 	if (a.X == b.X && a.Y == b.Y)
