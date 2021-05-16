@@ -1,5 +1,11 @@
 #include "utils.h"
 
+static void _gotoxy(int x, int y)
+{
+	COORD pos = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
 void removeCursor(void) { 
 
 	CONSOLE_CURSOR_INFO curInfo;
@@ -10,8 +16,7 @@ void removeCursor(void) {
 
 void goto2xy(int x, int y)
 {
-	COORD pos = { 2 * x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	_gotoxy(2 * x, y);
 }
 
 void gotoPosition(COORD position)
@@ -21,9 +26,9 @@ void gotoPosition(COORD position)
 
 void gotoCenterForAlignString(SMALL_RECT rect, const char* str)
 {
-	int x = (rect.Left + rect.Right) / 2 - (strlen(str) / 2);
+	int x = (rect.Left + rect.Right) - (strlen(str) / 2);
 
-	gotoPosition((COORD) { x, rect.Top });
+	_gotoxy(x, rect.Top);
 }
 
 int samePosition(COORD a, COORD b)
@@ -31,4 +36,9 @@ int samePosition(COORD a, COORD b)
 	if (a.X == b.X && a.Y == b.Y)
 		return 1;
 	return 0;
+}
+
+int rangedNum(int num, int minNum, int maxNum)
+{
+	return max(minNum, min(num, maxNum));
 }

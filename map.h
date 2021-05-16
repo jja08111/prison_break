@@ -6,7 +6,7 @@
 #define MAX_HEIGHT 91
 #define MAX_WIDTH 91
 
-enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED };
+enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED, FLAG_TARGET };
 
 // 맵 데이터 구조이다. 
 // 
@@ -30,5 +30,7 @@ typedef struct {
 //
 // 해당 위치의 map->grid가 FLAG_WALL인 경우 위치할 수 없다.
 int canPlace(COORD position, const Map* const map);
+
+COORD getTargetPosition(const Map* const map);
 
 #endif

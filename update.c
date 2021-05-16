@@ -1,8 +1,8 @@
 #include "update.h"
 
-void updatePlayerPosition(Player* player, const Map* const map, unsigned char keybdInput)
+void updatePosition(COORD* position, const Map* const map, unsigned char keybdInput)
 {
-	COORD newPosition = player->position;
+	COORD newPosition = *position;
 
 	// 새로운 위치로 이동
 	switch (keybdInput) {
@@ -14,8 +14,7 @@ void updatePlayerPosition(Player* player, const Map* const map, unsigned char ke
 
 	if (canPlace(newPosition, map))
 	{
-		player->prevPosition = player->position;
-		player->position = newPosition;
+		*position = newPosition;
 	}
 }
 
@@ -24,7 +23,11 @@ static void _levelUpStage(Stage* stage)
 
 }
 
-void update(Stage* stage, Player* player, Map* map)
+void update(Stage* stage, Player* player, Map* map, COORD newPosition)
 {
-
+	player->prevPosition = player->position;
+	if (!samePosition(newPosition, player->position))
+	{
+		player->position = newPosition;
+	}
 }

@@ -6,6 +6,12 @@ void drawPlayerIcon()
 	printf("%s", ICON_PLAYER);
 }
 
+void drawTargetIcon()
+{
+	textcolor(ACCENT_COLOR, SURFACE_COLOR);
+	printf("%s", ICON_TARGET);
+}
+
 void drawWallIcon()
 {
 	textcolor(ON_SURFACE_COLOR, SURFACE_COLOR);
@@ -15,12 +21,6 @@ void drawWallIcon()
 void drawEmptyIcon()
 {
 	textcolor(SURFACE_COLOR, SURFACE_COLOR);
-	printf("%s", ICON_EMPTY);
-}
-
-void drawDarknessIcon()
-{
-	textcolor(ON_SURFACE_COLOR, ON_SURFACE_COLOR);
 	printf("%s", ICON_EMPTY);
 }
 

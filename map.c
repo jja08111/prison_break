@@ -11,3 +11,8 @@ int canPlace(COORD position, const Map* const map)
 
 	return inRange && inEmptyCell;
 }
+
+COORD getTargetPosition(const Map* const map)
+{
+	return (COORD) { map->width - 1, map->height - 1 };
+}

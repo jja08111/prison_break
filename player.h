@@ -2,6 +2,7 @@
 #define __PLAYER_H__
 
 #define INIT_PLAYER_POS 1
+#define TARGET_VISION_RANGE 2
 
 enum VisionPattern { VISION_DEFAULT };
 

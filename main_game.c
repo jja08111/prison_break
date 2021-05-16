@@ -7,6 +7,7 @@ void runMainGame()
 	Stage stage;
 	Player player;
 	Map map;
+	COORD newPosition = { INIT_PLAYER_POS, INIT_PLAYER_POS };
 
 	prevTime = clock();
 
@@ -22,7 +23,7 @@ void runMainGame()
 			case KEYBD_DOWN:
 			case KEYBD_LEFT:
 			case KEYBD_RIGHT:
-				updatePlayerPosition(&player, &map, keybdInput);
+				updatePosition(&newPosition, &map, keybdInput);
 				break;
 			case KEYBD_ESC:
 				// TODO : 게임을 종료하시겠습니까? 처리 함수 제작
@@ -32,7 +33,7 @@ void runMainGame()
 			}
 		}
 
-		update(&stage, &player, &map);
+		update(&stage, &player, &map, newPosition);
 		render(&stage, &player, &map);
 
 		// 1초에 약 30 프레임

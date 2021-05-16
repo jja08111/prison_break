@@ -5,16 +5,14 @@
 
 // 스테이지 정보를 가지고 있다.
 //
-// 멤버변수로 level, visionRange, timeLimit가 있다.
+// 멤버변수로 level, score, timeLimit가 있다.
 typedef struct {
 	// 스테이지 레벨이다. 
 	//
 	// 0부터 시작한다.
 	int level;
 	
-	// 시야 범위이다.
-	//
-	// 초기 값은 10이다.
+	// 현재 획득한 점수이다.
 	int score;
 
 	// 시간 제한이다.

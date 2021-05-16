@@ -15,11 +15,6 @@ static int _inVisionRange(int y, int x, const Map* const map, const Player* cons
 	return minY <= y && y <= maxY && minX <= x && x <= maxX;
 }
 
-static int rangedNum(int num, int minNum, int maxNum)
-{
-	return max(minNum, min(num, maxNum));
-}
-
 static int _ensureToBeWithinRange(const Map* const map, SMALL_RECT* rect)
 {
 	// 한 칸도 겹치지 않는 경우
@@ -32,6 +27,18 @@ static int _ensureToBeWithinRange(const Map* const map, SMALL_RECT* rect)
 	rect->Left = rangedNum(rect->Left, 0, map->width);
 	rect->Right = rangedNum(rect->Right, 0, map->width);
 	return 1;
+}
+
+static void _drawBox(SMALL_RECT rect)
+{
+	int y, x;
+
+	for (y = rect.Top;y <= rect.Bottom;++y)
+	{
+		goto2xy(rect.Left, y);
+		for (x = rect.Left;x <= rect.Right;++x)
+			printf(ICON_EMPTY);
+	}
 }
 
 static void _drawEmptyIconAt(COORD position)
@@ -48,19 +55,22 @@ static void _drawDarknessFromRect(const Map* const map, SMALL_RECT rect)
 	if (!_ensureToBeWithinRange(map, &rect))
 		return;
 
-	for (y = rect.Top;y <= rect.Bottom;++y)
-	{
-		goto2xy(rect.Left, y);
-		for (x = rect.Left;x <= rect.Right;++x)
-			drawDarknessIcon();
-	}
+	textcolor(ON_SURFACE_COLOR, ON_SURFACE_COLOR);
+	_drawBox(rect);
 }
 
 static void _drawMapCell(const Map* const map, COORD position)
 {
-	map->grid[position.Y][position.X] == FLAG_WALL
-		? drawWallIcon()
-		: drawEmptyIcon();
+	switch (map->grid[position.Y][position.X]) {
+	case FLAG_WALL: 
+		drawWallIcon();
+		break;
+	case FLAG_TARGET: 
+		drawTargetIcon();
+		break;
+	default: 
+		drawEmptyIcon();
+	}
 }
 
 static void _drawMapCellAt(const Map* const map, COORD position)
@@ -72,6 +82,7 @@ static void _drawMapCellAt(const Map* const map, COORD position)
 static void _drawMapFromRect(const Map* const map, SMALL_RECT rect)
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
+
 	int y, x;
 
 	if (!_ensureToBeWithinRange(map, &rect))
@@ -85,12 +96,25 @@ static void _drawMapFromRect(const Map* const map, SMALL_RECT rect)
 	}	
 }
 
+static void _renderTargetSpace(const Map* const map)
+{
+	COORD targetPosition = getTargetPosition(map);
+
+	_drawMapFromRect(map,
+		(SMALL_RECT) {
+		targetPosition.X - TARGET_VISION_RANGE,
+		targetPosition.Y - TARGET_VISION_RANGE,
+		targetPosition.X + TARGET_VISION_RANGE,
+		targetPosition.Y + TARGET_VISION_RANGE});
+}
+
 static void _renderInitMap(const Map* const map, const Player* const player)
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
 	_drawDarknessFromRect(map, (SMALL_RECT) { 0, 0, map->width, map->height});
 	_drawMapFromRect(map, (SMALL_RECT) { 0, 0, visionRange, visionRange});
+	_renderTargetSpace(map);
 }
 
 static void _renderMap(const Map* const map, const Player* const player)
@@ -129,6 +153,7 @@ static void _renderMap(const Map* const map, const Player* const player)
 		_drawDarknessFromRect(map, (SMALL_RECT) { left - 1, top, left - 1, bottom });
 		_drawMapFromRect(map, (SMALL_RECT) { right, top, right, bottom });
 	}
+	_renderTargetSpace(map);
 }
 
 static void _renderPlayer(const Player* const player)
@@ -143,29 +168,53 @@ static void _renderPlayer(const Player* const player)
 	drawPlayerIcon();
 }
 
+static void _drawTextWithCenterAlign(SMALL_RECT rect, const char* _Format, ...)
+{
+	char _Buffer[20];
+
+	va_list _ArgList;
+	__crt_va_start(_ArgList, _Format);
+	_vsprintf_l(_Buffer, _Format, NULL, _ArgList);
+	__crt_va_end(_ArgList);
+
+	gotoCenterForAlignString(rect, _Buffer);
+	printf(_Buffer);
+}
+
 static void _renderInterface(const Stage* const stage, const Player* const player, const Map* const map)
 {
 	int y = 4;
 	
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 
-	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "SCORE");
-	printf("SCORE");
+	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "SCORE : %d", stage->score);
 
 	y += 4;
-	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LeEVEL");
-	printf("LeEVEL");
-	y += 2; 
-	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "1");
-	printf("%d", stage->level + 1);
+	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LEVEL : %d", stage->level + 1);
 
 	y += 4;
-	gotoCenterForAlignString((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LIFE");
-	printf("LIFE");
+	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LIFE  : %d", player->life);
+}
+
+static void _renderDialog(const char* msg)
+{
+
+}
+
+static void _renderSuccessDialog()
+{
+	_renderDialog("Successed the %d level!");
 }
 
 void render(const Stage* const stage, const Player* const player, Map* map)
 {
+	// 목표에 도달한 경우
+	if (samePosition(getTargetPosition(map), player->position))
+	{
+		
+	}
+	
+	// 초기 렌더링
 	if (!map->hasInitRendered)
 	{
 		_renderInterface(stage, player, map);

@@ -5,11 +5,12 @@
 #include "player.h"
 #include "stage.h"
 #include "constants.h"
+#include "utils.h"
 
-void updatePlayerPosition(Player* player, const Map* const map, unsigned char keybdInput);
+void updatePosition(COORD* position, const Map* const map, unsigned char keybdInput);
 
 static void _levelUpStage(Stage* stage);
 
-void update(Stage* stage, Player* player, Map* map);
+void update(Stage* stage, Player* player, Map* map, COORD updatedPosition);
 
 #endif

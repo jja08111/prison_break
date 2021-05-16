@@ -73,6 +73,8 @@ static void _initMap(Map* map, const Stage* const stage)
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
 	_generateMapUsingDFS(1, 1, map);
+
+	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
 }
 
 static void _initPlayer(Player* player, const Stage* const stage)
