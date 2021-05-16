@@ -27,8 +27,9 @@ void gotoPosition(COORD position)
 void gotoCenterForAlignString(SMALL_RECT rect, const char* str)
 {
 	int x = (rect.Left + rect.Right) - (strlen(str) / 2);
+	int y = (rect.Top + rect.Bottom) / 2;
 
-	_gotoxy(x, rect.Top);
+	_gotoxy(x, y);
 }
 
 int samePosition(COORD a, COORD b)

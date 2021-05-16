@@ -1,6 +1,9 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
+#include "map.h"
+#include "utils.h"
+
 #define INIT_PLAYER_POS 1
 #define TARGET_VISION_RANGE 2
 
@@ -25,5 +28,8 @@ typedef struct {
 
 	enum VisionPattern visionPattern;
 } Player;
+
+int onReachedTargetPoint(const Player* const player, const Map* const map);
+
 
 #endif

@@ -59,11 +59,11 @@ static void _renderPlayer(const Player* const player);
 
 
 
-static void _drawTextWithCenterAlign(SMALL_RECT rect, const char* _Format, ...);
+static void _drawCenterAlignedText(SMALL_RECT rect, const char* _Format, ...);
 
 static void _renderInterface(const Stage* const stage, const Player* const player, const Map* const map);
 
-static void _renderDialog(const char* msg);
+static void _renderDialogAtCenterMap(const char* msg);
 
 static void _renderSuccessDialog();
 

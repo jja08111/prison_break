@@ -145,6 +145,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="main_game.c" />
     <ClCompile Include="map.c" />
+    <ClCompile Include="player.c" />
     <ClCompile Include="render.c" />
     <ClCompile Include="stage.c" />
     <ClCompile Include="update.c" />

@@ -1,10 +1,14 @@
 ﻿#ifndef __MAP_H__
 #define __MAP_H__
 
+#include "stage.h"
+
 #include <Windows.h>
 
-#define MAX_HEIGHT 91
-#define MAX_WIDTH 91
+#define CONSOLE_MAX_WIDTH 140
+
+#define MAP_MAX_HEIGHT	64
+#define MAP_MAX_WIDTH	64
 
 enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED, FLAG_TARGET };
 
@@ -20,11 +24,22 @@ typedef struct {
 	// 맵 데이터를 [y][x]로 가진 배열이다.
 	//
 	// FLAG_WALL인 경우 벽이며 그 외의 경우는 빈 공간이다.
-	int grid[MAX_HEIGHT][MAX_WIDTH];
+	int grid[MAP_MAX_HEIGHT][MAP_MAX_WIDTH];
 
 	int height;
 	int width;
 } Map;
+
+// 0단계 48
+// 1단계 52
+// 2단계 56
+// 3단계 60
+// 4단계 64
+int getMapLineLength(const Stage* const stage);
+
+static int _shuffleArray(int array[], int size);
+static int _inRange(int y, int x, const Map* const map);
+void generateMap(int y, int x, Map* const map);
 
 // position 위치에 위치가능한 지 반환한다. 
 //
@@ -32,5 +47,9 @@ typedef struct {
 int canPlace(COORD position, const Map* const map);
 
 COORD getTargetPosition(const Map* const map);
+
+SMALL_RECT getMapRect(const Map* const map);
+
+COORD getMapCenterPoint(const Map* const map);
 
 #endif

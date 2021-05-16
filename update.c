@@ -12,22 +12,39 @@ void updatePosition(COORD* position, const Map* const map, unsigned char keybdIn
 	case KEYBD_RIGHT: newPosition.X++; break;
 	}
 
-	if (canPlace(newPosition, map))
-	{
+	//if (canPlace(newPosition, map))
+	//{
 		*position = newPosition;
-	}
+	//}
 }
 
-static void _levelUpStage(Stage* stage)
+static void _setNextStage(Stage* stage, Player* player, Map* map)
 {
+	stage->level++;
+	stage->timeLimit = timeLimitOf(stage);
 
+	player->visionRange = visionRangeOf(stage);
+	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
+
+	initMap(map, stage);
+
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	system("cls");
 }
 
-void update(Stage* stage, Player* player, Map* map, COORD newPosition)
+void update(Stage* stage, Player* player, Map* map, COORD* newPosition)
 {
-	player->prevPosition = player->position;
-	if (!samePosition(newPosition, player->position))
+	// 목표에 도달한 경우
+	if (onReachedTargetPoint(player, map))
 	{
-		player->position = newPosition;
+		Sleep(DIALOG_DELAY);
+		_setNextStage(stage, player, map);
+		*newPosition = player->position;
+	}
+	
+	player->prevPosition = player->position;
+	if (!samePosition(*newPosition, player->position))
+	{
+		player->position = *newPosition;
 	}
 }

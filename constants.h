@@ -8,4 +8,6 @@
 #define KEYBD_LEFT	0x4b
 #define KEYBD_RIGHT 0x4d
 
+#define DIALOG_DELAY 3000 // 3000ms
+
 #endif 

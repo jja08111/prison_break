@@ -50,7 +50,6 @@ static void _drawEmptyIconAt(COORD position)
 static void _drawDarknessFromRect(const Map* const map, SMALL_RECT rect)
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
-	int y, x;
 
 	if (!_ensureToBeWithinRange(map, &rect))
 		return;
@@ -112,7 +111,7 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
-	_drawDarknessFromRect(map, (SMALL_RECT) { 0, 0, map->width, map->height});
+	_drawDarknessFromRect(map, getMapRect(map));
 	_drawMapFromRect(map, (SMALL_RECT) { 0, 0, visionRange, visionRange});
 	_renderTargetSpace(map);
 }
@@ -153,6 +152,7 @@ static void _renderMap(const Map* const map, const Player* const player)
 		_drawDarknessFromRect(map, (SMALL_RECT) { left - 1, top, left - 1, bottom });
 		_drawMapFromRect(map, (SMALL_RECT) { right, top, right, bottom });
 	}
+
 	_renderTargetSpace(map);
 }
 
@@ -168,10 +168,12 @@ static void _renderPlayer(const Player* const player)
 	drawPlayerIcon();
 }
 
-static void _drawTextWithCenterAlign(SMALL_RECT rect, const char* _Format, ...)
+// rect의 x값은 2칸을 한 칸으로 두어 계산한다.
+static void _drawCenterAlignedText(SMALL_RECT rect, const char* _Format, ...)
 {
-	char _Buffer[20];
+	char _Buffer[40];
 
+	// _Buffer에 _ArgList을 포멧팅한다.
 	va_list _ArgList;
 	__crt_va_start(_ArgList, _Format);
 	_vsprintf_l(_Buffer, _Format, NULL, _ArgList);
@@ -187,47 +189,67 @@ static void _renderInterface(const Stage* const stage, const Player* const playe
 	
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 
-	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "SCORE : %d", stage->score);
+	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "SCORE : %d", stage->score);
 
 	y += 4;
-	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LEVEL : %d", stage->level + 1);
+	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "LEVEL : %d", stage->level + 1);
 
 	y += 4;
-	_drawTextWithCenterAlign((SMALL_RECT) { map->width, y, MAX_WIDTH, y }, "LIFE  : %d", player->life);
+	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "LIFE  : %d", player->life);
 }
 
-static void _renderDialog(const char* msg)
+static void _renderDialogAtCenterMap(const Map* const map, const char* _Format, ...)
 {
+	SMALL_RECT boxRect = getMapRect(map);
+	COORD centerPoint = getMapCenterPoint(map);
+	int horizontalPadding = 8;
+	char _Buffer[40];
 
+	boxRect = (SMALL_RECT){
+		boxRect.Left + horizontalPadding,
+		centerPoint.Y - 1,
+		boxRect.Right - horizontalPadding,
+		centerPoint.Y + 1 };
+
+	// _Buffer에 _ArgList을 포멧팅한다.
+	va_list _ArgList;
+	__crt_va_start(_ArgList, _Format);
+	_vsprintf_l(_Buffer, _Format, NULL, _ArgList);
+	__crt_va_end(_ArgList);
+
+	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
+
+	_drawBox(boxRect);
+	_drawCenterAlignedText(boxRect, _Buffer);
 }
 
-static void _renderSuccessDialog()
+static void _renderSuccessDialog(const Map* const map, const Stage* const stage)
 {
-	_renderDialog("Successed the %d level!");
+	_renderDialogAtCenterMap(map, "Successed the %d level!", stage->level + 1);
 }
 
 void render(const Stage* const stage, const Player* const player, Map* map)
 {
 	// 목표에 도달한 경우
-	if (samePosition(getTargetPosition(map), player->position))
+	if (onReachedTargetPoint(player, map))
 	{
-		
+		_renderSuccessDialog(map, stage);
 	}
 	
 	// 초기 렌더링
 	if (!map->hasInitRendered)
 	{
-		_renderInterface(stage, player, map);
-
 		_renderInitMap(map, player);
 		_renderPlayer(player);
 		map->hasInitRendered = 1;
 	}
 
+	_renderInterface(stage, player, map);
+
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
 	{
-		_renderInterface(stage, player, map);
+		
 
 		_renderMap(map, player);
 		_renderPlayer(player);
