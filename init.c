@@ -14,6 +14,7 @@ void initMap(Map* map, const Stage* const stage)
 
 static void _initPlayer(Player* player, const Stage* const stage)
 {
+	player->direction = player->prevDirection = DIRECTION_RIGHT;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->life = 5;
 	player->visionRange = visionRangeOf(stage);

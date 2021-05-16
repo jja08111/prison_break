@@ -5,10 +5,8 @@
 
 #include <Windows.h>
 
-#define CONSOLE_MAX_WIDTH 140
-
-#define MAP_MAX_HEIGHT	64
-#define MAP_MAX_WIDTH	64
+#define MAP_MAX_HEIGHT	65
+#define MAP_MAX_WIDTH	65
 
 enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED, FLAG_TARGET };
 

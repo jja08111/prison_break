@@ -1,6 +1,6 @@
 #include "main_game.h"
 
-static void _handleKeybdHit(COORD* newPosition, const Map* const map)
+static void _handleKeybdHit(COORD* newPosition, Player* player, const Map* const map)
 {
 	unsigned char keybdInput;
 
@@ -10,10 +10,11 @@ static void _handleKeybdHit(COORD* newPosition, const Map* const map)
 	case KEYBD_DOWN:
 	case KEYBD_LEFT:
 	case KEYBD_RIGHT:
-		updatePosition(newPosition, map, keybdInput);
+		player->prevDirection = player->direction;
+		player->direction = updatePosition(newPosition, map, keybdInput);
 		break;
 	case KEYBD_ESC:
-		// TODO : 게임을 종료하시겠습니까? 처리 함수 제작
+		// TODO : 게임을 종료하시겠습니까?  제작
 		break;
 	}
 }
@@ -31,7 +32,7 @@ void runMainGame()
 	{
 		if (_kbhit())
 		{
-			_handleKeybdHit(&newPosition, &map);
+			_handleKeybdHit(&newPosition, &player, &map);
 		}
 
 		update(&stage, &player, &map, &newPosition);

@@ -165,7 +165,7 @@ static void _renderPlayer(const Player* const player)
 	}
 
 	gotoPosition(player->position);
-	drawPlayerIcon();
+	drawPlayerIcon(player);
 }
 
 // rect의 x값은 2칸을 한 칸으로 두어 계산한다.
@@ -225,7 +225,7 @@ static void _renderDialogAtCenterMap(const Map* const map, const char* _Format, 
 
 static void _renderSuccessDialog(const Map* const map, const Stage* const stage)
 {
-	_renderDialogAtCenterMap(map, "Successed the %d level!", stage->level + 1);
+	_renderDialogAtCenterMap(map, "Successed!");
 }
 
 void render(const Stage* const stage, const Player* const player, Map* map)
@@ -249,9 +249,11 @@ void render(const Stage* const stage, const Player* const player, Map* map)
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
 	{
-		
-
 		_renderMap(map, player);
+		_renderPlayer(player);
+	}
+	else if (player->direction != player->prevDirection)
+	{
 		_renderPlayer(player);
 	}
 }

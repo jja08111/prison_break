@@ -6,6 +6,7 @@
 #include "stage.h"
 #include "utils.h"
 #include "icons.h"
+#include "constants.h"
 
 #include <assert.h>
 #include <string.h>
@@ -63,9 +64,9 @@ static void _drawCenterAlignedText(SMALL_RECT rect, const char* _Format, ...);
 
 static void _renderInterface(const Stage* const stage, const Player* const player, const Map* const map);
 
-static void _renderDialogAtCenterMap(const char* msg);
+static void _renderDialogAtCenterMap(const Map* const map, const char* _Format, ...);
 
-static void _renderSuccessDialog();
+static void _renderSuccessDialog(const Map* const map, const Stage* const stage);
 
 
 

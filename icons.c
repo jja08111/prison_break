@@ -1,9 +1,22 @@
 #include "icons.h"
 
-void drawPlayerIcon()
+void drawPlayerIcon(const Player* const player)
 {
 	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
-	printf("%s", ICON_PLAYER);
+	switch (player->direction)
+	{
+	case DIRECTION_UP:
+		printf("%s", ICON_PLAYER_UP);
+		break;
+	case DIRECTION_DOWN:
+		printf("%s", ICON_PLAYER_DOWN);
+		break;
+	case DIRECTION_LEFT:
+		printf("%s", ICON_PLAYER_LEFT);
+		break;
+	case DIRECTION_RIGHT:
+		printf("%s", ICON_PLAYER_RIGHT);
+	}
 }
 
 void drawTargetIcon()

@@ -43,3 +43,16 @@ int rangedNum(int num, int minNum, int maxNum)
 {
 	return max(minNum, min(num, maxNum));
 }
+
+Direction getDirectionFrom(COORD start, COORD end)
+{
+	if (start.Y > end.Y)
+		return DIRECTION_UP;
+	else if (start.Y < end.Y)
+		return DIRECTION_DOWN;
+	else if (start.X > end.X)
+		return DIRECTION_LEFT;
+	else if (start.X < end.X)
+		return DIRECTION_RIGHT;
+	return DIRECTION_UP;
+}

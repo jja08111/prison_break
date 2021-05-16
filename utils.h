@@ -4,6 +4,13 @@
 #include <Windows.h>
 #include <stdlib.h> // min, max
 
+typedef enum _Direction {
+	DIRECTION_UP,
+	DIRECTION_LEFT,
+	DIRECTION_DOWN, 
+	DIRECTION_RIGHT
+} Direction;
+
 static void _gotoxy(int x, int y);
 
 void removeCursor(void);
@@ -24,5 +31,7 @@ int samePosition(COORD a, COORD b);
 //
 // 즉, minNum보다 작으면 minNum, maxNum보다 크면 maxNum이 된다.
 int rangedNum(int num, int minNum, int maxNum);
+
+Direction getDirectionFrom(COORD start, COORD end);
 
 #endif
