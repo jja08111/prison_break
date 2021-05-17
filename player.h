@@ -5,9 +5,9 @@
 #include "utils.h"
 
 #define INIT_PLAYER_POS 1
-#define TARGET_VISION_RANGE 2
+#define TARGET_VISION_RANGE 1
 
-enum VisionPattern { VISION_DEFAULT };
+typedef enum _VisionPattern { VISION_DEFAULT } VisionPattern;
 
 // 플레이어의 정보를 가지고 있다.
 //
@@ -16,11 +16,11 @@ enum VisionPattern { VISION_DEFAULT };
 typedef struct {
 	Direction direction;
 	Direction prevDirection;
+
 	// 플레이어의 현재 위치 좌표이다.
 	// 
 	// 초기 위치는 {1,1}이다.
 	COORD position;
-
 	// 플레이어의 이전 위치이다.
 	COORD prevPosition;
 
@@ -28,7 +28,7 @@ typedef struct {
 
 	short visionRange;
 
-	enum VisionPattern visionPattern;
+	VisionPattern visionPattern;
 } Player;
 
 // 0단계 10
@@ -38,7 +38,10 @@ typedef struct {
 // 4단계 2 
 int visionRangeOf(const Stage* const stage);
 
-int onReachedTargetPoint(const Player* const player, const Map* const map);
-
+// 플레이어가 도착 지점에 도착했으면 1을 반환한다.
+int onReachedTargetPoint(
+	const Player* const player,
+	const Map* const	map
+);
 
 #endif

@@ -24,7 +24,10 @@ void gotoPosition(COORD position)
 	goto2xy(position.X, position.Y);
 }
 
-void gotoCenterForAlignString(SMALL_RECT rect, const char* str)
+void gotoCenterForAlignString(
+	SMALL_RECT	rect,
+	const char* str
+)
 {
 	int x = (rect.Left + rect.Right) - (strlen(str) / 2);
 	int y = (rect.Top + rect.Bottom) / 2;

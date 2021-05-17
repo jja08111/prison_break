@@ -1,6 +1,10 @@
 #include "main_game.h"
 
-static void _handleKeybdHit(COORD* newPosition, Player* player, const Map* const map)
+static void _handleKeybdHit(
+	COORD*				newPosition, 
+	Player*				player, 
+	const Map* const	map
+)
 {
 	unsigned char keybdInput;
 
@@ -11,7 +15,7 @@ static void _handleKeybdHit(COORD* newPosition, Player* player, const Map* const
 	case KEYBD_LEFT:
 	case KEYBD_RIGHT:
 		player->prevDirection = player->direction;
-		player->direction = updatePosition(newPosition, map, keybdInput);
+		player->direction = updatePlayerPosition(newPosition, map, keybdInput);
 		break;
 	case KEYBD_ESC:
 		// TODO : 게임을 종료하시겠습니까?  제작

@@ -18,7 +18,7 @@ static enum { N, S, W, E };
 // 상, 하, 좌, 우 이때 벽을 고려하여 2칸씩으로 설정한다.
 static const int DIR[4][2] = { {0,-2},{0,2},{-2,0},{2,0} };
 
-static int _shuffleArray(int array[], int size)
+static void _shuffleArray(int array[], int size)
 {
 	for (int i = 0;i < (size - 1);++i)
 	{

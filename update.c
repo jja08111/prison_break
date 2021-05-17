@@ -1,6 +1,10 @@
 #include "update.h"
 
-Direction updatePosition(COORD* position, const Map* const map, unsigned char keybdInput)
+Direction updatePlayerPosition(
+	COORD*				position, 
+	const Map* const	map, 
+	unsigned char		keybdInput
+)
 {
 	COORD newPosition = *position;
 	Direction direction;
@@ -33,7 +37,11 @@ Direction updatePosition(COORD* position, const Map* const map, unsigned char ke
 	return direction;
 }
 
-static void _setNextStage(Stage* stage, Player* player, Map* map)
+static void _setNextStage(
+	Stage* stage,
+	Player* player,
+	Map* map
+)
 {
 	stage->level++;
 	stage->timeLimit = timeLimitOf(stage);
@@ -47,7 +55,12 @@ static void _setNextStage(Stage* stage, Player* player, Map* map)
 	system("cls");
 }
 
-void update(Stage* stage, Player* player, Map* map, COORD* newPosition)
+void update(
+	Stage* stage,
+	Player* player,
+	Map* map,
+	COORD* newPosition
+)
 {
 	// 목표에 도달한 경우
 	if (onReachedTargetPoint(player, map))

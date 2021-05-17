@@ -12,7 +12,10 @@ int visionRangeOf(const Stage* const stage)
 	return 0;
 }
 
-int onReachedTargetPoint(const Player* const player, const Map* const map)
+int onReachedTargetPoint(
+	const Player* const player, 
+	const Map* const	map
+)
 {
 	return samePosition(player->position, getTargetPosition(map));
 }

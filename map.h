@@ -8,7 +8,12 @@
 #define MAP_MAX_HEIGHT	65
 #define MAP_MAX_WIDTH	65
 
-enum MapFlag { FLAG_WALL, FLAG_EMPTY, FLAG_VISITED, FLAG_TARGET };
+enum MapFlag { 
+	FLAG_WALL,
+	FLAG_EMPTY,
+	FLAG_VISITED, 
+	FLAG_TARGET 
+};
 
 // 맵 데이터 구조이다. 
 // 
@@ -35,7 +40,7 @@ typedef struct {
 // 4단계 64
 int getMapLineLength(const Stage* const stage);
 
-static int _shuffleArray(int array[], int size);
+static void _shuffleArray(int array[], int size);
 static int _inRange(int y, int x, const Map* const map);
 void generateMap(int y, int x, Map* const map);
 

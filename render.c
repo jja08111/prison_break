@@ -1,7 +1,12 @@
 #include "render.h"
 
 // 플레이어 시야 범위내에 (x,y)가 위치했으면 1을, 아니면 0을 반환한다.
-static int _inVisionRange(int y, int x, const Map* const map, const Player* const player)
+static int _inVisionRange(
+	int y, 
+	int x,
+	const Map* const	map,
+	const Player* const	player
+)
 {
 	int visionRange = player->visionRange;
 	int py = player->position.Y;
@@ -15,7 +20,10 @@ static int _inVisionRange(int y, int x, const Map* const map, const Player* cons
 	return minY <= y && y <= maxY && minX <= x && x <= maxX;
 }
 
-static int _ensureToBeWithinRange(const Map* const map, SMALL_RECT* rect)
+static int _ensureToBeWithinRange(
+	const Map* const map,
+	SMALL_RECT*		 rect
+)
 {
 	// 한 칸도 겹치지 않는 경우
 	if (rect->Bottom < 0 || rect->Right < 0
@@ -47,7 +55,10 @@ static void _drawEmptyIconAt(COORD position)
 	drawEmptyIcon();
 }
 
-static void _drawDarknessFromRect(const Map* const map, SMALL_RECT rect)
+static void _drawDarknessFromRect(
+	const Map* const map,
+	SMALL_RECT		 rect
+)
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 
@@ -58,7 +69,10 @@ static void _drawDarknessFromRect(const Map* const map, SMALL_RECT rect)
 	_drawBox(rect);
 }
 
-static void _drawMapCell(const Map* const map, COORD position)
+static void _drawMapCell(
+	const Map* const map,
+	COORD			 position
+)
 {
 	switch (map->grid[position.Y][position.X]) {
 	case FLAG_WALL: 
@@ -72,13 +86,19 @@ static void _drawMapCell(const Map* const map, COORD position)
 	}
 }
 
-static void _drawMapCellAt(const Map* const map, COORD position)
+static void _drawMapCellAt(
+	const Map* const map,
+	COORD			 position
+)
 {
 	gotoPosition(position);
 	_drawMapCell(map, position);
 }
 
-static void _drawMapFromRect(const Map* const map, SMALL_RECT rect)
+static void _drawMapFromRect(
+	const Map* const map,
+	SMALL_RECT		 rect
+)
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 
@@ -107,7 +127,10 @@ static void _renderTargetSpace(const Map* const map)
 		targetPosition.Y + TARGET_VISION_RANGE});
 }
 
-static void _renderInitMap(const Map* const map, const Player* const player)
+static void _renderInitMap(
+	const Map* const	map,
+	const Player* const player
+)
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
@@ -116,7 +139,10 @@ static void _renderInitMap(const Map* const map, const Player* const player)
 	_renderTargetSpace(map);
 }
 
-static void _renderMap(const Map* const map, const Player* const player)
+static void _renderMap(
+	const Map* const	map,
+	const Player* const player
+)
 {
 	COORD prevPosition = player->prevPosition;
 	COORD position = player->position;
@@ -169,7 +195,11 @@ static void _renderPlayer(const Player* const player)
 }
 
 // rect의 x값은 2칸을 한 칸으로 두어 계산한다.
-static void _drawCenterAlignedText(SMALL_RECT rect, const char* _Format, ...)
+static void _drawCenterAlignedText(
+	SMALL_RECT	rect,
+	const char* _Format,
+	...
+)
 {
 	char _Buffer[40];
 
@@ -183,22 +213,36 @@ static void _drawCenterAlignedText(SMALL_RECT rect, const char* _Format, ...)
 	printf(_Buffer);
 }
 
-static void _renderInterface(const Stage* const stage, const Player* const player, const Map* const map)
+static void _renderInterface(
+	const Stage* const	stage,
+	const Player* const player,
+	const Map* const	map
+)
 {
 	int y = 4;
 	
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 
-	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "SCORE : %d", stage->score);
+	_drawCenterAlignedText(
+		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, 
+		"SCORE : %d", stage->score);
 
 	y += 4;
-	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "LEVEL : %d", stage->level + 1);
+	_drawCenterAlignedText(
+		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
+		"LEVEL : %d", stage->level + 1);
 
 	y += 4;
-	_drawCenterAlignedText((SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, "LIFE  : %d", player->life);
+	_drawCenterAlignedText(
+		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
+		"LIFE  : %d", player->life);
 }
 
-static void _renderDialogAtCenterMap(const Map* const map, const char* _Format, ...)
+static void _renderDialogAtCenterMap(
+	const Map* const map, 
+	const char*		 _Format, 
+	...
+)
 {
 	SMALL_RECT boxRect = getMapRect(map);
 	COORD centerPoint = getMapCenterPoint(map);
@@ -223,12 +267,19 @@ static void _renderDialogAtCenterMap(const Map* const map, const char* _Format, 
 	_drawCenterAlignedText(boxRect, _Buffer);
 }
 
-static void _renderSuccessDialog(const Map* const map, const Stage* const stage)
+static void _renderSuccessDialog(
+	const Map* const	map,
+	const Stage* const	stage
+)
 {
 	_renderDialogAtCenterMap(map, "Successed!");
 }
 
-void render(const Stage* const stage, const Player* const player, Map* map)
+void render(
+	const Stage* const	stage,
+	const Player* const player,
+	Map*				map
+)
 {
 	// 목표에 도달한 경우
 	if (onReachedTargetPoint(player, map))

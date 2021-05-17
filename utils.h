@@ -22,7 +22,10 @@ void goto2xy(int x, int y);
 void gotoPosition(COORD position);
 
 // x 값은 2칸을 한 칸으로 두어 계산한다.
-void gotoCenterForAlignString(SMALL_RECT rect, const char* str);
+void gotoCenterForAlignString(
+	SMALL_RECT	rect, 
+	const char* str
+);
 
 // 같으면 1, 다르면 0을 반환
 int samePosition(COORD a, COORD b);

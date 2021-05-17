@@ -1,7 +1,10 @@
 #include "init.h"
 
 // 맵을 단계에 맞게 초기화한다.
-void initMap(Map* map, const Stage* const stage)
+void initMap(
+	Map* map,
+	const Stage* const  stage
+)
 {
 	map->height = map->width = getMapLineLength(stage);
 	map->hasInitRendered = 0;
@@ -13,7 +16,10 @@ void initMap(Map* map, const Stage* const stage)
 	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
 }
 
-static void _initPlayer(Player* player, const Stage* const stage)
+static void _initPlayer(
+	Player* player,
+	const Stage* const	stage
+)
 {
 	player->direction = player->prevDirection = DIRECTION_RIGHT;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
@@ -29,7 +35,11 @@ static void _initStage(Stage* stage)
 	stage->score = 0;
 }
 
-void init(Stage* stage, Player* player, Map* map)
+void init(
+	Stage* stage,
+	Player* player,
+	Map* map
+)
 {
 	srand(time(NULL));
 	removeCursor();
