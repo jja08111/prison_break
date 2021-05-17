@@ -4,6 +4,7 @@
 #include "map.h"
 #include "utils.h"
 
+#define INIT_PLAYER_DIRECTION DIRECTION_RIGHT
 #define INIT_PLAYER_POS 1
 #define TARGET_VISION_RANGE 1
 

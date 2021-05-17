@@ -1,6 +1,6 @@
 #include "update.h"
 
-Direction updatePlayerPosition(
+Direction updatePositionByInput(
 	COORD*				position, 
 	const Map* const	map, 
 	unsigned char		keybdInput
@@ -33,14 +33,14 @@ Direction updatePlayerPosition(
 	{
 		*position = newPosition;
 	}
-
+	
 	return direction;
 }
 
 static void _setNextStage(
-	Stage* stage,
+	Stage*	stage,
 	Player* player,
-	Map* map
+	Map*	map
 )
 {
 	stage->level++;
@@ -55,24 +55,47 @@ static void _setNextStage(
 	system("cls");
 }
 
-void update(
-	Stage* stage,
+static void _handleStageSuccess(
+	Stage*	stage,
 	Player* player,
-	Map* map,
-	COORD* newPosition
+	Map*	map,
+	COORD*	newPosition
+)
+{
+	Sleep(DIALOG_DURATION);
+	_setNextStage(stage, player, map);
+	*newPosition = player->position;
+}
+
+static void _updatePlayer(
+	Player*		player,
+	COORD*		newPosition,
+	Direction*	newDirection
+)
+{
+	player->prevDirection = player->direction;
+	player->prevPosition = player->position;
+	
+	player->direction = *newDirection;
+	if (!samePosition(*newPosition, player->position))
+	{
+		player->position = *newPosition;
+	}
+}
+
+void update(
+	Stage*		stage,
+	Player*		player,
+	Map*		map,
+	COORD*		newPlayerPosition,
+	Direction*	newDirection
 )
 {
 	// 목표에 도달한 경우
 	if (onReachedTargetPoint(player, map))
 	{
-		Sleep(DIALOG_DURATION);
-		_setNextStage(stage, player, map);
-		*newPosition = player->position;
+		_handleStageSuccess(stage, player, map, newPlayerPosition);
 	}
 
-	player->prevPosition = player->position;
-	if (!samePosition(*newPosition, player->position))
-	{
-		player->position = *newPosition;
-	}
+	_updatePlayer(player, newPlayerPosition, newDirection);
 }

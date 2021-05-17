@@ -12,9 +12,9 @@
 #include <stdlib.h>
 
 static void _handleKeybdHit(
-	COORD* newPosition,
-	Player* player,
-	const Map* const	map
+	COORD*			 newPosition,
+	Direction*		 newDirection,
+	const Map* const map
 );
 
 // 미로 게임을 실행한다.

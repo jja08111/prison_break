@@ -21,7 +21,7 @@ static void _initPlayer(
 	const Stage* const	stage
 )
 {
-	player->direction = player->prevDirection = DIRECTION_RIGHT;
+	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->life = 5;
 	player->visionRange = visionRangeOf(stage);
@@ -41,7 +41,7 @@ void init(
 	Map* map
 )
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	removeCursor();
 
 	_initStage(stage);
