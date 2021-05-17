@@ -7,19 +7,20 @@
 #include <stdio.h>
 #include <Windows.h>
 
-#define ICON_PLAYER_UP "¡ã"
-#define ICON_PLAYER_DOWN "¡å"
-#define ICON_PLAYER_LEFT "¢¸"
-#define ICON_PLAYER_RIGHT "¢º"
-#define ICON_TARGET "¡ß"
-#define ICON_WALL "¡á"
-#define ICON_EMPTY "  "
-#define ICON_BOMB "¢À"
+#define ICON_PLAYER_UP		"¡ã"
+#define ICON_PLAYER_DOWN	"¡å"
+#define ICON_PLAYER_LEFT	"¢¸"
+#define ICON_PLAYER_RIGHT	"¢º"
+
+#define ICON_MOB			"¢À"
+#define ICON_TARGET			"¡ß"
+#define ICON_WALL			"¡á"
+#define ICON_EMPTY			"  "
 
 void drawPlayerIcon(const Player* const player);
+void drawMobIcon();
 void drawTargetIcon();
 void drawWallIcon();
 void drawEmptyIcon();
-void drawBombIcon();
 
 #endif

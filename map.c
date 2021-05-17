@@ -12,18 +12,17 @@ int getMapLineLength(const Stage* const stage)
 	return 0;
 }
 
-// 상, 하, 좌, 우
-static enum { N, S, W, E };
-
 // 상, 하, 좌, 우 이때 벽을 고려하여 2칸씩으로 설정한다.
 static const int DIR[4][2] = { {0,-2},{0,2},{-2,0},{2,0} };
 
 static void _shuffleArray(int array[], int size)
 {
-	for (int i = 0;i < (size - 1);++i)
+	int i, r, temp;
+
+	for (i = 0;i < (size - 1);++i)
 	{
-		int r = i + (rand() % (size - i));
-		int temp = array[i];
+		r = i + (rand() % (size - i));
+		temp = array[i];
 		array[i] = array[r];
 		array[r] = temp;
 	}
@@ -40,24 +39,30 @@ static int _inRange(int y, int x, const Map* const map)
 // 표시한다. 방문 후에는 길을 뚫어 맵을 형성한다.
 void generateMap(int y, int x, Map* const map)
 {
-	int directions[4] = { N, E, S, W };
+	int i, nx, ny;
+	int directions[4] = { 
+		DIRECTION_UP, 
+		DIRECTION_RIGHT,
+		DIRECTION_DOWN, 
+		DIRECTION_LEFT
+	};
 
 	map->grid[y][x] = FLAG_VISITED;
 	// 방향을 무작위로 섞는다.
 	_shuffleArray(directions, 4);
 
-	for (int i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		// 다음 위치를 구한다.
-		int nx = x + DIR[directions[i]][0];
-		int ny = y + DIR[directions[i]][1];
+		nx = x + DIR[directions[i]][0];
+		ny = y + DIR[directions[i]][1];
 
 		if (_inRange(ny, nx, map) && map->grid[ny][nx] == FLAG_WALL) {
 			generateMap(ny, nx, map);
-			// 세로 축 이동
+			// 세로 축 이동인 경우
 			if (ny != y)
 				map->grid[(ny + y) / 2][x] = FLAG_EMPTY;
-			// 가로 축 이동
+			// 가로 축 이동인 경우
 			else
 				map->grid[y][(x + nx) / 2] = FLAG_EMPTY;
 			map->grid[ny][nx] = FLAG_EMPTY;
@@ -65,9 +70,6 @@ void generateMap(int y, int x, Map* const map)
 	}
 }
 
-// position 위치에 위치가능한 지 반환한다. 
-//
-// 해당 위치의 map->grid가 FLAG_WALL인 경우 위치할 수 없다.
 int canPlace(COORD position, const Map* const map)
 {
 	int inRange = (0 < position.X && position.X < map->width
@@ -82,7 +84,7 @@ COORD getTargetPosition(const Map* const map)
 	return (COORD) { map->width - 1, map->height - 1 };
 }
 
-SMALL_RECT getMapRect(const Map* const map)
+SMALL_RECT getRectOf(const Map* const map)
 {
 	return  (SMALL_RECT) { 0, 0, map->width, map->height };
 }

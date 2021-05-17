@@ -19,9 +19,15 @@ void drawPlayerIcon(const Player* const player)
 	}
 }
 
-void drawTargetIcon()
+void drawMobIcon()
 {
 	textcolor(ACCENT_COLOR, SURFACE_COLOR);
+	printf("%s", ICON_TARGET);
+}
+
+void drawTargetIcon()
+{
+	textcolor(SECONDARY_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_TARGET);
 }
 
@@ -35,10 +41,4 @@ void drawEmptyIcon()
 {
 	textcolor(SURFACE_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_EMPTY);
-}
-
-void drawBombIcon()
-{
-	textcolor(ACCENT_COLOR, SURFACE_COLOR);
-	printf("%s", ICON_BOMB);
 }

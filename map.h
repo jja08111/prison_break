@@ -2,6 +2,7 @@
 #define __MAP_H__
 
 #include "stage.h"
+#include "utils.h"
 
 #include <Windows.h>
 
@@ -46,12 +47,13 @@ void generateMap(int y, int x, Map* const map);
 
 // position 위치에 위치가능한 지 반환한다. 
 //
-// 해당 위치의 map->grid가 FLAG_WALL인 경우 위치할 수 없다.
+// 해당 위치의 map->grid가 FLAG_WALL인 경우와
+// 맵 범위를 벗어난 경우 0을 반환한다.
 int canPlace(COORD position, const Map* const map);
 
 COORD getTargetPosition(const Map* const map);
 
-SMALL_RECT getMapRect(const Map* const map);
+SMALL_RECT getRectOf(const Map* const map);
 
 COORD getMapCenterPoint(const Map* const map);
 

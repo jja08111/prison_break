@@ -134,7 +134,7 @@ static void _renderInitMap(
 {
 	int visionRange = player->visionRange + INIT_PLAYER_POS;
 	
-	_drawDarknessFromRect(map, getMapRect(map));
+	_drawDarknessFromRect(map, getRectOf(map));
 	_drawMapFromRect(map, (SMALL_RECT) { 0, 0, visionRange, visionRange});
 	_renderTargetSpace(map);
 }
@@ -148,11 +148,12 @@ static void _renderMap(
 	COORD position = player->position;
 	int visionRange = player->visionRange;
 
+	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
 	// 현재 위치의 시야 한계 좌표값들이다.
-	int top = position.Y - visionRange;
-	int bottom = position.Y + visionRange;
-	int left = position.X - visionRange;
-	int right = position.X + visionRange;
+	int top = playerVision.Top;
+	int bottom = playerVision.Bottom;
+	int left = playerVision.Left;
+	int right = playerVision.Right;
 
 	// 위로 이동한 경우
 	if (position.Y < prevPosition.Y)
@@ -192,6 +193,28 @@ static void _renderPlayer(const Player* const player)
 
 	gotoPosition(player->position);
 	drawPlayerIcon(player);
+}
+
+static void _renderMob(
+	const MobHandler* const mobHandler,
+	const Player* const		player,
+	const Map* const		map
+)
+{
+	COORD position;
+	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
+	int i;
+
+	for (i = 0;i < mobHandler->count;++i)
+	{
+		position = mobHandler->arrMob[i].position;
+		// 시야에 보이는 몹만 그린다.
+		if (inRangeRect(position, playerVision))
+		{
+			gotoPosition(position);
+			drawMobIcon();
+		}
+	}
 }
 
 // rect의 x값은 2칸을 한 칸으로 두어 계산한다.
@@ -244,7 +267,7 @@ static void _renderDialogAtCenterMap(
 	...
 )
 {
-	SMALL_RECT boxRect = getMapRect(map);
+	SMALL_RECT boxRect = getRectOf(map);
 	COORD centerPoint = getMapCenterPoint(map);
 	int horizontalPadding = 8;
 	char _Buffer[40];
@@ -276,11 +299,14 @@ static void _renderSuccessDialog(
 }
 
 void render(
-	const Stage* const	stage,
-	const Player* const player,
-	Map*				map
+	const Stage* const		stage,
+	const Player* const		player,
+	const MobHandler* const mobHandler,
+	Map*					map
 )
 {
+	_renderInterface(stage, player, map);
+
 	// 목표에 도달한 경우
 	if (onReachedTargetPoint(player, map))
 	{
@@ -295,16 +321,17 @@ void render(
 		map->hasInitRendered = 1;
 	}
 
-	_renderInterface(stage, player, map);
-
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
 	{
 		_renderMap(map, player);
 		_renderPlayer(player);
 	}
+	// 플레이어가 방향을 바꾼 경우 플레이어 렌더링
 	else if (player->direction != player->prevDirection)
 	{
 		_renderPlayer(player);
 	}
+
+	_renderMob(mobHandler, player, map);
 }

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="mob.c" />
     <ClCompile Include="colors.c" />
     <ClCompile Include="icons.c" />
     <ClCompile Include="init.c" />
@@ -152,12 +153,14 @@
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mob.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="icons.h" />
     <ClInclude Include="init.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="models.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="stage.h" />

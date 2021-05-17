@@ -2,7 +2,7 @@
 
 // 맵을 단계에 맞게 초기화한다.
 void initMap(
-	Map* map,
+	Map*				map,
 	const Stage* const  stage
 )
 {
@@ -17,7 +17,7 @@ void initMap(
 }
 
 static void _initPlayer(
-	Player* player,
+	Player*				player,
 	const Stage* const	stage
 )
 {
@@ -35,16 +35,28 @@ static void _initStage(Stage* stage)
 	stage->score = 0;
 }
 
+static void _initMob(
+	MobHandler*			mobHandler,
+	const Player* const player,
+	const Map* const	map
+)
+{
+	mobHandler->count = 0;
+	generateMob(mobHandler, INIT_MOB_NUM, player, map);
+}
+
 void init(
-	Stage* stage,
-	Player* player,
-	Map* map
+	Stage*		stage,
+	Player*		player,
+	MobHandler* mobHandler,
+	Map*		map
 )
 {
 	srand((unsigned int)time(NULL));
 	removeCursor();
 
 	_initStage(stage);
-	_initPlayer(player, stage);
 	initMap(map, stage);
+	_initPlayer(player, stage);
+	_initMob(mobHandler, player, map);
 }

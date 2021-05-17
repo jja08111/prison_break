@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <stdlib.h> // min, max
+#include <math.h>
 
 typedef enum _Direction {
 	DIRECTION_UP,
@@ -36,5 +37,7 @@ int samePosition(COORD a, COORD b);
 int rangedNum(int num, int minNum, int maxNum);
 
 Direction getDirectionFrom(COORD start, COORD end);
+
+int inRangeRect(COORD point, SMALL_RECT range);
 
 #endif

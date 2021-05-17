@@ -27,6 +27,7 @@ typedef struct {
 
 	short life;
 
+	// 플레이어의 시야 반지름이다. 
 	short visionRange;
 
 	VisionPattern visionPattern;
@@ -41,6 +42,18 @@ int visionRangeOf(const Stage* const stage);
 
 // 플레이어가 도착 지점에 도착했으면 1을 반환한다.
 int onReachedTargetPoint(
+	const Player* const player,
+	const Map* const	map
+);
+
+SMALL_RECT getRectFromPlayer(
+	const Player* const player,
+	const Map* const	map,
+	int					diameter
+);
+
+// 플레이어의 시야 사각형을 반환한다.
+SMALL_RECT getPlayerVisionRect(
 	const Player* const player,
 	const Map* const	map
 );

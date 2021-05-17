@@ -59,3 +59,9 @@ Direction getDirectionFrom(COORD start, COORD end)
 		return DIRECTION_RIGHT;
 	return DIRECTION_UP;
 }
+
+int inRangeRect(COORD point, SMALL_RECT range)
+{
+	return (range.Left <= point.X && point.X <= range.Right)
+		&& (range.Top <= point.Y && point.Y <= range.Bottom);
+}

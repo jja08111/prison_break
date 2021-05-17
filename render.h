@@ -1,9 +1,7 @@
 #ifndef __RENDER_H__
 #define __RENDER_H__
 
-#include "map.h"
-#include "player.h"
-#include "stage.h"
+#include "models.h"
 #include "utils.h"
 #include "icons.h"
 #include "constants.h"
@@ -84,6 +82,12 @@ static void _renderMap(
 // 플레이어를 그린다. 만약 이전 위치와 현재 위치가 다르다면 지우고 새로 그린다.
 static void _renderPlayer(const Player* const player);
 
+static void _renderMob(
+	const MobHandler* const mobHandler,
+	const Player* const		player,
+	const Map* const		map
+);
+
 
 
 static void _drawCenterAlignedText(
@@ -112,9 +116,10 @@ static void _renderSuccessDialog(
 
 
 void render(
-	const Stage* const	stage,
-	const Player* const player,
-	Map* map
+	const Stage* const		stage,
+	const Player* const		player,
+	const MobHandler* const mobHandler,
+	Map*					map
 );
 
 #endif

@@ -12,18 +12,18 @@
 #define WHITE2      7
 #define WHITE1		15 
 
-#define BACKGROUND_COLOR	WHITE1
-#define ON_BACKGROUND_COLOR BLACK
+#define BACKGROUND_COLOR	WHITE1	// 하양
+#define ON_BACKGROUND_COLOR BLACK	// 검정
 
-#define SURFACE_COLOR		WHITE2
-#define ON_SURFACE_COLOR	BLACK
+#define SURFACE_COLOR		WHITE2	// 회색
+#define ON_SURFACE_COLOR	BLACK	// 검정
 
-#define DIALOG_COLOR		WHITE1
-#define ON_DIALOG_COLOR		BLACK
+#define DIALOG_COLOR		WHITE1	// 하양
+#define ON_DIALOG_COLOR		BLACK	// 검정
 
-#define PRIMARY_COLOR		MAGENTA2
-#define SECONDARY_COLOR		YELLOW2
-#define ACCENT_COLOR		RED2
+#define PRIMARY_COLOR		MAGENTA2// 보라
+#define SECONDARY_COLOR		YELLOW2 // 노랑
+#define ACCENT_COLOR		RED2	// 빨강
 
 // 문자의 (foreground, background) 색상 설정
 void textcolor(int color, int bgcolor);
