@@ -7,7 +7,8 @@ void initMap(Map* map, const Stage* const stage)
 	map->hasInitRendered = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
-	generateMap(1, 1, map);
+	// 도착 지점부터 시작하여 맵을 생성한다.
+	generateMap(map->height - 1, map->width - 1, map);
 
 	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
 }
