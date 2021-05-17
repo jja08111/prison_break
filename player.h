@@ -31,6 +31,13 @@ typedef struct {
 	enum VisionPattern visionPattern;
 } Player;
 
+// 0단계 10
+// 1단계 8
+// 2단계 6
+// 3단계 4
+// 4단계 2 
+int visionRangeOf(const Stage* const stage);
+
 int onReachedTargetPoint(const Player* const player, const Map* const map);
 
 

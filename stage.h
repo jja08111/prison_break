@@ -19,13 +19,6 @@ typedef struct {
 	int timeLimit;
 } Stage;
 
-// 0단계 10
-// 1단계 8
-// 2단계 6
-// 3단계 4
-// 4단계 2 
-int visionRangeOf(const Stage* const stage);
-
 // 0단계 60
 // 1단계 80
 // 2단계 100
