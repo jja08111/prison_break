@@ -1,6 +1,6 @@
 #include "stage.h"
 
-int timeLimitOf(const Stage* const stage)
+int getTimeLimitPer(const Stage* const stage)
 {
 	switch (stage->level)
 	{

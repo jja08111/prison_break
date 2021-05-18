@@ -203,18 +203,20 @@ static void _renderMob(
 {
 	COORD position, prevPosition;
 	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
+	int isMoved;
 	int i;
 
 	for (i = 0;i < mobHandler->count;++i)
 	{
 		position = mobHandler->arrMob[i].position;
 		prevPosition = mobHandler->arrMob[i].prevPosition;
+
+		isMoved = !samePosition(prevPosition, position);
 		// 시야에 보이는 몹만 그린다.
-		if (inRangeRect(position, playerVision))
+		if (isMoved && inRangeRect(position, playerVision))
 		{
-			// 이전 위치와 다르면 지운다.
-			if (!samePosition(prevPosition, position))
-				_drawEmptyIconAt(prevPosition);
+			// 이전 위치는 지운다.
+			_drawEmptyIconAt(prevPosition);
 			
 			gotoPosition(position);
 			drawMobIcon(&mobHandler->arrMob[i]);

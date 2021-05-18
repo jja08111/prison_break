@@ -3,6 +3,8 @@
 
 #include <Windows.h>
 
+#define HEX_DEFAULT_COLOR	0x00aabbcc
+
 #define BLACK		0  
 
 #define RED2		12 
@@ -24,6 +26,8 @@
 #define PRIMARY_COLOR		MAGENTA2// 보라
 #define SECONDARY_COLOR		YELLOW2 // 노랑
 #define ACCENT_COLOR		RED2	// 빨강
+
+#define MOB_VISION_COLOR	YELLOW2	// 노랑
 
 // 문자의 (foreground, background) 색상 설정
 void textcolor(int color, int bgcolor);

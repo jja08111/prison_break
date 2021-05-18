@@ -21,6 +21,7 @@ static void _initStage(Stage* stage);
 static void _initMob(
 	MobHandler*			mobHandler,
 	const Player* const player,
+	const Stage* const	stage,
 	const Map* const	map
 );
 

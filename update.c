@@ -44,9 +44,9 @@ static void _setNextStage(
 )
 {
 	stage->level++;
-	stage->timeLimit = timeLimitOf(stage);
+	stage->timeLimit = getTimeLimitPer(stage);
 
-	player->visionRange = visionRangeOf(stage);
+	player->visionRange = getPlayerVisionRangePer(stage);
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 
 	initMap(map, stage);
@@ -125,7 +125,7 @@ static void _updateMobPosition(
 		randomNum = rand() % highPriorityPositionCount;
 		randomForGoBack = rand() % 101;
 
-		// 2% 확률로 뒤로 돌아 이동한다.
+		// 1% 확률로 뒤로 돌아 이동한다.
 		if(randomForGoBack < 1)
 			moveMobTo(mob, goBackPosition);
 		else 
@@ -149,11 +149,16 @@ static void _updateMob(
 
 	for (i = 0;i < mobHandler->count;++i)
 	{
-		if (now - prevClock > 200)
-			_updateMobPosition(&mobHandler->arrMob[i], player, map);
-	}
-	if (now - prevClock > 200)
-		prevClock = now;
+		Mob* currentMob = &mobHandler->arrMob[i];
+
+		if (now - prevClock > currentMob->moveDelay)
+		{
+			_updateMobPosition(currentMob, player, map);
+			
+			if(i == mobHandler->count - 1)
+				prevClock = now;
+		}
+	}	
 }
 
 void update(

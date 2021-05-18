@@ -1,6 +1,6 @@
 #include "player.h"
 
-int visionRangeOf(const Stage* const stage)
+int getPlayerVisionRangePer(const Stage* const stage)
 {
 	switch (stage->level) {
 	case 0: return 16;

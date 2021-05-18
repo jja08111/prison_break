@@ -38,7 +38,7 @@ typedef struct {
 // 2단계 6
 // 3단계 4
 // 4단계 2 
-int visionRangeOf(const Stage* const stage);
+int getPlayerVisionRangePer(const Stage* const stage);
 
 // 플레이어가 도착 지점에 도착했으면 1을 반환한다.
 int onReachedTargetPoint(

@@ -39,7 +39,7 @@ typedef struct {
 // 2단계 56
 // 3단계 60
 // 4단계 64
-int getMapLineLength(const Stage* const stage);
+int getMapLineLengthPer(const Stage* const stage);
 
 static void _shuffleArray(int array[], int size);
 static int _inRange(int y, int x, const Map* const map);

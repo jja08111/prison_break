@@ -6,7 +6,7 @@ void initMap(
 	const Stage* const  stage
 )
 {
-	map->height = map->width = getMapLineLength(stage);
+	map->height = map->width = getMapLineLengthPer(stage);
 	map->hasInitRendered = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
@@ -31,18 +31,19 @@ static void _initPlayer(
 static void _initStage(Stage* stage)
 {
 	stage->level = 0;
-	stage->timeLimit = timeLimitOf(stage);
+	stage->timeLimit = getTimeLimitPer(stage);
 	stage->score = 0;
 }
 
 static void _initMob(
 	MobHandler*			mobHandler,
 	const Player* const player,
+	const Stage* const	stage,
 	const Map* const	map
 )
 {
 	mobHandler->count = 0;
-	generateMob(mobHandler, INIT_MOB_NUM, player, map);
+	generateMob(mobHandler, INIT_MOB_NUM, player, stage, map);
 }
 
 void init(
@@ -58,5 +59,5 @@ void init(
 	_initStage(stage);
 	initMap(map, stage);
 	_initPlayer(player, stage);
-	_initMob(mobHandler, player, map);
+	_initMob(mobHandler, player, stage, map);
 }

@@ -24,6 +24,6 @@ typedef struct {
 // 2단계 100
 // 3단계 120
 // 4단계 140 
-int timeLimitOf(const Stage* const stage);
+int getTimeLimitPer(const Stage* const stage);
 
 #endif

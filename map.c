@@ -1,6 +1,6 @@
 #include "map.h"
 
-int getMapLineLength(const Stage* const stage)
+int getMapLineLengthPer(const Stage* const stage)
 {
 	switch (stage->level) {
 	case 0: return 48;

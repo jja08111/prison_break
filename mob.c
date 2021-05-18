@@ -26,23 +26,43 @@ static COORD _getRandomMobPosition(
 	return result;
 }
 
+int getMobMoveDelayPer(const Stage* const stage)
+{
+	switch (stage->level) 
+	{
+	case 0: return 400;
+	case 1: return 360;
+	case 2: return 320;
+	case 3: return 260;
+	case MAX_LEVEL: return 200;
+	}
+	return 0;
+}
+
 void generateMob(
 	MobHandler*			mobHandler,
 	int					num,
 	const Player* const player,
+	const Stage* const	stage,
 	const Map* const	map
 )
 {
 	SMALL_RECT mapRect = getRectOf(map);
 	Mob newMob;
 	COORD position;
+	int speed = getMobMoveDelayPer(stage);
 	int i;
 
 	for (i = 0;i < num;++i)
 	{
 		position = _getRandomMobPosition(map, player, mapRect);
 
-		newMob = (Mob){ rand() % 4,position,position };
+		newMob = (Mob){ 
+			rand() % 4,
+			position,
+			position,
+			speed 
+		};
 		insertMobAtLast(mobHandler, newMob);
 	}
 }

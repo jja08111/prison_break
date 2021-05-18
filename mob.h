@@ -7,18 +7,24 @@
 
 #define INIT_MOB_NUM	4
 #define MAX_MOB_NUM		100
+#define MAX_MOB_SPEED	200
 
 // 움직이는 객체이며 플레이어가 제거할 대상이다.
 //
 // 방향과 위치를 가지고 있다.
 typedef struct {
-	// 봇의 방향이다.
+	// 몹의 방향이다.
 	Direction direction;
 
-	// 봇의 현재 위치이다.
+	// 몹의 현재 위치이다.
 	COORD position;
 
 	COORD prevPosition;
+
+	// 몹의 속도를 결정할 지연시간이다.
+	//
+	// 최소 200이다.
+	int moveDelay;
 } Mob;
 
 typedef struct {
@@ -35,11 +41,14 @@ static COORD _getRandomMobPosition(
 	SMALL_RECT			rect
 );
 
+int getMobMoveDelayPer(const Stage* const stage);
+
 // num 개수 만큼 추가로 봇을 생성한다.
 void generateMob(
 	MobHandler*			mobHandler,
 	int					num,
 	const Player* const player,
+	const Stage* const	stage,
 	const Map* const	map
 );
 
