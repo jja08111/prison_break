@@ -37,9 +37,22 @@ static void _updatePlayer(
 	Direction*	newDirection
 );
 
+static void _updateMobPosition(
+	Mob*				mob,
+	const Player* const player,
+	const Map* const	map
+);
+
+static void _updateMob(
+	MobHandler*			mobHandler,
+	const Player* const player,
+	const Map* const	map
+);
+
 void update(
 	Stage*		stage,
 	Player*		player,
+	MobHandler* mobHandler,
 	Map*		map,
 	COORD*		newPlayerPosition,
 	Direction*	newDirection

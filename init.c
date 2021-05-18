@@ -24,7 +24,7 @@ static void _initPlayer(
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->life = 5;
-	player->visionRange = visionRangeOf(stage);
+	player->visionRange = 50;//visionRangeOf(stage);
 	player->visionPattern = VISION_DEFAULT;
 }
 

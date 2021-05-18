@@ -35,15 +35,14 @@ void generateMob(
 {
 	SMALL_RECT mapRect = getRectOf(map);
 	Mob newMob;
+	COORD position;
 	int i;
 
 	for (i = 0;i < num;++i)
 	{
-		newMob = (Mob){
-			rand() % 4,
-			_getRandomMobPosition(map, player, mapRect)
-		};
+		position = _getRandomMobPosition(map, player, mapRect);
 
+		newMob = (Mob){ rand() % 4,position,position };
 		insertMobAtLast(mobHandler, newMob);
 	}
 }
@@ -53,4 +52,15 @@ void insertMobAtLast(MobHandler* mobHandler, Mob mob)
 	if (mobHandler->count == MAX_MOB_NUM)
 		return;
 	mobHandler->arrMob[mobHandler->count++] = mob;
+}
+
+void moveMobTo(
+	Mob*	mob,
+	COORD	targetPosition
+)
+{
+	mob->direction = getDirectionFrom(mob->position, targetPosition);
+
+	mob->prevPosition = mob->position;
+	mob->position = targetPosition;
 }

@@ -40,7 +40,9 @@ void runMainGame()
 			_handleKeybdHit(&newPlayerPosition, &newPlayerDirection, &map);
 		}
 
-		update(&stage, &player, &map, &newPlayerPosition, &newPlayerDirection);
+		update(&stage, &player, &mobHandler, &map, 
+			&newPlayerPosition, &newPlayerDirection);
+
 		render(&stage, &player, &mobHandler, &map);
 
 		Sleep(16);

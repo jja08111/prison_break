@@ -47,15 +47,15 @@ int rangedNum(int num, int minNum, int maxNum)
 	return max(minNum, min(num, maxNum));
 }
 
-Direction getDirectionFrom(COORD start, COORD end)
+Direction getDirectionFrom(COORD before, COORD after)
 {
-	if (start.Y > end.Y)
+	if (before.Y > after.Y)
 		return DIRECTION_UP;
-	else if (start.Y < end.Y)
+	else if (before.Y < after.Y)
 		return DIRECTION_DOWN;
-	else if (start.X > end.X)
+	else if (before.X > after.X)
 		return DIRECTION_LEFT;
-	else if (start.X < end.X)
+	else if (before.X < after.X)
 		return DIRECTION_RIGHT;
 	return DIRECTION_UP;
 }
@@ -64,4 +64,41 @@ int inRangeRect(COORD point, SMALL_RECT range)
 {
 	return (range.Left <= point.X && point.X <= range.Right)
 		&& (range.Top <= point.Y && point.Y <= range.Bottom);
+}
+
+Direction turnRightDirection(Direction direction)
+{
+	direction++;
+	return direction % 4;
+}
+
+Direction turnLeftDirection(Direction direction)
+{
+	direction += 3;
+	return direction % 4;
+}
+
+Direction turnBackDirection(Direction direction)
+{
+	direction += 2;
+	return direction % 4;
+}
+
+COORD moveInDirection(COORD coord, Direction direction)
+{
+	switch (direction)
+	{
+	case DIRECTION_LEFT:
+		coord.X--;
+		break;
+	case DIRECTION_UP:
+		coord.Y--;
+		break;
+	case DIRECTION_RIGHT:
+		coord.X++;
+		break;
+	case DIRECTION_DOWN:
+		coord.Y++;
+	}
+	return coord;
 }

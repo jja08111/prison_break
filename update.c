@@ -83,9 +83,83 @@ static void _updatePlayer(
 	}
 }
 
+// 몹을 이동시긴다. 
+//
+// 주로 현재 향하고 있는 방향 혹은 그 방향의 좌우로 움직이며
+// 뒤로 가끔 이동한다. 막다른 길에 도달한 경우 뒤로 이동한다.
+static void _updateMobPosition(
+	Mob*				mob,
+	const Player* const player,
+	const Map* const	map
+) 
+{
+	int randomNum, randomForGoBack;
+	int highPriorityPositionCount = 0;
+	int canGoBack = 0;
+	COORD highPriorityPosition[3];
+
+	COORD goStraightPosition = moveInDirection(mob->position, mob->direction);
+	COORD goLeftPosition = moveInDirection(mob->position, turnLeftDirection(mob->direction));
+	COORD goRightPosition = moveInDirection(mob->position, turnRightDirection(mob->direction));
+	COORD goBackPosition = moveInDirection(mob->position, turnBackDirection(mob->direction));
+
+	if (canPlace(goStraightPosition, map))
+	{
+		highPriorityPosition[highPriorityPositionCount++] = goStraightPosition;
+	}
+	if (canPlace(goLeftPosition, map))
+	{
+		highPriorityPosition[highPriorityPositionCount++] = goLeftPosition;
+	}
+	if (canPlace(goRightPosition, map))
+	{
+		highPriorityPosition[highPriorityPositionCount++] = goRightPosition;
+	}
+	if (canPlace(goBackPosition, map))
+	{
+		canGoBack = 1;
+	}
+
+	if (highPriorityPositionCount > 0)
+	{
+		randomNum = rand() % highPriorityPositionCount;
+		randomForGoBack = rand() % 101;
+
+		// 2% 확률로 뒤로 돌아 이동한다.
+		if(randomForGoBack < 1)
+			moveMobTo(mob, goBackPosition);
+		else 
+			moveMobTo(mob, highPriorityPosition[randomNum]);
+	}
+	else
+	{
+		moveMobTo(mob, goBackPosition);
+	}
+}
+
+static void _updateMob(
+	MobHandler*			mobHandler,
+	const Player* const player,
+	const Map* const	map
+) 
+{
+	static clock_t prevClock = 0;
+	clock_t now = clock();
+	int i;
+
+	for (i = 0;i < mobHandler->count;++i)
+	{
+		if (now - prevClock > 200)
+			_updateMobPosition(&mobHandler->arrMob[i], player, map);
+	}
+	if (now - prevClock > 200)
+		prevClock = now;
+}
+
 void update(
 	Stage*		stage,
 	Player*		player,
+	MobHandler* mobHandler,
 	Map*		map,
 	COORD*		newPlayerPosition,
 	Direction*	newDirection
@@ -98,4 +172,6 @@ void update(
 	}
 
 	_updatePlayer(player, newPlayerPosition, newDirection);
+
+	_updateMob(mobHandler, player, map);
 }

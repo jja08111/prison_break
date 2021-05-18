@@ -17,6 +17,8 @@ typedef struct {
 
 	// 봇의 현재 위치이다.
 	COORD position;
+
+	COORD prevPosition;
 } Mob;
 
 typedef struct {
@@ -42,5 +44,10 @@ void generateMob(
 );
 
 void insertMobAtLast(MobHandler* mobHandler, Mob mob);
+
+void moveMobTo(
+	Mob*	mob,
+	COORD	position
+);
 
 #endif // !__BOT_H__

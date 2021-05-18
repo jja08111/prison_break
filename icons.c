@@ -1,9 +1,8 @@
 #include "icons.h"
 
-void drawPlayerIcon(const Player* const player)
+static void _drawDirectionIcon(Direction direction)
 {
-	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
-	switch (player->direction)
+	switch (direction)
 	{
 	case DIRECTION_UP:
 		printf("%s", ICON_PLAYER_UP);
@@ -19,10 +18,16 @@ void drawPlayerIcon(const Player* const player)
 	}
 }
 
-void drawMobIcon()
+void drawPlayerIcon(const Player* const player)
+{
+	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
+	_drawDirectionIcon(player->direction);
+}
+
+void drawMobIcon(const Mob* const mob)
 {
 	textcolor(ACCENT_COLOR, SURFACE_COLOR);
-	printf("%s", ICON_TARGET);
+	_drawDirectionIcon(mob->direction);
 }
 
 void drawTargetIcon()

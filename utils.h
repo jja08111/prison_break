@@ -6,10 +6,10 @@
 #include <math.h>
 
 typedef enum _Direction {
-	DIRECTION_UP,
 	DIRECTION_LEFT,
-	DIRECTION_DOWN, 
-	DIRECTION_RIGHT
+	DIRECTION_UP,
+	DIRECTION_RIGHT,
+	DIRECTION_DOWN
 } Direction;
 
 static void _gotoxy(int x, int y);
@@ -36,8 +36,18 @@ int samePosition(COORD a, COORD b);
 // 즉, minNum보다 작으면 minNum, maxNum보다 크면 maxNum이 된다.
 int rangedNum(int num, int minNum, int maxNum);
 
-Direction getDirectionFrom(COORD start, COORD end);
+// before에서 after로의 진행 방향을 반환한다. 
+//
+// 반드시 두 값 차이가 나는 멤버가 하나여야 한다.
+Direction getDirectionFrom(COORD before, COORD start);
 
 int inRangeRect(COORD point, SMALL_RECT range);
+
+Direction turnRightDirection(Direction direction);
+Direction turnLeftDirection(Direction direction);
+Direction turnBackDirection(Direction direction);
+
+// coord 위치를 direction 방향으로 이동시킨 값을 반환한다.
+COORD moveInDirection(COORD coord, Direction direction);
 
 #endif

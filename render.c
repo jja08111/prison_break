@@ -201,18 +201,23 @@ static void _renderMob(
 	const Map* const		map
 )
 {
-	COORD position;
+	COORD position, prevPosition;
 	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
 	int i;
 
 	for (i = 0;i < mobHandler->count;++i)
 	{
 		position = mobHandler->arrMob[i].position;
+		prevPosition = mobHandler->arrMob[i].prevPosition;
 		// 시야에 보이는 몹만 그린다.
 		if (inRangeRect(position, playerVision))
 		{
+			// 이전 위치와 다르면 지운다.
+			if (!samePosition(prevPosition, position))
+				_drawEmptyIconAt(prevPosition);
+			
 			gotoPosition(position);
-			drawMobIcon();
+			drawMobIcon(&mobHandler->arrMob[i]);
 		}
 	}
 }

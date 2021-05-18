@@ -2,7 +2,7 @@
 #define __ICONS_H__
 
 #include "colors.h"
-#include "player.h"
+#include "models.h"
 
 #include <stdio.h>
 #include <Windows.h>
@@ -17,8 +17,10 @@
 #define ICON_WALL			"бс"
 #define ICON_EMPTY			"  "
 
+static void _drawDirectionIcon(Direction direction);
+
 void drawPlayerIcon(const Player* const player);
-void drawMobIcon();
+void drawMobIcon(const Mob* const mob);
 void drawTargetIcon();
 void drawWallIcon();
 void drawEmptyIcon();
