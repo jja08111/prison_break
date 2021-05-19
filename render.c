@@ -45,7 +45,7 @@ static void _drawBox(SMALL_RECT rect)
 	{
 		goto2xy(rect.Left, y);
 		for (x = rect.Left;x <= rect.Right;++x)
-			printf(ICON_EMPTY);
+			drawNoneColoredEmptyIcon();
 	}
 }
 
@@ -195,6 +195,49 @@ static void _renderPlayer(const Player* const player)
 	drawPlayerIcon(player);
 }
 
+static void _drawMobVisionInPlayerVision(
+	COORD				initPosition,
+	Direction			direction,
+	const Player* const	player,
+	const Map* const	map
+)
+{
+	while (canPlace(initPosition, map))
+	{
+		if (inRangeRect(initPosition, getPlayerVisionRect(player, map)))
+		{
+			gotoPosition(initPosition);
+			drawNoneColoredEmptyIcon();
+		}
+
+		initPosition = getMovedCoordInDirection(initPosition, direction);
+	}
+}
+// 몹의 시야를 렌더링한다. 
+//
+// 이전과 방향이 바뀌었다면 이전 시야는 지운다.
+static void _renderMobVision(
+	const Mob* const	mob,
+	const Player* const	player,
+	const Map* const	map
+) 
+{
+	COORD position = getMovedCoordInDirection(mob->position, mob->direction);
+	textcolor(MOB_VISION_COLOR, MOB_VISION_COLOR);
+
+	_drawMobVisionInPlayerVision(position, mob->direction, player, map);
+
+	// 이전 방향과 다르면 이전 시야를 지운다.
+	if (mob->direction != mob->prevDirection)
+	{
+		COORD prevPosition = getMovedCoordInDirection(mob->prevPosition, mob->prevDirection);
+
+		textcolor(SURFACE_COLOR, SURFACE_COLOR);
+		_drawMobVisionInPlayerVision(prevPosition, mob->prevDirection, player, map);
+	}
+}
+
+// 몹과 몹의 시야를 렌더링한다.
 static void _renderMob(
 	const MobHandler* const mobHandler,
 	const Player* const		player,
@@ -203,23 +246,29 @@ static void _renderMob(
 {
 	COORD position, prevPosition;
 	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
+	const Mob* currentMob;
 	int isMoved;
 	int i;
 
 	for (i = 0;i < mobHandler->count;++i)
 	{
-		position = mobHandler->arrMob[i].position;
-		prevPosition = mobHandler->arrMob[i].prevPosition;
+		currentMob = &mobHandler->arrMob[i];
+
+		position = currentMob->position;
+		prevPosition = currentMob->prevPosition;
 
 		isMoved = !samePosition(prevPosition, position);
-		// 시야에 보이는 몹만 그린다.
-		if (isMoved && inRangeRect(position, playerVision))
+		if (isMoved)
 		{
-			// 이전 위치는 지운다.
-			_drawEmptyIconAt(prevPosition);
-			
-			gotoPosition(position);
-			drawMobIcon(&mobHandler->arrMob[i]);
+			_renderMobVision(currentMob, player, map);
+			if (inRangeRect(position, playerVision))
+			{
+				// 이전 위치는 지운다.
+				_drawEmptyIconAt(prevPosition);
+
+				gotoPosition(position);
+				drawMobIcon(currentMob);
+			}
 		}
 	}
 }

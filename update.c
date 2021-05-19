@@ -98,10 +98,10 @@ static void _updateMobPosition(
 	int canGoBack = 0;
 	COORD highPriorityPosition[3];
 
-	COORD goStraightPosition = moveInDirection(mob->position, mob->direction);
-	COORD goLeftPosition = moveInDirection(mob->position, turnLeftDirection(mob->direction));
-	COORD goRightPosition = moveInDirection(mob->position, turnRightDirection(mob->direction));
-	COORD goBackPosition = moveInDirection(mob->position, turnBackDirection(mob->direction));
+	COORD goStraightPosition = getMovedCoordInDirection(mob->position, mob->direction);
+	COORD goLeftPosition = getMovedCoordInDirection(mob->position, turnLeftDirection(mob->direction));
+	COORD goRightPosition = getMovedCoordInDirection(mob->position, turnRightDirection(mob->direction));
+	COORD goBackPosition = getMovedCoordInDirection(mob->position, turnBackDirection(mob->direction));
 
 	if (canPlace(goStraightPosition, map))
 	{

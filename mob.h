@@ -15,6 +15,8 @@
 typedef struct {
 	// 몹의 방향이다.
 	Direction direction;
+	
+	Direction prevDirection;
 
 	// 몹의 현재 위치이다.
 	COORD position;

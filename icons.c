@@ -47,3 +47,8 @@ void drawEmptyIcon()
 	textcolor(SURFACE_COLOR, SURFACE_COLOR);
 	printf("%s", ICON_EMPTY);
 }
+
+void drawNoneColoredEmptyIcon()
+{
+	printf("%s", ICON_EMPTY);
+}

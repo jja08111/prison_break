@@ -49,16 +49,19 @@ void generateMob(
 {
 	SMALL_RECT mapRect = getRectOf(map);
 	Mob newMob;
+	Direction direction;
 	COORD position;
 	int speed = getMobMoveDelayPer(stage);
 	int i;
 
 	for (i = 0;i < num;++i)
 	{
+		direction = rand() % 4;
 		position = _getRandomMobPosition(map, player, mapRect);
 
 		newMob = (Mob){ 
-			rand() % 4,
+			direction,
+			direction,
 			position,
 			position,
 			speed 
@@ -79,6 +82,7 @@ void moveMobTo(
 	COORD	targetPosition
 )
 {
+	mob->prevDirection = mob->direction;
 	mob->direction = getDirectionFrom(mob->position, targetPosition);
 
 	mob->prevPosition = mob->position;

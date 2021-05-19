@@ -84,7 +84,7 @@ Direction turnBackDirection(Direction direction)
 	return direction % 4;
 }
 
-COORD moveInDirection(COORD coord, Direction direction)
+COORD getMovedCoordInDirection(COORD coord, Direction direction)
 {
 	switch (direction)
 	{

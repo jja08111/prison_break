@@ -79,8 +79,18 @@ static void _renderMap(
 	const Player* const player
 );
 
+
+
 // 플레이어를 그린다. 만약 이전 위치와 현재 위치가 다르다면 지우고 새로 그린다.
 static void _renderPlayer(const Player* const player);
+
+
+
+static void _renderMobVision(
+	const Mob* const	mob,
+	const Player* const	player,
+	const Map* const	map
+);
 
 static void _renderMob(
 	const MobHandler* const mobHandler,

@@ -48,6 +48,6 @@ Direction turnLeftDirection(Direction direction);
 Direction turnBackDirection(Direction direction);
 
 // coord 위치를 direction 방향으로 이동시킨 값을 반환한다.
-COORD moveInDirection(COORD coord, Direction direction);
+COORD getMovedCoordInDirection(COORD coord, Direction direction);
 
 #endif

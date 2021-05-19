@@ -24,5 +24,6 @@ void drawMobIcon(const Mob* const mob);
 void drawTargetIcon();
 void drawWallIcon();
 void drawEmptyIcon();
+void drawNoneColoredEmptyIcon();
 
 #endif
