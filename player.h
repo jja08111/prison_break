@@ -46,10 +46,15 @@ int onReachedTargetPoint(
 	const Map* const	map
 );
 
-SMALL_RECT getRectFromPlayer(
+SMALL_RECT getRectFromPlayerPosition(
 	const Player* const player,
 	const Map* const	map,
 	int					diameter
+);
+
+SMALL_RECT getPlayerPreviousVisionRect(
+	const Player* const player,
+	const Map* const	map
 );
 
 // 플레이어의 시야 사각형을 반환한다.

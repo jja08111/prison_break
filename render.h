@@ -24,9 +24,9 @@ static int _ensureToBeWithinRange(
 	SMALL_RECT*		 rect
 );
 
+
+
 static void _drawBox(SMALL_RECT rect);
-
-
 
 static void _drawEmptyIconAt(COORD position);
 
@@ -39,9 +39,10 @@ static void _drawDarknessFromRect(
 
 
 // map[y][x]를 그린다.
-static void _drawMapCell(
+static void _drawMapCellWith(
 	const Map* const map,
-	COORD			 position
+	COORD			 position,
+	int				 emptyCellColor
 );
 
 // map[y][x]를 position 위치에 한 칸 그린다.
@@ -53,9 +54,10 @@ static void _drawMapCellAt(
 // 직사각형 범위만 맵을 그린다.
 //
 // topLeft는 좌측 상단이어야만 하고 bottomRight는 우측 하단이어야만 한다.
-static void _drawMapFromRect(
+static void _drawMapWith(
 	const Map* const map,
-	SMALL_RECT		 rect
+	SMALL_RECT		 rect,
+	int				 emptyCellColor
 );
 
 
@@ -63,27 +65,13 @@ static void _drawMapFromRect(
 // 도착지점을 렌더링한다.
 static void _renderTargetSpace(const Map* const map);
 
-
-
-// 초기 맵을 플레이어 시야에 맞춰 그린다. 
-//
-// 도착 지점은 맵의 우측 하단이다.
-static void _renderInitMap(
-	const Map* const	map, 
-	const Player* const player
+// 플레이어와 플레이어 시야를 그린다.
+// 
+// 만약 이전 위치와 현재 위치가 다르다면 지우고 새로 그린다.
+static void _renderPlayer(
+	const Player* const player,
+	const Map* const	map
 );
-
-// 플레이어가 이동한 방향의 맵을 그리며, 이전 방향 부분의 맵은 지운다.
-static void _renderMap(
-	const Map* const	map,
-	const Player* const player
-);
-
-
-
-// 플레이어를 그린다. 만약 이전 위치와 현재 위치가 다르다면 지우고 새로 그린다.
-static void _renderPlayer(const Player* const player);
-
 
 // 몹의 시야를 렌더링한다.
 //
@@ -131,6 +119,8 @@ static void _renderDialogAtCenterMap(
 void renderSuccessDialog(const Map* const map);
 
 void renderFailDialog(const Map* const map);
+
+
 
 void render(
 	const Stage* const		stage,

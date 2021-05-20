@@ -188,7 +188,6 @@ static void _updateMobVisionToMap(
 )
 {
 	int* ptrCell = getMapCellPtrFrom(mob->prevPosition, map);
-	COORD position = mob->position;
 	// 이전 위치의 플래그는 지운다.
 	*ptrCell = FLAG_EMPTY;
 

@@ -41,6 +41,12 @@ void drawTargetIcon()
 	printf("%s", ICON_TARGET);
 }
 
+void drawWallIconWith(int backgroundColor)
+{
+	textcolor(ON_SURFACE_COLOR, backgroundColor);
+	printf("%s", ICON_WALL);
+}
+
 void drawWallIcon()
 {
 	textcolor(ON_SURFACE_COLOR, SURFACE_COLOR);

@@ -24,6 +24,7 @@ void drawPlayerIconWithNoColor(const Player* const player);
 void drawMobIcon(const Mob* const mob);
 void drawTargetIcon();
 void drawWallIcon();
+void drawWallIconWith(int backgroundColor);
 void drawEmptyIcon();
 void drawEmptyIconWithNoColor();
 

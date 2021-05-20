@@ -6,7 +6,7 @@ static COORD _getRandomMobPosition(
 	SMALL_RECT			mapRect
 )
 {
-	SMALL_RECT playerVision = getRectFromPlayer(player, map, 7);
+	SMALL_RECT playerVision = getRectFromPlayerPosition(player, map, 7);
 	COORD result;
 	int loY, hiY;
 	int loX, hiX;
@@ -100,13 +100,13 @@ int onCaughtPlayer(
 	return *ptrCell == FLAG_MOB_VISION;
 }
 
+// 이거 수정해야함!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!
 int onKilledByPlayer(
 	const Player* const player,
 	const Mob* const	mob
 )
 {
 	Direction reversedMobDirection = reverseDirection(mob->direction);
-	COORD mobBackPosition = getMovedCoordInDirection(mob->position, reversedMobDirection);
 
 	// 플레이어가 몹을 잡은 경우는
 	// 
