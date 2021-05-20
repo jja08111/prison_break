@@ -85,6 +85,16 @@ static void _renderMap(
 static void _renderPlayer(const Player* const player);
 
 
+// 몹의 시야를 렌더링한다.
+//
+// position 위치부터 맵의 벽에 닿을 때까지 렌더링한다. 해당 위치에
+// 플레이어가 위치했다면 플레이어 아래에 그린다.
+void drawMobVisionInPlayerRange(
+	COORD				initPosition,
+	Direction			direction,
+	const Map* const 	map,
+	const Player* const	player
+);
 
 static void _renderMobVision(
 	const Mob* const	mob,
@@ -114,16 +124,13 @@ static void _renderInterface(
 
 static void _renderDialogAtCenterMap(
 	const Map* const map,
-	const char* _Format,
+	const char*		 _Format,
 	...
 );
 
-static void _renderSuccessDialog(
-	const Map* const	map, 
-	const Stage* const	stage
-);
+void renderSuccessDialog(const Map* const map);
 
-
+void renderFailDialog(const Map* const map);
 
 void render(
 	const Stage* const		stage,

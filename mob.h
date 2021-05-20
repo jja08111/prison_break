@@ -5,11 +5,13 @@
 #include "map.h"
 #include "player.h"
 
+#include <time.h>
+
 #define INIT_MOB_NUM	4
 #define MAX_MOB_NUM		100
 #define MAX_MOB_SPEED	200
 
-// 움직이는 객체이며 플레이어가 제거할 대상이다.
+// 움직이는 객체이며 플레이어가 피해야 할 대상이다.
 //
 // 방향과 위치를 가지고 있다.
 typedef struct {
@@ -27,6 +29,10 @@ typedef struct {
 	//
 	// 최소 200이다.
 	int moveDelay;
+
+	clock_t updatedClock;
+
+	int wasKilled;
 } Mob;
 
 typedef struct {
@@ -59,6 +65,18 @@ void insertMobAtLast(MobHandler* mobHandler, Mob mob);
 void moveMobTo(
 	Mob*	mob,
 	COORD	position
+);
+
+// 몹의 시야에 들어서 플레이어가 잡혔는지 반환한다.
+int onCaughtPlayer(
+	const Player* const		player,
+	const Map* const		map
+);
+
+// 유저가 뒤에서 접근하는 경우 몹은 죽는다.
+int onKilledByPlayer(
+	const Player* const player,
+	const Mob* const	mob
 );
 
 #endif // !__BOT_H__

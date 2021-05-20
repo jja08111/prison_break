@@ -10,6 +10,7 @@
 #define RED2		12 
 #define MAGENTA2	13 
 #define YELLOW2		14 
+#define GREEN		2
 
 #define WHITE2      7
 #define WHITE1		15 

@@ -9,12 +9,13 @@
 #define MAP_MAX_HEIGHT	65
 #define MAP_MAX_WIDTH	65
 
-enum MapFlag { 
+typedef enum _MapFlag {
 	FLAG_WALL,
 	FLAG_EMPTY,
 	FLAG_VISITED, 
-	FLAG_TARGET 
-};
+	FLAG_TARGET,
+	FLAG_MOB_VISION
+} MapFlag;
 
 // 맵 데이터 구조이다. 
 // 
@@ -34,10 +35,10 @@ typedef struct {
 	int width;
 } Map;
 
-// 0단계 48
-// 1단계 52
-// 2단계 56
-// 3단계 60
+// 0단계 30
+// 1단계 36
+// 2단계 42
+// 3단계 58
 // 4단계 64
 int getMapLineLengthPer(const Stage* const stage);
 
@@ -50,6 +51,11 @@ void generateMap(int y, int x, Map* const map);
 // 해당 위치의 map->grid가 FLAG_WALL인 경우와
 // 맵 범위를 벗어난 경우 0을 반환한다.
 int canPlace(COORD position, const Map* const map);
+
+int* getMapCellPtrFrom(
+	COORD			 position,
+	const Map* const map
+);
 
 COORD getTargetPosition(const Map* const map);
 

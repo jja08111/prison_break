@@ -3,10 +3,10 @@
 int getMapLineLengthPer(const Stage* const stage)
 {
 	switch (stage->level) {
-	case 0: return 48;
-	case 1: return 52;
-	case 2: return 56;
-	case 3: return 60;
+	case 0: return 30;
+	case 1: return 36;
+	case 2: return 42;
+	case 3: return 58;
 	case MAX_LEVEL: return 64;
 	}
 	return 0;
@@ -77,6 +77,14 @@ int canPlace(COORD position, const Map* const map)
 	int inEmptyCell = map->grid[position.Y][position.X] != FLAG_WALL;
 
 	return inRange && inEmptyCell;
+}
+
+int* getMapCellPtrFrom(
+	COORD			 position,
+	const Map* const map
+)
+{
+	return &map->grid[position.Y][position.X];
 }
 
 COORD getTargetPosition(const Map* const map)

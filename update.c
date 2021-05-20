@@ -55,14 +55,28 @@ static void _setNextStage(
 	system("cls");
 }
 
-static void _handleStageSuccess(
+static void _handleSuccessed(
 	Stage*	stage,
 	Player* player,
 	Map*	map,
 	COORD*	newPosition
 )
 {
-	Sleep(DIALOG_DURATION);
+	renderSuccessDialog(map);
+
+	_setNextStage(stage, player, map);
+	*newPosition = player->position;
+}
+
+static void _handleFailed(
+	Stage*	stage,
+	Player* player,
+	Map*	map,
+	COORD*	newPosition
+)
+{
+	renderFailDialog(map);
+	
 	_setNextStage(stage, player, map);
 	*newPosition = player->position;
 }
@@ -101,7 +115,7 @@ static void _updateMobPosition(
 	COORD goStraightPosition = getMovedCoordInDirection(mob->position, mob->direction);
 	COORD goLeftPosition = getMovedCoordInDirection(mob->position, turnLeftDirection(mob->direction));
 	COORD goRightPosition = getMovedCoordInDirection(mob->position, turnRightDirection(mob->direction));
-	COORD goBackPosition = getMovedCoordInDirection(mob->position, turnBackDirection(mob->direction));
+	COORD goBackPosition = getMovedCoordInDirection(mob->position, reverseDirection(mob->direction));
 
 	if (canPlace(goStraightPosition, map))
 	{
@@ -137,13 +151,75 @@ static void _updateMobPosition(
 	}
 }
 
+// 플래그를 맵의 그리드에 설정한다.
+//
+// position 위치부터 direction 방향으로 벽을 만날 때까지 
+// 반복하여 flag를 칸에 초기화한다.
+static void _setVisionFlagToMap(
+	COORD				position,
+	Direction			direction,
+	MapFlag				flag,
+	const Map* const	map
+)
+{
+	int* ptrCell;
+
+	while (canPlace(position, map))
+	{
+		ptrCell = getMapCellPtrFrom(position, map);
+		*ptrCell = flag;
+
+		position = getMovedCoordInDirection(position, direction);
+	}
+}
+
+static void _clearVisionFlagToMap(
+	COORD			 position,
+	Direction		 direction,
+	const Map* const map
+)
+{
+	_setVisionFlagToMap(position, direction, FLAG_EMPTY, map);
+}
+
+static void _updateMobVisionToMap(
+	const Mob* const mob,
+	const Map* const map
+)
+{
+	int* ptrCell = getMapCellPtrFrom(mob->prevPosition, map);
+	COORD position = mob->position;
+	// 이전 위치의 플래그는 지운다.
+	*ptrCell = FLAG_EMPTY;
+
+	if (mob->direction != mob->prevDirection)
+	{
+		_clearVisionFlagToMap(mob->prevPosition, mob->prevDirection, map);
+	}
+
+	_setVisionFlagToMap(mob->position, mob->direction, FLAG_MOB_VISION, map);
+}
+
+static void _removeMob(
+	const Mob* const	mob,
+	const Player* const player,
+	const Map* const	map
+)
+{
+	COORD startPosition = getMovedCoordInDirection(mob->position, mob->direction);
+
+	textcolor(SURFACE_COLOR, SURFACE_COLOR);
+	drawMobVisionInPlayerRange(startPosition, mob->direction, map, player);
+
+	_clearVisionFlagToMap(mob->position, mob->direction, map);
+}
+
 static void _updateMob(
 	MobHandler*			mobHandler,
 	const Player* const player,
 	const Map* const	map
 ) 
 {
-	static clock_t prevClock = 0;
 	clock_t now = clock();
 	int i;
 
@@ -151,12 +227,23 @@ static void _updateMob(
 	{
 		Mob* currentMob = &mobHandler->arrMob[i];
 
-		if (now - prevClock > currentMob->moveDelay)
+		if (currentMob->wasKilled)
+			continue;
+
+		if (onKilledByPlayer(player, currentMob))
+		{
+			_removeMob(currentMob, player, map);
+			currentMob->wasKilled = 1;
+			continue;
+		}
+
+		_updateMobVisionToMap(currentMob, map);
+
+		if (now - currentMob->updatedClock > currentMob->moveDelay)
 		{
 			_updateMobPosition(currentMob, player, map);
 			
-			if(i == mobHandler->count - 1)
-				prevClock = now;
+			currentMob->updatedClock = now;
 		}
 	}	
 }
@@ -170,13 +257,17 @@ void update(
 	Direction*	newDirection
 )
 {
-	// 목표에 도달한 경우
-	if (onReachedTargetPoint(player, map))
-	{
-		_handleStageSuccess(stage, player, map, newPlayerPosition);
-	}
-
 	_updatePlayer(player, newPlayerPosition, newDirection);
 
 	_updateMob(mobHandler, player, map);
+
+	if (onCaughtPlayer(player, map))
+	{
+		_handleFailed(stage, player, map, newPlayerPosition);
+	}
+	// 목표에 도달한 경우
+	if (onReachedTargetPoint(player, map))
+	{
+		_handleSuccessed(stage, player, map, newPlayerPosition);
+	}
 }

@@ -45,7 +45,7 @@ int inRangeRect(COORD point, SMALL_RECT range);
 
 Direction turnRightDirection(Direction direction);
 Direction turnLeftDirection(Direction direction);
-Direction turnBackDirection(Direction direction);
+Direction reverseDirection(Direction direction);
 
 // coord 위치를 direction 방향으로 이동시킨 값을 반환한다.
 COORD getMovedCoordInDirection(COORD coord, Direction direction);

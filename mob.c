@@ -30,9 +30,9 @@ int getMobMoveDelayPer(const Stage* const stage)
 {
 	switch (stage->level) 
 	{
-	case 0: return 400;
-	case 1: return 360;
-	case 2: return 320;
+	case 0: return 600;
+	case 1: return 460;
+	case 2: return 340;
 	case 3: return 260;
 	case MAX_LEVEL: return 200;
 	}
@@ -64,7 +64,9 @@ void generateMob(
 			direction,
 			position,
 			position,
-			speed 
+			speed,
+			0,
+			0
 		};
 		insertMobAtLast(mobHandler, newMob);
 	}
@@ -87,4 +89,35 @@ void moveMobTo(
 
 	mob->prevPosition = mob->position;
 	mob->position = targetPosition;
+}
+
+int onCaughtPlayer(
+	const Player* const		player,
+	const Map* const		map
+)
+{
+	int* ptrCell = getMapCellPtrFrom(player->position, map);
+	return *ptrCell == FLAG_MOB_VISION;
+}
+
+int onKilledByPlayer(
+	const Player* const player,
+	const Mob* const	mob
+)
+{
+	Direction reversedMobDirection = reverseDirection(mob->direction);
+	COORD mobBackPosition = getMovedCoordInDirection(mob->position, reversedMobDirection);
+
+	// 플레이어가 몹을 잡은 경우는
+	// 
+	// 1. 현재 둘의 위치가 같다.
+	// 2. 서로를 마주보고 있지 않고 있다.
+	// 
+	// 일때 성립한다.
+	if (samePosition(player->position, mob->position) 
+		&& player->direction != reversedMobDirection)
+	{
+		return 1;
+	}
+	return 0;
 }

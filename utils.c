@@ -78,7 +78,7 @@ Direction turnLeftDirection(Direction direction)
 	return direction % 4;
 }
 
-Direction turnBackDirection(Direction direction)
+Direction reverseDirection(Direction direction)
 {
 	direction += 2;
 	return direction % 4;

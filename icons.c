@@ -20,7 +20,12 @@ static void _drawDirectionIcon(Direction direction)
 
 void drawPlayerIcon(const Player* const player)
 {
-	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
+	textcolor(GREEN, SURFACE_COLOR);
+	_drawDirectionIcon(player->direction);
+}
+
+void drawPlayerIconWithNoColor(const Player* const player)
+{
 	_drawDirectionIcon(player->direction);
 }
 
@@ -48,7 +53,7 @@ void drawEmptyIcon()
 	printf("%s", ICON_EMPTY);
 }
 
-void drawNoneColoredEmptyIcon()
+void drawEmptyIconWithNoColor()
 {
 	printf("%s", ICON_EMPTY);
 }

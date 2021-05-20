@@ -45,7 +45,7 @@ static void _drawBox(SMALL_RECT rect)
 	{
 		goto2xy(rect.Left, y);
 		for (x = rect.Left;x <= rect.Right;++x)
-			drawNoneColoredEmptyIcon();
+			drawEmptyIconWithNoColor();
 	}
 }
 
@@ -195,24 +195,31 @@ static void _renderPlayer(const Player* const player)
 	drawPlayerIcon(player);
 }
 
-static void _drawMobVisionInPlayerVision(
-	COORD				initPosition,
+void drawMobVisionInPlayerRange(
+	COORD				position,
 	Direction			direction,
-	const Player* const	player,
-	const Map* const	map
+	const Map* const	map,
+	const Player* const	player
 )
 {
-	while (canPlace(initPosition, map))
+	while (canPlace(position, map))
 	{
-		if (inRangeRect(initPosition, getPlayerVisionRect(player, map)))
+		if (inRangeRect(position, getPlayerVisionRect(player, map)))
 		{
-			gotoPosition(initPosition);
-			drawNoneColoredEmptyIcon();
+			gotoPosition(position);
+			drawEmptyIconWithNoColor();
+
+			if (samePosition(position, player->position))
+			{
+				gotoPosition(position);
+				drawPlayerIconWithNoColor(player);
+			}
 		}
 
-		initPosition = getMovedCoordInDirection(initPosition, direction);
+		position = getMovedCoordInDirection(position, direction);
 	}
 }
+
 // 몹의 시야를 렌더링한다. 
 //
 // 이전과 방향이 바뀌었다면 이전 시야는 지운다.
@@ -223,9 +230,9 @@ static void _renderMobVision(
 ) 
 {
 	COORD position = getMovedCoordInDirection(mob->position, mob->direction);
-	textcolor(MOB_VISION_COLOR, MOB_VISION_COLOR);
-
-	_drawMobVisionInPlayerVision(position, mob->direction, player, map);
+	
+	textcolor(GREEN, MOB_VISION_COLOR);
+	drawMobVisionInPlayerRange(position, mob->direction, map, player);
 
 	// 이전 방향과 다르면 이전 시야를 지운다.
 	if (mob->direction != mob->prevDirection)
@@ -233,7 +240,7 @@ static void _renderMobVision(
 		COORD prevPosition = getMovedCoordInDirection(mob->prevPosition, mob->prevDirection);
 
 		textcolor(SURFACE_COLOR, SURFACE_COLOR);
-		_drawMobVisionInPlayerVision(prevPosition, mob->prevDirection, player, map);
+		drawMobVisionInPlayerRange(prevPosition, mob->prevDirection, map, player);
 	}
 }
 
@@ -247,25 +254,48 @@ static void _renderMob(
 	COORD position, prevPosition;
 	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
 	const Mob* currentMob;
-	int isMoved;
 	int i;
 
+	// 몹의 시야를 먼저 그려 몹이 지워지지 않도록 한다.
 	for (i = 0;i < mobHandler->count;++i)
 	{
 		currentMob = &mobHandler->arrMob[i];
 
+		if (currentMob->wasKilled)
+			continue;
+
 		position = currentMob->position;
 		prevPosition = currentMob->prevPosition;
 
-		isMoved = !samePosition(prevPosition, position);
-		if (isMoved)
+		if (!samePosition(prevPosition, position))
 		{
 			_renderMobVision(currentMob, player, map);
-			if (inRangeRect(position, playerVision))
+		}
+	}
+
+	// 몹을 그린다.
+	for (i = 0;i < mobHandler->count;++i)
+	{
+		currentMob = &mobHandler->arrMob[i];
+		if (currentMob->wasKilled)
+			continue;
+
+		position = currentMob->position;
+		prevPosition = currentMob->prevPosition;
+
+		if (!samePosition(prevPosition, position))
+		{
+			int* ptrCell = getMapCellPtrFrom(currentMob->prevPosition, map);
+
+			if (inRangeRect(currentMob->prevPosition, playerVision) 
+				&& *ptrCell != FLAG_MOB_VISION)
 			{
 				// 이전 위치는 지운다.
 				_drawEmptyIconAt(prevPosition);
+			}
 
+			if (inRangeRect(position, playerVision))
+			{
 				gotoPosition(position);
 				drawMobIcon(currentMob);
 			}
@@ -325,13 +355,13 @@ static void _renderDialogAtCenterMap(
 {
 	SMALL_RECT boxRect = getRectOf(map);
 	COORD centerPoint = getMapCenterPoint(map);
-	int horizontalPadding = 8;
+	int horizontalPadding = 12;
 	char _Buffer[40];
 
 	boxRect = (SMALL_RECT){
-		boxRect.Left + horizontalPadding,
+		centerPoint.X - horizontalPadding,
 		centerPoint.Y - 1,
-		boxRect.Right - horizontalPadding,
+		centerPoint.X + horizontalPadding,
 		centerPoint.Y + 1 };
 
 	// _Buffer에 _ArgList을 포멧팅한다.
@@ -344,14 +374,17 @@ static void _renderDialogAtCenterMap(
 
 	_drawBox(boxRect);
 	_drawCenterAlignedText(boxRect, _Buffer);
+	Sleep(DIALOG_DURATION);
 }
 
-static void _renderSuccessDialog(
-	const Map* const	map,
-	const Stage* const	stage
-)
+void renderSuccessDialog(const Map* const map)
 {
-	_renderDialogAtCenterMap(map, "Successed!");
+	_renderDialogAtCenterMap(map, "성공! 다음 단계에 진입합니다.");
+}
+
+void renderFailDialog(const Map* const map)
+{
+	_renderDialogAtCenterMap(map, "교도관에게 적발되었습니다!");
 }
 
 void render(
@@ -362,12 +395,6 @@ void render(
 )
 {
 	_renderInterface(stage, player, map);
-
-	// 목표에 도달한 경우
-	if (onReachedTargetPoint(player, map))
-	{
-		_renderSuccessDialog(map, stage);
-	}
 	
 	// 초기 렌더링
 	if (!map->hasInitRendered)
@@ -376,6 +403,8 @@ void render(
 		_renderPlayer(player);
 		map->hasInitRendered = 1;
 	}
+
+	_renderMob(mobHandler, player, map);
 
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
@@ -388,6 +417,4 @@ void render(
 	{
 		_renderPlayer(player);
 	}
-
-	_renderMob(mobHandler, player, map);
 }

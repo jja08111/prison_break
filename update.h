@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "init.h"
 #include "colors.h"
+#include "render.h"
 
 #include <conio.h>
 
@@ -24,7 +25,7 @@ static void _setNextStage(
 	Map*	map
 );
 
-static void _handleStageSuccess(
+static void _handleSuccessed(
 	Stage*	stage,
 	Player* player,
 	Map*	map,
@@ -41,6 +42,11 @@ static void _updateMobPosition(
 	Mob*				mob,
 	const Player* const player,
 	const Map* const	map
+);
+
+static void _updateMobVisionToMap(
+	const Mob* const mob,
+	const Map* const map
 );
 
 static void _updateMob(
