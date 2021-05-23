@@ -8,18 +8,16 @@ static COORD _getRandomMobPosition(
 {
 	SMALL_RECT playerVision = getRectFromPlayerPosition(player, map, 7);
 	COORD result;
-	int loY, hiY;
-	int loX, hiX;
 
 	do {
-		loY = max(mapRect.Top, 1);
-		hiY = mapRect.Bottom - 1;
+		result.X = OBJECT_GEN_PADDING + rand() % (map->width - OBJECT_GEN_PADDING * 2);
+		result.Y = OBJECT_GEN_PADDING + rand() % (map->height - OBJECT_GEN_PADDING * 2);
 
-		loX = max(mapRect.Left, 1);
-		hiX = mapRect.Right - 1;
-
-		result.Y = rand() % (hiY - loY + 1) + loY;
-		result.X = rand() % (hiX - loX + 1) + loX;
+		// È¦¼ö Ä­¿¡¸¸ ¹èÄ¡ÇÑ´Ù.
+		if (result.X % 2 == 0)
+			result.X--;
+		if (result.Y % 2 == 0)
+			result.Y--;
 	} while (!canPlace(result, map) 
 		|| inRangeRect(result, playerVision));
 	
@@ -47,7 +45,7 @@ void generateMob(
 	const Map* const	map
 )
 {
-	SMALL_RECT mapRect = getRectOf(map);
+	SMALL_RECT mapRect = getMapRect(map);
 	Mob newMob;
 	Direction direction;
 	COORD position;

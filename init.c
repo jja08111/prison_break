@@ -8,12 +8,15 @@ void initMap(
 {
 	map->height = map->width = getMapLineLengthPer(stage);
 	map->hasInitRendered = 0;
+	map->hasDrawedEntireMap = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
 	// 도착 지점부터 시작하여 맵을 생성한다.
 	generateMap(map->height - 1, map->width - 1, map);
 
 	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
+
+	generateItem(map, FLAG_UNLIMIT_VISION_ITEM, 4);
 }
 
 static void _initPlayer(
@@ -23,9 +26,7 @@ static void _initPlayer(
 {
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
-	player->life = 5;
-	player->visionRange = getPlayerVisionRangePer(stage);
-	player->visionPattern = VISION_DEFAULT;
+	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
 }
 
 static void _initStage(Stage* stage)

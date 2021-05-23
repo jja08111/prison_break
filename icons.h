@@ -7,15 +7,15 @@
 #include <stdio.h>
 #include <Windows.h>
 
-#define ICON_PLAYER_UP		"¡ã"
-#define ICON_PLAYER_DOWN	"¡å"
-#define ICON_PLAYER_LEFT	"¢¸"
-#define ICON_PLAYER_RIGHT	"¢º"
+#define ICON_PLAYER_UP				"¡ã"
+#define ICON_PLAYER_DOWN			"¡å"
+#define ICON_PLAYER_LEFT			"¢¸"
+#define ICON_PLAYER_RIGHT			"¢º"
 
-#define ICON_MOB			"¢À"
-#define ICON_TARGET			"¡ß"
-#define ICON_WALL			"¡á"
-#define ICON_EMPTY			"  "
+#define ICON_UNLIMIT_VISION_ITEM	"¢À"
+#define ICON_TARGET					"¡ß"
+#define ICON_WALL					"¡á"
+#define ICON_EMPTY					"  "
 
 static void _drawDirectionIcon(Direction direction);
 
@@ -27,5 +27,7 @@ void drawWallIcon();
 void drawWallIconWith(int backgroundColor);
 void drawEmptyIcon();
 void drawEmptyIconWithNoColor();
+void drawUnlimitVisionItemIcon();
+void drawUnlimitVisionItemIconWith(int backgroundColor);
 
 #endif

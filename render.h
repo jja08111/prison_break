@@ -9,13 +9,6 @@
 #include <assert.h>
 #include <string.h>
 
-static int _inVisionRange(
-	int y,
-	int x, 
-	const Map* const	map, 
-	const Player* const	player
-);
-
 // 사각형이 범위에 있지 않으면 범위에 들도록 수정한다.
 //
 // 만약 범위가 map에 한 칸도 겹치지 않으면 0을 반환한다.
@@ -60,7 +53,10 @@ static void _drawMapWith(
 	int				 emptyCellColor
 );
 
-
+void drawEntireMapWith(
+	const Map* const map,
+	int				 backgroundColor
+);
 
 // 도착지점을 렌더링한다.
 static void _renderTargetSpace(const Map* const map);
@@ -68,9 +64,9 @@ static void _renderTargetSpace(const Map* const map);
 // 플레이어와 플레이어 시야를 그린다.
 // 
 // 만약 이전 위치와 현재 위치가 다르다면 지우고 새로 그린다.
-static void _renderPlayer(
+void renderPlayer(
 	const Player* const player,
-	const Map* const	map
+	Map*				map
 );
 
 // 몹의 시야를 렌더링한다.

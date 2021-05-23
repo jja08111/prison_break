@@ -24,6 +24,7 @@
     <ProjectGuid>{8c992dcc-c6cb-4539-b0cf-dbabca7e0578}</ProjectGuid>
     <RootNamespace>mazegame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>prison_break</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -153,6 +154,7 @@
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="items.h" />
     <ClInclude Include="mob.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="constants.h" />

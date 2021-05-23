@@ -35,7 +35,8 @@ static void _handleSuccessed(
 static void _updatePlayer(
 	Player*		player,
 	COORD*		newPosition,
-	Direction*	newDirection
+	Direction*	newDirection,
+	Map*		map
 );
 
 static void _updateMobPosition(

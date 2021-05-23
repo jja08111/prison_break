@@ -3,17 +3,17 @@
 
 #include "map.h"
 #include "utils.h"
+#include "items.h"
 
-#define INIT_PLAYER_DIRECTION DIRECTION_RIGHT
-#define INIT_PLAYER_POS 1
-#define TARGET_VISION_RANGE 1
+#include <time.h>
 
-typedef enum _VisionPattern { VISION_DEFAULT } VisionPattern;
+#define INIT_PLAYER_DIRECTION	DIRECTION_RIGHT
+#define INIT_PLAYER_POS			1
+#define TARGET_VISION_RANGE		1
 
 // 플레이어의 정보를 가지고 있다.
 //
-// 멤버변수로 position, life, score를 가지고 있다. 이때 position은 COORD 구조체이며,
-// 이 구조체는 멤버변수로 X,Y를 가지고 있다.
+// 방향, 위치, 그리고 시야 무제한 아이템에 대한 정보를 갖고 있다.
 typedef struct {
 	Direction direction;
 	Direction prevDirection;
@@ -25,20 +25,13 @@ typedef struct {
 	// 플레이어의 이전 위치이다.
 	COORD prevPosition;
 
-	short life;
-
-	// 플레이어의 시야 반지름이다. 
-	short visionRange;
-
-	VisionPattern visionPattern;
+	// 시야 무제한 아이템을 얻은 시간이다.
+	//
+	// 제한 시간은 UNLIMIT_VISION_DURATION(5)초 이며, 아이템이 
+	// 없는 경우 이 값은 -1이다.
+	clock_t visionItemAcquiredTime;
 } Player;
 
-// 0단계 10
-// 1단계 8
-// 2단계 6
-// 3단계 4
-// 4단계 2 
-int getPlayerVisionRangePer(const Stage* const stage);
 
 // 플레이어가 도착 지점에 도착했으면 1을 반환한다.
 int onReachedTargetPoint(
@@ -62,5 +55,7 @@ SMALL_RECT getPlayerVisionRect(
 	const Player* const player,
 	const Map* const	map
 );
+
+int hasPlayerVisionItem(const Player* const player);
 
 #endif

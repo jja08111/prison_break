@@ -63,3 +63,15 @@ void drawEmptyIconWithNoColor()
 {
 	printf("%s", ICON_EMPTY);
 }
+
+void drawUnlimitVisionItemIcon()
+{
+	textcolor(MAGENTA2, SURFACE_COLOR);
+	printf("%s", ICON_UNLIMIT_VISION_ITEM);
+}
+
+void drawUnlimitVisionItemIconWith(int backgroundColor)
+{
+	textcolor(MAGENTA2, backgroundColor);
+	printf("%s", ICON_UNLIMIT_VISION_ITEM);
+}

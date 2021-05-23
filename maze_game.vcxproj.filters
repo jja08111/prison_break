@@ -89,9 +89,6 @@
     <ClInclude Include="render.h">
       <Filter>헤더 파일\game</Filter>
     </ClInclude>
-    <ClInclude Include="init.h">
-      <Filter>헤더 파일\game</Filter>
-    </ClInclude>
     <ClInclude Include="update.h">
       <Filter>헤더 파일\game</Filter>
     </ClInclude>
@@ -102,6 +99,12 @@
       <Filter>헤더 파일\models</Filter>
     </ClInclude>
     <ClInclude Include="models.h">
+      <Filter>헤더 파일\models</Filter>
+    </ClInclude>
+    <ClInclude Include="init.h">
+      <Filter>헤더 파일\game</Filter>
+    </ClInclude>
+    <ClInclude Include="items.h">
       <Filter>헤더 파일\models</Filter>
     </ClInclude>
   </ItemGroup>

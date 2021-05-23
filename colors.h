@@ -13,13 +13,13 @@
 #define GREEN		2
 #define DARK_GRAY   8
 
-#define WHITE2      7
+#define GREY      7
 #define WHITE1		15 
 
 #define BACKGROUND_COLOR	WHITE1	// 하양
 #define ON_BACKGROUND_COLOR BLACK	// 검정
 
-#define SURFACE_COLOR		WHITE2	// 회색
+#define SURFACE_COLOR		GREY	// 회색
 #define ON_SURFACE_COLOR	BLACK	// 검정
 
 #define DIALOG_COLOR		WHITE1	// 하양

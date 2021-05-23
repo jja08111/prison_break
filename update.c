@@ -46,7 +46,6 @@ static void _setNextStage(
 	stage->level++;
 	stage->timeLimit = getTimeLimitPer(stage);
 
-	player->visionRange = getPlayerVisionRangePer(stage);
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 
 	initMap(map, stage);
@@ -84,9 +83,12 @@ static void _handleFailed(
 static void _updatePlayer(
 	Player*		player,
 	COORD*		newPosition,
-	Direction*	newDirection
+	Direction*	newDirection,
+	Map*		map
 )
 {
+	clock_t now = clock();
+
 	player->prevDirection = player->direction;
 	player->prevPosition = player->position;
 	
@@ -94,6 +96,23 @@ static void _updatePlayer(
 	if (!samePosition(*newPosition, player->position))
 	{
 		player->position = *newPosition;
+	}
+
+	// 아이템 기간이 만료된 경우
+	if (hasPlayerVisionItem(player) 
+		&& now - player->visionItemAcquiredTime > VISION_ITEM_DURATION)
+	{
+		player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
+		map->hasDrawedEntireMap = 0;
+		drawEntireMapWith(map, DARK_GRAY);
+		renderPlayer(player, map);
+	}
+
+	// 시야 무제한 아이템을 먹은 경우
+	if(map->grid[newPosition->Y][newPosition->X] == FLAG_UNLIMIT_VISION_ITEM) 
+	{
+		player->visionItemAcquiredTime = now;
+		map->grid[newPosition->Y][newPosition->X] = FLAG_EMPTY;
 	}
 }
 
@@ -256,7 +275,7 @@ void update(
 	Direction*	newDirection
 )
 {
-	_updatePlayer(player, newPlayerPosition, newDirection);
+	_updatePlayer(player, newPlayerPosition, newDirection, map);
 
 	_updateMob(mobHandler, player, map);
 

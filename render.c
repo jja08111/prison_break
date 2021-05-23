@@ -1,25 +1,5 @@
 #include "render.h"
 
-// 플레이어 시야 범위내에 (x,y)가 위치했으면 1을, 아니면 0을 반환한다.
-static int _inVisionRange(
-	int y, 
-	int x,
-	const Map* const	map,
-	const Player* const	player
-)
-{
-	int visionRange = player->visionRange;
-	int py = player->position.Y;
-	int px = player->position.X;
-
-	int minY = max(0, py - visionRange);
-	int minX = max(0, px - visionRange);
-	int maxY = min(map->height, py + visionRange);
-	int maxX = min(map->width, px + visionRange);
-	
-	return minY <= y && y <= maxY && minX <= x && x <= maxX;
-}
-
 static int _ensureToBeWithinRange(
 	const Map* const map,
 	SMALL_RECT*		 rect
@@ -82,6 +62,9 @@ static void _drawMapCellWith(
 	case FLAG_TARGET: 
 		drawTargetIcon();
 		break;
+	case FLAG_UNLIMIT_VISION_ITEM:
+		drawUnlimitVisionItemIconWith(backgroundColor);
+		break;
 	default: 
 		textcolor(backgroundColor, backgroundColor);
 		drawEmptyIconWithNoColor();
@@ -94,7 +77,7 @@ static void _drawMapCellAt(
 )
 {
 	gotoPosition(position);
-	_drawMapCellWith(map, position, WHITE2);
+	_drawMapCellWith(map, position, GREY);
 }
 
 static void _drawMapWith(
@@ -118,6 +101,14 @@ static void _drawMapWith(
 	}	
 }
 
+void drawEntireMapWith(
+	const Map* const map,
+	int				 backgroundColor
+)
+{
+	_drawMapWith(map, getMapRect(map), backgroundColor);
+}
+
 static void _renderTargetSpace(const Map* const map)
 {
 	COORD targetPosition = getTargetPosition(map);
@@ -129,13 +120,12 @@ static void _renderTargetSpace(const Map* const map)
 		targetPosition.Y - TARGET_VISION_RANGE,
 		targetPosition.X + TARGET_VISION_RANGE,
 		targetPosition.Y + TARGET_VISION_RANGE},
-		DARK_GRAY
-		);
+		DARK_GRAY);
 }
 
-static void _renderPlayer(
+void renderPlayer(
 	const Player* const player,
-	const Map* const	map
+	Map*			 	map
 )
 {
 	SMALL_RECT willRemoveRange = getPlayerPreviousVisionRect(player, map);
@@ -145,26 +135,40 @@ static void _renderPlayer(
 	{
 		_drawEmptyIconAt(player->prevPosition);
 	}
-	// 방향이 그대로인 경우 플레이어 이전 위치인 뒤쪽만 지운다.
-	if (player->direction == player->prevDirection)
+
+	if (hasPlayerVisionItem(player))
 	{
-		switch (player->direction)
+		if (!map->hasDrawedEntireMap)
 		{
-		case DIRECTION_UP: 
-			willRemoveRange.Top = willRemoveRange.Bottom;
-			break;
-		case DIRECTION_DOWN:
-			willRemoveRange.Bottom = willRemoveRange.Top;
-			break;
-		case DIRECTION_LEFT:
-			willRemoveRange.Left = willRemoveRange.Right;
-			break;
-		case DIRECTION_RIGHT:
-			willRemoveRange.Right = willRemoveRange.Left;
+			map->hasDrawedEntireMap = 1;
+			_drawMapWith(map, getMapRect(map), GREY);
 		}
 	}
-	_drawMapWith(map, willRemoveRange, DARK_GRAY);
-	_drawMapWith(map, getPlayerVisionRect(player, map), WHITE2);
+	else
+	{
+		// 방향이 그대로인 경우 플레이어 이전 위치인 뒤쪽만 지운다.
+		if (player->direction == player->prevDirection)
+		{
+			switch (player->direction)
+			{
+			case DIRECTION_UP:
+				willRemoveRange.Top = willRemoveRange.Bottom;
+				break;
+			case DIRECTION_DOWN:
+				willRemoveRange.Bottom = willRemoveRange.Top;
+				break;
+			case DIRECTION_LEFT:
+				willRemoveRange.Left = willRemoveRange.Right;
+				break;
+			case DIRECTION_RIGHT:
+				willRemoveRange.Right = willRemoveRange.Left;
+			}
+		}
+		// 이전 시야는 지운다.
+		_drawMapWith(map, willRemoveRange, DARK_GRAY);
+		// 새로운 시야는 그린다.
+		_drawMapWith(map, getPlayerVisionRect(player, map), GREY);
+	}
 
 	gotoPosition(player->position);
 	drawPlayerIcon(player);
@@ -179,7 +183,8 @@ void drawMobVisionInPlayerRange(
 {
 	while (canPlace(position, map))
 	{
-		if (inRangeRect(position, getPlayerVisionRect(player, map)))
+		if (hasPlayerVisionItem(player)
+			|| inRangeRect(position, getPlayerVisionRect(player, map)))
 		{
 			gotoPosition(position);
 			drawEmptyIconWithNoColor();
@@ -262,14 +267,16 @@ static void _renderMob(
 		{
 			int* ptrCell = getMapCellPtrFrom(currentMob->prevPosition, map);
 
-			if (inRangeRect(currentMob->prevPosition, playerVision) 
-				&& *ptrCell != FLAG_MOB_VISION)
+			if (hasPlayerVisionItem(player) 
+				|| (inRangeRect(currentMob->prevPosition, playerVision) 
+				&& *ptrCell != FLAG_MOB_VISION))
 			{
 				// 이전 위치는 지운다.
 				_drawEmptyIconAt(prevPosition);
 			}
 
-			if (inRangeRect(position, playerVision))
+			if (hasPlayerVisionItem(player)
+				|| inRangeRect(position, playerVision))
 			{
 				gotoPosition(position);
 				drawMobIcon(currentMob);
@@ -316,10 +323,7 @@ static void _renderInterface(
 		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
 		"LEVEL : %d", stage->level + 1);
 
-	y += 4;
-	_drawCenterAlignedText(
-		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
-		"LIFE  : %d", player->life);
+	
 }
 
 static void _renderDialogAtCenterMap(
@@ -328,7 +332,7 @@ static void _renderDialogAtCenterMap(
 	...
 )
 {
-	SMALL_RECT boxRect = getRectOf(map);
+	SMALL_RECT boxRect = getMapRect(map);
 	COORD centerPoint = getMapCenterPoint(map);
 	int horizontalPadding = 12;
 	char _Buffer[40];
@@ -374,10 +378,10 @@ void render(
 	// 초기 렌더링
 	if (!map->hasInitRendered)
 	{
-		_drawDarknessFromRect(map, getRectOf(map));
+		_drawDarknessFromRect(map, getMapRect(map));
 		_renderTargetSpace(map);
 
-		_renderPlayer(player, map);
+		renderPlayer(player, map);
 		map->hasInitRendered = 1;
 	}
 
@@ -386,11 +390,11 @@ void render(
 	// 플레이어가 이동한 경우 렌더링
 	if (!samePosition(player->position, player->prevPosition))
 	{
-		_renderPlayer(player, map);
+		renderPlayer(player, map);
 	}
 	// 플레이어가 방향을 바꾼 경우 플레이어 렌더링
 	else if (player->direction != player->prevDirection)
 	{
-		_renderPlayer(player, map);
+		renderPlayer(player, map);
 	}
 }

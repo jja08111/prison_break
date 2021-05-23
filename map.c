@@ -70,13 +70,43 @@ void generateMap(int y, int x, Map* const map)
 	}
 }
 
+void generateItem(
+	Map*	map,
+	MapFlag itemFlag,
+	int		count
+)
+{
+	int x, y, i;
+
+	map->grid[3][1] = itemFlag;
+	for (i = 0;i < count;++i)
+	{
+		x = OBJECT_GEN_PADDING + rand() % (map->width - OBJECT_GEN_PADDING * 2);
+		y = OBJECT_GEN_PADDING + rand() % (map->height - OBJECT_GEN_PADDING * 2);
+
+		// 홀수 칸에만 배치한다.
+		if (x % 2 == 0)
+			x--;
+		if (y % 2 == 0)
+			y--;
+
+		// 이미 해당 위치에 동일한 아이템이 있는 경우 
+		if (map->grid[y][x] == itemFlag)
+		{
+			--i;
+			continue;
+		}
+		map->grid[y][x] = itemFlag;
+	}
+}
+
 int canPlace(COORD position, const Map* const map)
 {
 	int inRange = (0 < position.X && position.X < map->width
 		&& 0 < position.Y && position.Y < map->height);
-	int inEmptyCell = map->grid[position.Y][position.X] != FLAG_WALL;
+	int isCellEmpty = map->grid[position.Y][position.X] != FLAG_WALL;
 
-	return inRange && inEmptyCell;
+	return inRange && isCellEmpty;
 }
 
 int* getMapCellPtrFrom(
@@ -92,7 +122,7 @@ COORD getTargetPosition(const Map* const map)
 	return (COORD) { map->width - 1, map->height - 1 };
 }
 
-SMALL_RECT getRectOf(const Map* const map)
+SMALL_RECT getMapRect(const Map* const map)
 {
 	return  (SMALL_RECT) { 0, 0, map->width, map->height };
 }
