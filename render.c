@@ -356,12 +356,12 @@ static void _renderDialogAtCenterMap(
 	Sleep(DIALOG_DURATION);
 }
 
-void renderSuccessDialog(const Map* const map)
+static void _renderSuccessDialog(const Map* const map)
 {
 	_renderDialogAtCenterMap(map, "성공! 다음 단계에 진입합니다.");
 }
 
-void renderFailDialog(const Map* const map)
+static void _renderFailDialog(const Map* const map)
 {
 	_renderDialogAtCenterMap(map, "교도관에게 적발되었습니다!");
 }
@@ -396,5 +396,17 @@ void render(
 	else if (player->direction != player->prevDirection)
 	{
 		renderPlayer(player, map);
+	}
+
+	switch (player->state)
+	{
+	case STATE_CAUGHTED:
+		_renderFailDialog(map);
+		break;
+	case STATE_SUCCESS:
+		_renderSuccessDialog(map);
+		break;
+	default:
+		break;
 	}
 }

@@ -68,7 +68,7 @@ void moveMobTo(
 );
 
 // 몹의 시야에 들어서 플레이어가 잡혔는지 반환한다.
-int onCaughtPlayer(
+int onCaughtedPlayer(
 	const Player* const		player,
 	const Map* const		map
 );

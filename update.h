@@ -25,11 +25,12 @@ static void _setNextStage(
 	Map*	map
 );
 
-static void _handleSuccessed(
+
+static void _updateStage(
 	Stage*	stage,
 	Player* player,
-	Map*	map,
-	COORD*	newPosition
+	COORD*	newPosition,
+	Map*	map
 );
 
 static void _updatePlayer(
@@ -45,7 +46,7 @@ static void _updateMobPosition(
 	const Map* const	map
 );
 
-static void _updateMobVisionToMap(
+static void _updateMobVisionFlagToMap(
 	const Mob* const mob,
 	const Map* const map
 );

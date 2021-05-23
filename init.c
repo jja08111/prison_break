@@ -24,6 +24,7 @@ static void _initPlayer(
 	const Stage* const	stage
 )
 {
+	player->state = STATE_NORMAL;
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;

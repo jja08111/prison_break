@@ -11,10 +11,18 @@
 #define INIT_PLAYER_POS			1
 #define TARGET_VISION_RANGE		1
 
+typedef enum {
+	STATE_NORMAL,
+	STATE_SUCCESS,
+	STATE_CAUGHTED
+} PlayerState;
+
 // 플레이어의 정보를 가지고 있다.
 //
 // 방향, 위치, 그리고 시야 무제한 아이템에 대한 정보를 갖고 있다.
 typedef struct {
+	PlayerState state;
+
 	Direction direction;
 	Direction prevDirection;
 

@@ -89,7 +89,7 @@ void moveMobTo(
 	mob->position = targetPosition;
 }
 
-int onCaughtPlayer(
+int onCaughtedPlayer(
 	const Player* const		player,
 	const Map* const		map
 )

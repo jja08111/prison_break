@@ -112,9 +112,9 @@ static void _renderDialogAtCenterMap(
 	...
 );
 
-void renderSuccessDialog(const Map* const map);
+static void _renderSuccessDialog(const Map* const map);
 
-void renderFailDialog(const Map* const map);
+static void _renderFailDialog(const Map* const map);
 
 
 

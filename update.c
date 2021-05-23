@@ -46,6 +46,7 @@ static void _setNextStage(
 	stage->level++;
 	stage->timeLimit = getTimeLimitPer(stage);
 
+	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 
 	initMap(map, stage);
@@ -54,30 +55,23 @@ static void _setNextStage(
 	system("cls");
 }
 
-static void _handleSuccessed(
-	Stage*	stage,
-	Player* player,
-	Map*	map,
-	COORD*	newPosition
+static void _updateStage(
+	Stage*	stage, 
+	Player*	player,
+	COORD*	newPosition,
+	Map*	map
 )
 {
-	renderSuccessDialog(map);
-
-	_setNextStage(stage, player, map);
-	*newPosition = player->position;
-}
-
-static void _handleFailed(
-	Stage*	stage,
-	Player* player,
-	Map*	map,
-	COORD*	newPosition
-)
-{
-	renderFailDialog(map);
-	
-	_setNextStage(stage, player, map);
-	*newPosition = player->position;
+	switch (player->state)
+	{
+	case STATE_CAUGHTED:
+	case STATE_SUCCESS:
+		_setNextStage(stage, player, map);
+		*newPosition = player->position;
+		break;
+	default:
+		break;
+	}
 }
 
 static void _updatePlayer(
@@ -88,6 +82,15 @@ static void _updatePlayer(
 )
 {
 	clock_t now = clock();
+
+	if (onCaughtedPlayer(player, map))
+	{
+		player->state = STATE_CAUGHTED;
+	}
+	if (onReachedTargetPoint(player, map))
+	{
+		player->state = STATE_SUCCESS;
+	}
 
 	player->prevDirection = player->direction;
 	player->prevPosition = player->position;
@@ -201,7 +204,7 @@ static void _clearVisionFlagToMap(
 	_setVisionFlagToMap(position, direction, FLAG_EMPTY, map);
 }
 
-static void _updateMobVisionToMap(
+static void _updateMobVisionFlagToMap(
 	const Mob* const mob,
 	const Map* const map
 )
@@ -255,7 +258,7 @@ static void _updateMob(
 			continue;
 		}
 
-		_updateMobVisionToMap(currentMob, map);
+		_updateMobVisionFlagToMap(currentMob, map);
 
 		if (now - currentMob->updatedClock > currentMob->moveDelay)
 		{
@@ -275,17 +278,7 @@ void update(
 	Direction*	newDirection
 )
 {
+	_updateStage(stage, player, newPlayerPosition, map);
 	_updatePlayer(player, newPlayerPosition, newDirection, map);
-
 	_updateMob(mobHandler, player, map);
-
-	if (onCaughtPlayer(player, map))
-	{
-		_handleFailed(stage, player, map, newPlayerPosition);
-	}
-	// 목표에 도달한 경우
-	if (onReachedTargetPoint(player, map))
-	{
-		_handleSuccessed(stage, player, map, newPlayerPosition);
-	}
 }
