@@ -326,7 +326,7 @@ static void _renderInterface(
 	
 }
 
-static void _renderDialogAtCenterMap(
+static void _renderDialogAtMapCenter(
 	const Map* const map, 
 	const char*		 _Format, 
 	...
@@ -334,7 +334,7 @@ static void _renderDialogAtCenterMap(
 {
 	SMALL_RECT boxRect = getMapRect(map);
 	COORD centerPoint = getMapCenterPoint(map);
-	int horizontalPadding = 12;
+	int horizontalPadding = 4;
 	char _Buffer[40];
 
 	boxRect = (SMALL_RECT){
@@ -358,12 +358,12 @@ static void _renderDialogAtCenterMap(
 
 static void _renderSuccessDialog(const Map* const map)
 {
-	_renderDialogAtCenterMap(map, "성공! 다음 단계에 진입합니다.");
+	_renderDialogAtMapCenter(map, "성공! 다음 단계에 진입합니다.");
 }
 
 static void _renderFailDialog(const Map* const map)
 {
-	_renderDialogAtCenterMap(map, "교도관에게 적발되었습니다!");
+	_renderDialogAtMapCenter(map, "교도관에게 적발되었습니다!");
 }
 
 void render(
@@ -387,13 +387,9 @@ void render(
 
 	_renderMob(mobHandler, player, map);
 
-	// 플레이어가 이동한 경우 렌더링
-	if (!samePosition(player->position, player->prevPosition))
-	{
-		renderPlayer(player, map);
-	}
-	// 플레이어가 방향을 바꾼 경우 플레이어 렌더링
-	else if (player->direction != player->prevDirection)
+	// 플레이어가 이동한 경우, 방향을 바꾼 경우 플레이어 렌더링
+	if (!samePosition(player->position, player->prevPosition)
+		|| (player->direction != player->prevDirection))
 	{
 		renderPlayer(player, map);
 	}

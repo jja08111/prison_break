@@ -106,7 +106,7 @@ static void _renderInterface(
 	const Map* const	map
 );
 
-static void _renderDialogAtCenterMap(
+static void _renderDialogAtMapCenter(
 	const Map* const map,
 	const char*		 _Format,
 	...

@@ -24,6 +24,19 @@ static COORD _getRandomMobPosition(
 	return result;
 }
 
+int getMobCountPer(const Stage* const stage)
+{
+	switch (stage->level)
+	{
+	case 0: return 4;
+	case 1: return 6;
+	case 2: return 8;
+	case 3: return 10;
+	case MAX_LEVEL: return 12;
+	}
+	return 0;
+}
+
 int getMobMoveDelayPer(const Stage* const stage)
 {
 	switch (stage->level) 
@@ -68,6 +81,11 @@ void generateMob(
 		};
 		insertMobAtLast(mobHandler, newMob);
 	}
+}
+
+void clearMob(MobHandler* mobHandler)
+{
+	memset(mobHandler, 0, sizeof(MobHandler));
 }
 
 void insertMobAtLast(MobHandler* mobHandler, Mob mob)

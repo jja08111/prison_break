@@ -20,17 +20,19 @@ Direction updatePositionByInput(
 );
 
 static void _setNextStage(
-	Stage*	stage, 
-	Player*	player, 
-	Map*	map
+	Stage*		stage, 
+	Player*		player, 
+	Map*		map,
+	MobHandler* mobHandler
 );
 
 
 static void _updateStage(
-	Stage*	stage,
-	Player* player,
-	COORD*	newPosition,
-	Map*	map
+	Stage*		stage,
+	Player*		player,
+	COORD*		newPosition,
+	Map*		map,
+	MobHandler* mobHandler
 );
 
 static void _updatePlayer(

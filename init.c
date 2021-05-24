@@ -45,7 +45,7 @@ static void _initMob(
 )
 {
 	mobHandler->count = 0;
-	generateMob(mobHandler, INIT_MOB_NUM, player, stage, map);
+	generateMob(mobHandler, getMobCountPer(stage), player, stage, map);
 }
 
 void init(

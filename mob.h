@@ -7,7 +7,6 @@
 
 #include <time.h>
 
-#define INIT_MOB_NUM	4
 #define MAX_MOB_NUM		100
 #define MAX_MOB_SPEED	200
 
@@ -49,6 +48,8 @@ static COORD _getRandomMobPosition(
 	SMALL_RECT			rect
 );
 
+int getMobCountPer(const Stage* const stage);
+
 int getMobMoveDelayPer(const Stage* const stage);
 
 // num 개수 만큼 추가로 봇을 생성한다.
@@ -59,6 +60,8 @@ void generateMob(
 	const Stage* const	stage,
 	const Map* const	map
 );
+
+void clearMob(MobHandler* mobHandler);
 
 void insertMobAtLast(MobHandler* mobHandler, Mob mob);
 

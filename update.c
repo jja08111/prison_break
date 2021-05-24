@@ -38,9 +38,10 @@ Direction updatePositionByInput(
 }
 
 static void _setNextStage(
-	Stage*	stage,
-	Player* player,
-	Map*	map
+	Stage*		stage,
+	Player*		player,
+	Map*		map,
+	MobHandler* mobHandler
 )
 {
 	stage->level++;
@@ -51,22 +52,26 @@ static void _setNextStage(
 
 	initMap(map, stage);
 
+	clearMob(mobHandler);
+	generateMob(mobHandler, getMobCountPer(stage), player, stage, map);
+
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 	system("cls");
 }
 
 static void _updateStage(
-	Stage*	stage, 
-	Player*	player,
-	COORD*	newPosition,
-	Map*	map
+	Stage*		stage, 
+	Player*		player,
+	COORD*		newPosition,
+	Map*		map,
+	MobHandler* mobHandler
 )
 {
 	switch (player->state)
 	{
 	case STATE_CAUGHTED:
 	case STATE_SUCCESS:
-		_setNextStage(stage, player, map);
+		_setNextStage(stage, player, map, mobHandler);
 		*newPosition = player->position;
 		break;
 	default:
@@ -278,7 +283,7 @@ void update(
 	Direction*	newDirection
 )
 {
-	_updateStage(stage, player, newPlayerPosition, map);
+	_updateStage(stage, player, newPlayerPosition, map, mobHandler);
 	_updatePlayer(player, newPlayerPosition, newDirection, map);
 	_updateMob(mobHandler, player, map);
 }

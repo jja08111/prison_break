@@ -3,11 +3,11 @@
 int getMapLineLengthPer(const Stage* const stage)
 {
 	switch (stage->level) {
-	case 0: return 30;
-	case 1: return 36;
-	case 2: return 42;
-	case 3: return 58;
-	case MAX_LEVEL: return 64;
+	case 0: return 20;
+	case 1: return 30;
+	case 2: return 40;
+	case 3: return 50;
+	case MAX_LEVEL: return 60;
 	}
 	return 0;
 }
