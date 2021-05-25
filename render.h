@@ -39,12 +39,6 @@ static void _drawMapCellWith(
 	int				 emptyCellColor
 );
 
-// map[y][x]를 position 위치에 한 칸 그린다.
-static void _drawMapCellAt(
-	const Map* const map,
-	COORD			 position
-);
-
 // 직사각형 범위만 맵을 그린다.
 //
 // topLeft는 좌측 상단이어야만 하고 bottomRight는 우측 하단이어야만 한다.
@@ -87,7 +81,7 @@ static void _renderMobVision(
 	const Map* const	map
 );
 
-static void _renderMob(
+void renderMob(
 	const MobHandler* const mobHandler,
 	const Player* const		player,
 	const Map* const		map

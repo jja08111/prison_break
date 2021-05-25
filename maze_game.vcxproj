@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="intro.c" />
     <ClCompile Include="mob.c" />
     <ClCompile Include="colors.c" />
     <ClCompile Include="icons.c" />
@@ -155,6 +156,7 @@
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="intro.h" />
     <ClInclude Include="items.h" />
     <ClInclude Include="mob.h" />
     <ClInclude Include="colors.h" />

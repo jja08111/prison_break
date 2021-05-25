@@ -12,7 +12,7 @@
 #define ICON_PLAYER_LEFT			"¢¸"
 #define ICON_PLAYER_RIGHT			"¢º"
 
-#define ICON_UNLIMIT_VISION_ITEM	"¢À"
+#define ICON_VISION_ITEM			"¢À"
 #define ICON_TARGET					"¡ß"
 #define ICON_WALL					"¡á"
 #define ICON_EMPTY					"  "
@@ -27,7 +27,7 @@ void drawWallIcon();
 void drawWallIconWith(int backgroundColor);
 void drawEmptyIcon();
 void drawEmptyIconWithNoColor();
-void drawUnlimitVisionItemIcon();
-void drawUnlimitVisionItemIconWith(int backgroundColor);
+void drawVisionItemIcon();
+void drawVisionItemIconWith(int backgroundColor);
 
 #endif

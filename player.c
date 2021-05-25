@@ -72,6 +72,7 @@ static SMALL_RECT _getVisionRange(
 		topLeft = (COORD){ startPosition.X - padding, startPosition.Y - padding };
 		bottomRight = (COORD){ endOfVision.X, endOfVision.Y + padding };
 	}
+
 	return (SMALL_RECT) { 
 		topLeft.X, topLeft.Y,
 		bottomRight.X, bottomRight.Y

@@ -149,10 +149,9 @@ static void _updatePlayer(
 //
 // 주로 현재 향하고 있는 방향 혹은 그 방향의 좌우로 움직이며
 // 뒤로 가끔 이동한다. 막다른 길에 도달한 경우 뒤로 이동한다.
-static void _updateMobPosition(
-	Mob*				mob,
-	const Player* const player,
-	const Map* const	map
+void updateMobPosition(
+	Mob*			 mob,
+	const Map* const map
 ) 
 {
 	int randomNum, randomForGoBack;
@@ -291,7 +290,7 @@ static void _updateMob(
 
 		if (now - currentMob->updatedClock > currentMob->moveDelay)
 		{
-			_updateMobPosition(currentMob, player, map);
+			updateMobPosition(currentMob, map);
 			
 			currentMob->updatedClock = now;
 		}

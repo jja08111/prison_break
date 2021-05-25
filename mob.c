@@ -2,8 +2,7 @@
 
 static COORD _getRandomMobPosition(
 	const Map* const	map,
-	const Player* const player,
-	SMALL_RECT			mapRect
+	const Player* const player
 )
 {
 	SMALL_RECT playerVision = getRectFromPlayerPosition(player, map, 7);
@@ -68,7 +67,7 @@ void generateMob(
 	for (i = 0;i < num;++i)
 	{
 		direction = rand() % 4;
-		position = _getRandomMobPosition(map, player, mapRect);
+		position = _getRandomMobPosition(map, player);
 
 		newMob = (Mob){ 
 			direction,

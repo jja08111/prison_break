@@ -12,6 +12,7 @@ void initMap(
 	const Stage* const  stage
 )
 {
+	map->topLeftPosition = (COORD){ 0,0 };
 	map->height = map->width = getMapLineLength(stage);
 	map->hasInitRendered = 0;
 	map->hasDrawedEntireMap = 0;
@@ -64,7 +65,6 @@ void init(
 )
 {
 	srand((unsigned int)time(NULL));
-	removeCursor();
 
 	_initSound(soundController);
 	_initStage(stage);

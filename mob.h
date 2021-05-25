@@ -44,8 +44,7 @@ typedef struct {
 
 static COORD _getRandomMobPosition(
 	const Map* const	map,
-	const Player* const player,
-	SMALL_RECT			rect
+	const Player* const player
 );
 
 int getMobCountPer(const Stage* const stage);

@@ -16,12 +16,6 @@
     <Filter Include="헤더 파일\models">
       <UniqueIdentifier>{f842f254-ba43-43bf-8100-639b9200ce8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\game">
-      <UniqueIdentifier>{edd1eee9-3c7a-4d08-9164-2ad31089f477}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\game">
-      <UniqueIdentifier>{5cff35b1-e75b-4408-9b0c-ac3358f3e989}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\models">
       <UniqueIdentifier>{a2ed6220-394f-4b92-829e-eea66d52da76}</UniqueIdentifier>
     </Filter>
@@ -30,6 +24,18 @@
     </Filter>
     <Filter Include="헤더 파일\assets">
       <UniqueIdentifier>{23bf87a5-f0e9-4339-8c17-af7fe8760a14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ui">
+      <UniqueIdentifier>{f7522c4a-8e20-4736-b1a4-e0434ec5401f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ui\game">
+      <UniqueIdentifier>{5cff35b1-e75b-4408-9b0c-ac3358f3e989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\ui">
+      <UniqueIdentifier>{a8f6efef-d39d-4ddb-9ff6-d913e5ef3b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\ui\game">
+      <UniqueIdentifier>{edd1eee9-3c7a-4d08-9164-2ad31089f477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,16 +46,16 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="render.c">
-      <Filter>소스 파일\game</Filter>
+      <Filter>소스 파일\ui\game</Filter>
     </ClCompile>
     <ClCompile Include="init.c">
-      <Filter>소스 파일\game</Filter>
+      <Filter>소스 파일\ui\game</Filter>
     </ClCompile>
     <ClCompile Include="update.c">
-      <Filter>소스 파일\game</Filter>
+      <Filter>소스 파일\ui\game</Filter>
     </ClCompile>
     <ClCompile Include="main_game.c">
-      <Filter>소스 파일\game</Filter>
+      <Filter>소스 파일\ui\game</Filter>
     </ClCompile>
     <ClCompile Include="stage.c">
       <Filter>소스 파일\models</Filter>
@@ -72,6 +78,9 @@
     <ClCompile Include="sounds.c">
       <Filter>소스 파일\assets</Filter>
     </ClCompile>
+    <ClCompile Include="intro.c">
+      <Filter>소스 파일\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -90,13 +99,13 @@
       <Filter>헤더 파일\models</Filter>
     </ClInclude>
     <ClInclude Include="render.h">
-      <Filter>헤더 파일\game</Filter>
+      <Filter>헤더 파일\ui\game</Filter>
     </ClInclude>
     <ClInclude Include="update.h">
-      <Filter>헤더 파일\game</Filter>
+      <Filter>헤더 파일\ui\game</Filter>
     </ClInclude>
     <ClInclude Include="main_game.h">
-      <Filter>헤더 파일\game</Filter>
+      <Filter>헤더 파일\ui\game</Filter>
     </ClInclude>
     <ClInclude Include="mob.h">
       <Filter>헤더 파일\models</Filter>
@@ -105,7 +114,7 @@
       <Filter>헤더 파일\models</Filter>
     </ClInclude>
     <ClInclude Include="init.h">
-      <Filter>헤더 파일\game</Filter>
+      <Filter>헤더 파일\ui\game</Filter>
     </ClInclude>
     <ClInclude Include="items.h">
       <Filter>헤더 파일\models</Filter>
@@ -118,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="sounds.h">
       <Filter>헤더 파일\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="intro.h">
+      <Filter>헤더 파일\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

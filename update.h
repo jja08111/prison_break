@@ -44,10 +44,9 @@ static void _updatePlayer(
 	SoundController* soundController
 );
 
-static void _updateMobPosition(
-	Mob*				mob,
-	const Player* const player,
-	const Map* const	map
+void updateMobPosition(
+	Mob*			 mob,
+	const Map* const map
 );
 
 static void _updateMobVisionFlagToMap(

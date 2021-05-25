@@ -123,10 +123,32 @@ COORD getTargetPosition(const Map* const map)
 
 SMALL_RECT getMapRect(const Map* const map)
 {
-	return  (SMALL_RECT) { 0, 0, map->width, map->height };
+	return (SMALL_RECT) { 0, 0, map->width, map->height };
+}
+
+SMALL_RECT getMapScreenRect(const Map* const map)
+{
+	int x = map->topLeftPosition.X;
+	int y = map->topLeftPosition.Y;
+	return (SMALL_RECT) { x, y, map->width + x, map->height + y };
 }
 
 COORD getMapCenterPoint(const Map* const map)
 {
 	return (COORD) { map->width / 2, map->height / 2 };
+}
+
+COORD getMapScreenCenterPoint(const Map* const map)
+{
+	int x = map->topLeftPosition.X;
+	int y = map->topLeftPosition.Y;
+	return (COORD) { x + (map->width / 2), y + (map->height / 2) };
+}
+
+COORD getScreenPostion(COORD position, const Map* const map)
+{
+	return (COORD) {
+		position.X + map->topLeftPosition.X,
+		position.Y + map->topLeftPosition.Y
+	};
 }

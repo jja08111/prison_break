@@ -43,13 +43,10 @@ typedef struct {
 
 	int height;
 	int width;
+
+	COORD topLeftPosition;
 } Map;
 
-// 0단계 30
-// 1단계 36
-// 2단계 42
-// 3단계 58
-// 4단계 64
 int getMapLineLength(const Stage* const stage);
 
 static void _shuffleArray(int array[], int size);
@@ -78,6 +75,12 @@ COORD getTargetPosition(const Map* const map);
 
 SMALL_RECT getMapRect(const Map* const map);
 
+SMALL_RECT getMapScreenRect(const Map* const map);
+
 COORD getMapCenterPoint(const Map* const map);
+
+COORD getMapScreenCenterPoint(const Map* const map);
+
+COORD getScreenPostion(COORD position, const Map* const map);
 
 #endif

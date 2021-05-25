@@ -20,7 +20,7 @@ static void _drawDirectionIcon(Direction direction)
 
 void drawPlayerIcon(const Player* const player)
 {
-	textcolor(GREEN, SURFACE_COLOR);
+	textcolor(PRIMARY_COLOR, SURFACE_COLOR);
 	_drawDirectionIcon(player->direction);
 }
 
@@ -64,14 +64,14 @@ void drawEmptyIconWithNoColor()
 	printf("%s", ICON_EMPTY);
 }
 
-void drawUnlimitVisionItemIcon()
+void drawVisionItemIcon()
 {
-	textcolor(MAGENTA2, SURFACE_COLOR);
-	printf("%s", ICON_UNLIMIT_VISION_ITEM);
+	textcolor(GREEN, SURFACE_COLOR);
+	printf("%s", ICON_VISION_ITEM);
 }
 
-void drawUnlimitVisionItemIconWith(int backgroundColor)
+void drawVisionItemIconWith(int backgroundColor)
 {
-	textcolor(MAGENTA2, backgroundColor);
-	printf("%s", ICON_UNLIMIT_VISION_ITEM);
+	textcolor(GREEN, backgroundColor);
+	printf("%s", ICON_VISION_ITEM);
 }

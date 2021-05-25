@@ -42,11 +42,19 @@ static void _drawDarknessFromRect(
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 
+	int pivotY = map->topLeftPosition.Y;
+	int pivotX = map->topLeftPosition.X;
+
 	if (!_ensureToBeWithinRange(map, &rect))
 		return;
 
 	textcolor(ON_SURFACE_COLOR, ON_SURFACE_COLOR);
-	_drawBox(rect);
+	_drawBox((SMALL_RECT) {
+		rect.Left + pivotX,
+		rect.Top + pivotY,
+		rect.Right + pivotX,
+		rect.Bottom + pivotY
+	});
 }
 
 static void _drawMapCellWith(
@@ -63,21 +71,12 @@ static void _drawMapCellWith(
 		drawTargetIcon();
 		break;
 	case FLAG_UNLIMIT_VISION_ITEM:
-		drawUnlimitVisionItemIconWith(backgroundColor);
+		drawVisionItemIconWith(backgroundColor);
 		break;
 	default: 
 		textcolor(backgroundColor, backgroundColor);
 		drawEmptyIconWithNoColor();
 	}
-}
-
-static void _drawMapCellAt(
-	const Map* const map,
-	COORD			 position
-)
-{
-	gotoPosition(position);
-	_drawMapCellWith(map, position, GREY);
 }
 
 static void _drawMapWith(
@@ -88,6 +87,7 @@ static void _drawMapWith(
 {
 	assert(rect.Top <= rect.Bottom && rect.Left <= rect.Right);
 
+	COORD topLeft = map->topLeftPosition;
 	int y, x;
 
 	if (!_ensureToBeWithinRange(map, &rect))
@@ -95,7 +95,7 @@ static void _drawMapWith(
 
 	for (y = rect.Top;y <= rect.Bottom;++y)
 	{
-		goto2xy(rect.Left, y);
+		goto2xy(rect.Left + topLeft.X, y + topLeft.Y);
 		for (x = rect.Left;x <= rect.Right;++x)
 			_drawMapCellWith(map, (COORD) { x, y }, backgroundColor);
 	}	
@@ -130,10 +130,13 @@ void renderPlayer(
 {
 	SMALL_RECT willRemoveRange = getPlayerPreviousVisionRect(player, map);
 
+	COORD screenPosition = getScreenPostion(player->position, map);
+	COORD screenPrevPosition = getScreenPostion(player->prevPosition, map);
+
 	// 이전 위치와 다르면 지운다.
 	if (!samePosition(player->position, player->prevPosition))
 	{
-		_drawEmptyIconAt(player->prevPosition);
+		_drawEmptyIconAt(screenPrevPosition);
 	}
 
 	if (hasPlayerVisionItem(player))
@@ -141,7 +144,7 @@ void renderPlayer(
 		if (!map->hasDrawedEntireMap)
 		{
 			map->hasDrawedEntireMap = 1;
-			_drawMapWith(map, getMapRect(map), GREY);
+			_drawMapWith(map, getMapRect(map), GRAY);
 		}
 	}
 	else
@@ -167,10 +170,10 @@ void renderPlayer(
 		// 이전 시야는 지운다.
 		_drawMapWith(map, willRemoveRange, DARK_GRAY);
 		// 새로운 시야는 그린다.
-		_drawMapWith(map, getPlayerVisionRect(player, map), GREY);
+		_drawMapWith(map, getPlayerVisionRect(player, map), GRAY);
 	}
 
-	gotoPosition(player->position);
+	gotoPosition(screenPosition);
 	drawPlayerIcon(player);
 }
 
@@ -181,17 +184,21 @@ void drawMobVisionInPlayerRange(
 	const Player* const	player
 )
 {
+	COORD screenPosition;
+
 	while (canPlace(position, map))
 	{
+		screenPosition = getScreenPostion(position, map);
+
 		if (hasPlayerVisionItem(player)
 			|| inRangeRect(position, getPlayerVisionRect(player, map)))
 		{
-			gotoPosition(position);
+			gotoPosition(screenPosition);
 			drawEmptyIconWithNoColor();
 
 			if (samePosition(position, player->position))
 			{
-				gotoPosition(position);
+				gotoPosition(screenPosition);
 				drawPlayerIconWithNoColor(player);
 			}
 		}
@@ -211,7 +218,7 @@ static void _renderMobVision(
 {
 	COORD position = getMovedCoordInDirection(mob->position, mob->direction);
 	
-	textcolor(GREEN, MOB_VISION_COLOR);
+	textcolor(PRIMARY_COLOR, MOB_VISION_COLOR);
 	drawMobVisionInPlayerRange(position, mob->direction, map, player);
 
 	// 이전 방향과 다르면 이전 시야를 지운다.
@@ -225,13 +232,14 @@ static void _renderMobVision(
 }
 
 // 몹과 몹의 시야를 렌더링한다.
-static void _renderMob(
+void renderMob(
 	const MobHandler* const mobHandler,
 	const Player* const		player,
 	const Map* const		map
 )
 {
 	COORD position, prevPosition;
+	COORD screenPosition, screenPrevPosition;
 	SMALL_RECT playerVision = getPlayerVisionRect(player, map);
 	const Mob* currentMob;
 	int i;
@@ -263,6 +271,9 @@ static void _renderMob(
 		position = currentMob->position;
 		prevPosition = currentMob->prevPosition;
 
+		screenPosition = getScreenPostion(position, map);
+		screenPrevPosition = getScreenPostion(prevPosition, map);
+
 		if (!samePosition(prevPosition, position))
 		{
 			int* ptrPreviousCell = getMapCellPtrFrom(prevPosition, map);
@@ -273,13 +284,13 @@ static void _renderMob(
 				)
 			{
 				// 이전 위치는 지운다.
-				_drawEmptyIconAt(prevPosition);
+				_drawEmptyIconAt(screenPrevPosition);
 			}
 
 			if (hasPlayerVisionItem(player)
 				|| inRangeRect(position, playerVision))
 			{
-				gotoPosition(position);
+				gotoPosition(screenPosition);
 				drawMobIcon(currentMob);
 			}
 		}
@@ -338,8 +349,8 @@ static void _renderDialogAtMapCenter(
 	...
 )
 {
-	SMALL_RECT boxRect = getMapRect(map);
-	COORD centerPoint = getMapCenterPoint(map);
+	SMALL_RECT boxRect = getMapScreenRect(map);
+	COORD centerPoint = getMapScreenCenterPoint(map);
 	int halfWidth = map->width/2;
 	char _Buffer[40];
 
@@ -398,7 +409,7 @@ void render(
 		renderPlayer(player, map);
 	}
 	// 몹을 나중에 렌더링해야 플레이어가 몹에게 잡혔을때 깔끔하게 처리됨
-	_renderMob(mobHandler, player, map);
+	renderMob(mobHandler, player, map);
 
 	switch (player->state)
 	{
