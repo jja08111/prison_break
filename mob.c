@@ -116,22 +116,21 @@ int onCaughtedPlayer(
 	return *ptrCell == FLAG_MOB_VISION;
 }
 
-// 이거 수정해야함!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!
 int onKilledByPlayer(
 	const Player* const player,
 	const Mob* const	mob
 )
 {
-	Direction reversedMobDirection = reverseDirection(mob->direction);
-
 	// 플레이어가 몹을 잡은 경우는
 	// 
-	// 1. 현재 둘의 위치가 같다.
-	// 2. 서로를 마주보고 있지 않고 있다.
+	// 1. 플레이어가 잡히지 않았다.
+	// 2. 플레이어가 움직였다.
+	// 3. 현재 둘의 위치가 같다.
 	// 
 	// 일때 성립한다.
-	if (samePosition(player->position, mob->position) 
-		&& player->direction != reversedMobDirection)
+	if (player->state != STATE_CAUGHTED &&
+		!samePosition(player->prevPosition, player->position) && 
+		samePosition(player->position, mob->position))
 	{
 		return 1;
 	}

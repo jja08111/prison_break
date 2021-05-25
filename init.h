@@ -3,8 +3,11 @@
 
 #include "models.h"
 #include "utils.h"
+#include "sounds.h"
 
 #include <time.h>
+
+static void _initSound(SoundController* controller);
 
 void initMap(
 	Map*				map,
@@ -26,10 +29,11 @@ static void _initMob(
 );
 
 void init(
-	Stage*		stage,
-	Player*		player,
-	MobHandler* mobHandler,
-	Map*		map
+	Stage*			 stage,
+	Player*			 player,
+	MobHandler*		 mobHandler,
+	Map*			 map,
+	SoundController* soundController
 );
 
 #endif

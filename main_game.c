@@ -28,10 +28,12 @@ void runMainGame()
 	Player player;
 	MobHandler mobHandler;
 	Map map;
+	SoundController soundController;
+
 	COORD newPlayerPosition = { INIT_PLAYER_POS, INIT_PLAYER_POS };
 	Direction newPlayerDirection = INIT_PLAYER_DIRECTION;
 
-	init(&stage, &player, &mobHandler, &map);
+	init(&stage, &player, &mobHandler, &map, &soundController);
 
 	while (1)
 	{
@@ -40,7 +42,7 @@ void runMainGame()
 			_handleKeybdHit(&newPlayerPosition, &newPlayerDirection, &map);
 		}
 
-		update(&stage, &player, &mobHandler, &map, 
+		update(&stage, &player, &mobHandler, &map, &soundController,
 			&newPlayerPosition, &newPlayerDirection);
 
 		render(&stage, &player, &mobHandler, &map);

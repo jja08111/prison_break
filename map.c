@@ -1,6 +1,6 @@
 #include "map.h"
 
-int getMapLineLengthPer(const Stage* const stage)
+int getMapLineLength(const Stage* const stage)
 {
 	switch (stage->level) {
 	case 0: return 20;
@@ -78,7 +78,6 @@ void generateItem(
 {
 	int x, y, i;
 
-	map->grid[3][1] = itemFlag;
 	for (i = 0;i < count;++i)
 	{
 		x = OBJECT_GEN_PADDING + rand() % (map->width - OBJECT_GEN_PADDING * 2);

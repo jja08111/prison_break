@@ -7,7 +7,6 @@
 
 int main()
 {
-	CONSOLE_MAX_WIDTH;
 	system("mode con cols=140 lines=68 | title Maze game");
 
 	while (1)

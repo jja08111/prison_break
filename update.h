@@ -28,18 +28,20 @@ static void _setNextStage(
 
 
 static void _updateStage(
-	Stage*		stage,
-	Player*		player,
-	COORD*		newPosition,
-	Map*		map,
-	MobHandler* mobHandler
+	Stage*			 stage,
+	Player*			 player,
+	COORD*			 newPosition,
+	Map*			 map,
+	MobHandler*		 mobHandler,
+	SoundController* soundController
 );
 
 static void _updatePlayer(
-	Player*		player,
-	COORD*		newPosition,
-	Direction*	newDirection,
-	Map*		map
+	Player*			 player,
+	COORD*			 newPosition,
+	Direction*		 newDirection,
+	Map*			 map,
+	SoundController* soundController
 );
 
 static void _updateMobPosition(
@@ -56,16 +58,20 @@ static void _updateMobVisionFlagToMap(
 static void _updateMob(
 	MobHandler*			mobHandler,
 	const Player* const player,
-	const Map* const	map
+	const Map* const	map,
+	SoundController*	soundController
 );
 
+static void _updateSound(SoundController* controller);
+
 void update(
-	Stage*		stage,
-	Player*		player,
-	MobHandler* mobHandler,
-	Map*		map,
-	COORD*		newPlayerPosition,
-	Direction*	newDirection
+	Stage*			 stage,
+	Player*			 player,
+	MobHandler*		 mobHandler,
+	Map*			 map,
+	SoundController* soundController,
+	COORD*			 newPlayerPosition,
+	Direction*		 newDirection
 );
 
 #endif

@@ -265,11 +265,12 @@ static void _renderMob(
 
 		if (!samePosition(prevPosition, position))
 		{
-			int* ptrCell = getMapCellPtrFrom(currentMob->prevPosition, map);
+			int* ptrPreviousCell = getMapCellPtrFrom(prevPosition, map);
 
-			if (hasPlayerVisionItem(player) 
-				|| (inRangeRect(currentMob->prevPosition, playerVision) 
-				&& *ptrCell != FLAG_MOB_VISION))
+			if ((hasPlayerVisionItem(player) || inRangeRect(currentMob->prevPosition, playerVision))
+				&& *ptrPreviousCell != FLAG_MOB_VISION
+				&& !samePosition(prevPosition,player->position)
+				)
 			{
 				// ÀÌÀü À§Ä¡´Â Áö¿î´Ù.
 				_drawEmptyIconAt(prevPosition);
@@ -316,12 +317,17 @@ static void _renderInterface(
 
 	_drawCenterAlignedText(
 		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, 
-		"SCORE : %d", stage->score);
+		"ÃÑ È¹µæ Á¡¼ö : %5d", stage->totalScore);
+
+	y += 4;
+	_drawCenterAlignedText(
+		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, 
+		"ÀÌ¹ø ´Ü°è Á¡¼ö : %5d", stage->score);
 
 	y += 4;
 	_drawCenterAlignedText(
 		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
-		"LEVEL : %d", stage->level + 1);
+		"´Ü°è : %d", stage->level + 1);
 
 	
 }
@@ -334,13 +340,13 @@ static void _renderDialogAtMapCenter(
 {
 	SMALL_RECT boxRect = getMapRect(map);
 	COORD centerPoint = getMapCenterPoint(map);
-	int horizontalPadding = 4;
+	int halfWidth = map->width/2;
 	char _Buffer[40];
 
 	boxRect = (SMALL_RECT){
-		centerPoint.X - horizontalPadding,
+		centerPoint.X - halfWidth + 2,
 		centerPoint.Y - 1,
-		centerPoint.X + horizontalPadding,
+		centerPoint.X + halfWidth - 2,
 		centerPoint.Y + 1 };
 
 	// _Buffer¿¡ _ArgListÀ» Æ÷¸äÆÃÇÑ´Ù.
@@ -385,14 +391,14 @@ void render(
 		map->hasInitRendered = 1;
 	}
 
-	_renderMob(mobHandler, player, map);
-
 	// ÇÃ·¹ÀÌ¾î°¡ ÀÌµ¿ÇÑ °æ¿ì, ¹æÇâÀ» ¹Ù²Û °æ¿ì ÇÃ·¹ÀÌ¾î ·»´õ¸µ
-	if (!samePosition(player->position, player->prevPosition)
-		|| (player->direction != player->prevDirection))
+	if (!samePosition(player->position, player->prevPosition) || 
+		(player->direction != player->prevDirection))
 	{
 		renderPlayer(player, map);
 	}
+	// ¸÷À» ³ªÁß¿¡ ·»´õ¸µÇØ¾ß ÇÃ·¹ÀÌ¾î°¡ ¸÷¿¡°Ô ÀâÇûÀ»¶§ ±ò²ûÇÏ°Ô Ã³¸®µÊ
+	_renderMob(mobHandler, player, map);
 
 	switch (player->state)
 	{

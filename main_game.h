@@ -6,6 +6,7 @@
 #include "update.h"
 #include "utils.h"
 #include "constants.h"
+#include "sounds.h"
 
 #include <conio.h>
 #include <time.h>

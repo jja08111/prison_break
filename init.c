@@ -1,19 +1,24 @@
 #include "init.h"
 
+static void _initSound(SoundController* controller)
+{
+	setHeartBeatLoopSound(controller);
+	clearNextSound(controller);
+}
+
 // 맵을 단계에 맞게 초기화한다.
 void initMap(
 	Map*				map,
 	const Stage* const  stage
 )
 {
-	map->height = map->width = getMapLineLengthPer(stage);
+	map->height = map->width = getMapLineLength(stage);
 	map->hasInitRendered = 0;
 	map->hasDrawedEntireMap = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
 	// 도착 지점부터 시작하여 맵을 생성한다.
 	generateMap(map->height - 1, map->width - 1, map);
-
 	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
 
 	generateItem(map, FLAG_UNLIMIT_VISION_ITEM, 4);
@@ -33,8 +38,10 @@ static void _initPlayer(
 static void _initStage(Stage* stage)
 {
 	stage->level = 0;
-	stage->timeLimit = getTimeLimitPer(stage);
-	stage->score = 0;
+	stage->timeLimit = getStageTimeLimit(stage);
+	stage->score = getStageStartScore(stage);
+	stage->scoreUpdateTime = clock();
+	stage->totalScore = 0;
 }
 
 static void _initMob(
@@ -49,15 +56,17 @@ static void _initMob(
 }
 
 void init(
-	Stage*		stage,
-	Player*		player,
-	MobHandler* mobHandler,
-	Map*		map
+	Stage*			 stage,
+	Player*			 player,
+	MobHandler*		 mobHandler,
+	Map*			 map,
+	SoundController* soundController
 )
 {
 	srand((unsigned int)time(NULL));
 	removeCursor();
 
+	_initSound(soundController);
 	_initStage(stage);
 	initMap(map, stage);
 	_initPlayer(player, stage);

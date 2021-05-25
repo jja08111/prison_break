@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "icons.h"
 #include "constants.h"
+#include "sounds.h"
 
 #include <assert.h>
 #include <string.h>

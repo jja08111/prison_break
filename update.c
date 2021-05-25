@@ -38,14 +38,17 @@ Direction updatePositionByInput(
 }
 
 static void _setNextStage(
-	Stage*		stage,
-	Player*		player,
-	Map*		map,
-	MobHandler* mobHandler
+	Stage*			 stage,
+	Player*			 player,
+	Map*			 map,
+	MobHandler*		 mobHandler
 )
 {
 	stage->level++;
-	stage->timeLimit = getTimeLimitPer(stage);
+
+	stage->timeLimit = getStageTimeLimit(stage);
+	stage->totalScore += stage->score;
+	stage->score = getStageStartScore(stage);
 
 	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
@@ -60,30 +63,42 @@ static void _setNextStage(
 }
 
 static void _updateStage(
-	Stage*		stage, 
-	Player*		player,
-	COORD*		newPosition,
-	Map*		map,
-	MobHandler* mobHandler
+	Stage*			 stage, 
+	Player*			 player,
+	COORD*			 newPosition,
+	Map*			 map,
+	MobHandler*		 mobHandler,
+	SoundController* soundController
 )
 {
+	clock_t now = clock();
+
 	switch (player->state)
 	{
 	case STATE_CAUGHTED:
+		// TODO: Implement this
 	case STATE_SUCCESS:
 		_setNextStage(stage, player, map, mobHandler);
+		setHeartBeatLoopSound(soundController);
 		*newPosition = player->position;
 		break;
 	default:
 		break;
 	}
+
+	if (now - stage->scoreUpdateTime >= SCORE_UPDATE_INTERVAL) 
+	{
+		decreaseScore(stage);
+		stage->scoreUpdateTime = now;
+	}
 }
 
 static void _updatePlayer(
-	Player*		player,
-	COORD*		newPosition,
-	Direction*	newDirection,
-	Map*		map
+	Player*			 player,
+	COORD*			 newPosition,
+	Direction*		 newDirection,
+	Map*			 map,
+	SoundController* soundController
 )
 {
 	clock_t now = clock();
@@ -91,10 +106,12 @@ static void _updatePlayer(
 	if (onCaughtedPlayer(player, map))
 	{
 		player->state = STATE_CAUGHTED;
+		setSirenSound(soundController);
 	}
 	if (onReachedTargetPoint(player, map))
 	{
 		player->state = STATE_SUCCESS;
+		setSuccessSound(soundController);
 	}
 
 	player->prevDirection = player->direction;
@@ -107,13 +124,15 @@ static void _updatePlayer(
 	}
 
 	// 아이템 기간이 만료된 경우
-	if (hasPlayerVisionItem(player) 
-		&& now - player->visionItemAcquiredTime > VISION_ITEM_DURATION)
+	if (hasPlayerVisionItem(player) && 
+		now - player->visionItemAcquiredTime > VISION_ITEM_DURATION)
 	{
 		player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
 		map->hasDrawedEntireMap = 0;
 		drawEntireMapWith(map, DARK_GRAY);
 		renderPlayer(player, map);
+
+		setHeartBeatLoopSound(soundController);
 	}
 
 	// 시야 무제한 아이템을 먹은 경우
@@ -121,6 +140,8 @@ static void _updatePlayer(
 	{
 		player->visionItemAcquiredTime = now;
 		map->grid[newPosition->Y][newPosition->X] = FLAG_EMPTY;
+
+		setEarningItemSound(soundController);
 	}
 }
 
@@ -243,7 +264,8 @@ static void _removeMob(
 static void _updateMob(
 	MobHandler*			mobHandler,
 	const Player* const player,
-	const Map* const	map
+	const Map* const	map,
+	SoundController*	soundController
 ) 
 {
 	clock_t now = clock();
@@ -260,6 +282,8 @@ static void _updateMob(
 		{
 			_removeMob(currentMob, player, map);
 			currentMob->wasKilled = 1;
+
+			setBoneCrushingSound(soundController);
 			continue;
 		}
 
@@ -274,16 +298,41 @@ static void _updateMob(
 	}	
 }
 
+static void _updateSound(SoundController* controller)
+{
+	clock_t now = clock();
+
+	if (controller->nextSoundTime != EMPTY_NEXT_SOUND &&
+		controller->nextSoundTime <= now)
+	{
+		controller->currentSound = controller->nextSound;
+		controller->currentPlayMode = controller->nextPlayMode;
+
+		controller->isUpdated = 1;
+
+		clearNextSound(controller);
+	}
+
+	if (controller->isUpdated)
+	{
+		controller->isUpdated = 0;
+		playSound(controller);
+	}
+}
+
 void update(
-	Stage*		stage,
-	Player*		player,
-	MobHandler* mobHandler,
-	Map*		map,
-	COORD*		newPlayerPosition,
-	Direction*	newDirection
+	Stage*			 stage,
+	Player*			 player,
+	MobHandler*		 mobHandler,
+	Map*			 map,
+	SoundController* soundController,
+	COORD*			 newPlayerPosition,
+	Direction*		 newDirection
 )
 {
-	_updateStage(stage, player, newPlayerPosition, map, mobHandler);
-	_updatePlayer(player, newPlayerPosition, newDirection, map);
-	_updateMob(mobHandler, player, map);
+	_updateStage(stage, player, newPlayerPosition, map, mobHandler, soundController);
+	_updatePlayer(player, newPlayerPosition, newDirection, map, soundController);
+	_updateMob(mobHandler, player, map, soundController);
+
+	_updateSound(soundController);
 }

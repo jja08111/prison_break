@@ -25,18 +25,18 @@
     <Filter Include="소스 파일\models">
       <UniqueIdentifier>{a2ed6220-394f-4b92-829e-eea66d52da76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\assets">
+      <UniqueIdentifier>{69ce063f-3d06-418a-9352-2d5ce3fcd2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\assets">
+      <UniqueIdentifier>{23bf87a5-f0e9-4339-8c17-af7fe8760a14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="utils.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="colors.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="icons.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="render.c">
@@ -63,6 +63,15 @@
     <ClCompile Include="mob.c">
       <Filter>소스 파일\models</Filter>
     </ClCompile>
+    <ClCompile Include="colors.c">
+      <Filter>소스 파일\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="icons.c">
+      <Filter>소스 파일\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="sounds.c">
+      <Filter>소스 파일\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -79,12 +88,6 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>헤더 파일\models</Filter>
-    </ClInclude>
-    <ClInclude Include="icons.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="colors.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="render.h">
       <Filter>헤더 파일\game</Filter>
@@ -106,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="items.h">
       <Filter>헤더 파일\models</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>헤더 파일\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="icons.h">
+      <Filter>헤더 파일\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="sounds.h">
+      <Filter>헤더 파일\assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
