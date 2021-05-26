@@ -104,14 +104,13 @@ static void renderIntroHeader()
 	printf("     ■          ■      ■   ■■■    ■■■■     ■■■■    ■      ■        ■■■■     ■      ■   ■        ■   ■■■■    ■    ■     \n");Sleep(PIVOT_SLEEP_DURATION + 10);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 4);
 	printf("                                                                                                                                                     \n");
-	Sleep(150);
 }
 
 static void drawPlayGameText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_PLAY_GAME;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, WHITE);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS);
 	if (isSelected)
 		printf(">  게임 시작  <");
@@ -123,7 +122,7 @@ static void drawShowScoreText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_SHOW_SCORE;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, WHITE);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS + 2);
 	if (isSelected)
 		printf(">  점수 보기  <");
@@ -135,7 +134,7 @@ static void drawExitGameText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_EXIT;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, WHITE);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS + 4);
 	if (isSelected)
 		printf(">  게임 종료  <");
@@ -234,7 +233,10 @@ IntroMenu showIntroScreen()
 	initSamplePlayer(&samplePlayer);
 	initSampleMob(&mobHandler, &sampleMap);
 
+	playIntroSound();
+
 	renderIntroHeader();
+	Sleep(280);
 	renderSampleMap(&sampleMap);
 	renderActions(selectedMenu);
 

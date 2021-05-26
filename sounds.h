@@ -14,6 +14,7 @@
 #define SOUND_BONE_CRUSHING_PATH	"assets\\bone_crushing.wav"
 #define SOUND_BUTTON_PATH			"assets\\button.wav"
 #define SOUND_TRANSITION_PATH		"assets\\transition.wav"
+#define SOUND_INTRO_PATH			"assets\\intro.wav"
 
 #define SOUND_EARNING_ITEM_DURATION		1000
 #define SOUND_BONE_CRUSHING_DURATION	1000
@@ -32,7 +33,8 @@ typedef enum {
 	SOUND_EARNING_ITEM,	
 	SOUND_BONE_CRUSHING,
 	SOUND_BUTTON,
-	SOUND_TRANSITION
+	SOUND_TRANSITION,
+	SOUND_INTRO
 } Sounds;
 
 typedef struct _SoundController {
@@ -44,6 +46,10 @@ typedef struct _SoundController {
 	clock_t nextSoundTime;
 	DWORD nextPlayMode;
 } SoundController;
+
+void playIntroSound();
+
+void playTransitionSound();
 
 void playButtonSound();
 

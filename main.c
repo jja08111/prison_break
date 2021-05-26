@@ -14,6 +14,8 @@ int main()
 
 	removeCursor();
 	srand((unsigned int)time(NULL));
+	// 기본 배경 색상을 검정으로 설정
+	system("color 01");
 
 	while (1)
 	{

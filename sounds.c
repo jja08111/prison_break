@@ -29,6 +29,11 @@ static const unsigned short* getSoundPath(Sounds name)
 	return NULL;
 }
 
+void playIntroSound()
+{
+	PlaySound(TEXT(SOUND_INTRO_PATH), NULL, PLAY_MODE_ASYNC);
+}
+
 void playTransitionSound()
 {
 	PlaySound(TEXT(SOUND_TRANSITION_PATH), NULL, PLAY_MODE_SYNC);
