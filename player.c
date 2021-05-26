@@ -99,3 +99,13 @@ int hasPlayerVisionItem(const Player* const player)
 {
 	return player->visionItemAcquiredTime != VISION_ITEM_EMPTY;
 }
+
+int getVisionItemLeftTimePercent(const Player* const player)
+{
+	if (!hasPlayerVisionItem(player))
+		return 0;
+
+	int leftTime = (VISION_ITEM_DURATION - (clock() - player->visionItemAcquiredTime));
+
+	return max(0, leftTime * 100 / VISION_ITEM_DURATION);
+}

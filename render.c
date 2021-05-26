@@ -323,28 +323,57 @@ static void _drawCenterAlignedText(
 	printf(_Buffer);
 }
 
+#define RIGHT_INTERFACE_X (SCREEN_WIDTH/2 - INTERFACE_WIDTH)
+
 static void _renderInterface(
 	const Stage* const	stage,
 	const Player* const player,
 	const Map* const	map
 )
 {
-	int y = 4;
+	static int prevScore = 0;
+	int y = 5;
+	int visionItemPct;
 
-	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, GRAY);
+	// 왼쪽 인터페이스 시작
+	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, DARK_GRAY);
+	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 	_drawCenterAlignedText(
-		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y + 8},
+		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y},
 		"단계", stage->level + 1);
 
 
-	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, GRAY);
+	y += 10;
+	if (prevScore != stage->score)
+	{
+		prevScore = stage->score;
+		removeBigNumberWithColor((COORD) { INTERFACE_WIDTH / 2, y }, BACKGROUND_COLOR);
+	}
+	drawBigNumberWithColor(stage->score, (COORD) { INTERFACE_WIDTH / 2, y }, DARK_GRAY);
+	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 	_drawCenterAlignedText(
-		(SMALL_RECT) {
-		0, y, INTERFACE_WIDTH, y + 8
-	},
-		"단계", stage->level + 1);
+		(SMALL_RECT) {0, y, INTERFACE_WIDTH, y},
+		"이번 단계 점수", stage->level + 1);
+
+
+	y += 10;
+	drawBigNumberWithColor(stage->totalScore, (COORD) { INTERFACE_WIDTH / 2, y }, ON_BACKGROUND_COLOR);
+	y += 4;
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	_drawCenterAlignedText(
+		(SMALL_RECT) {0, y, INTERFACE_WIDTH, y},
+		"총점", stage->level + 1);
+	// ~왼쪽 인터페이스 종료
+
+
+	// 오른쪽 인터페이스 시작
+	y = 8;
+	visionItemPct = getVisionItemLeftTimePercent(player);
+	_drawCenterAlignedText(
+		(SMALL_RECT) {RIGHT_INTERFACE_X, y, SCREEN_WIDTH/2, y},
+		"시야 아이템 %2d", visionItemPct);
 }
 
 static void _renderDialogAtMapCenter(

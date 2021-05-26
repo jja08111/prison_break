@@ -66,4 +66,6 @@ SMALL_RECT getPlayerVisionRect(
 
 int hasPlayerVisionItem(const Player* const player);
 
+int getVisionItemLeftTimePercent(const Player* const player);
+
 #endif

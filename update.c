@@ -1,4 +1,5 @@
 #include "update.h"
+#include "items.h"
 
 Direction updatePositionByInput(
 	COORD*				position, 
@@ -49,6 +50,7 @@ static void _setNextStage(
 	stage->totalScore += stage->score;
 	stage->score = getStageStartScore(stage);
 
+	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
 	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 

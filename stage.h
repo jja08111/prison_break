@@ -5,7 +5,7 @@
 
 #define MAX_LEVEL				4
 #define SCORE_UPDATE_INTERVAL	1000 //1000밀리초
-#define SCORE_DECREASE_INTERVAL 10	
+#define SCORE_DECREASE_INTERVAL 1	
 
 // 스테이지 정보를 가지고 있다.
 //
