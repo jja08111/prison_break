@@ -64,8 +64,6 @@ void init(
 	SoundController* soundController
 )
 {
-	srand((unsigned int)time(NULL));
-
 	_initSound(soundController);
 	_initStage(stage);
 	initMap(map, stage);

@@ -13,19 +13,28 @@
 #include <assert.h>
 #include <string.h>
 
-#define ACTION_TOP_Y_POS 30
+#define ACTION_TOP_Y_POS 31
 #define ACTION_LEFT_X_POS 34
 
 static void initSampleMap(Map* map)
 {
-	map->topLeftPosition = (COORD){ 27,2 };
+	int x, y;
+	
+	map->topLeftPosition = (COORD){ 27,3 };
 	map->height = 8;
 	map->width = 20;
 	map->hasInitRendered = 0;
 	map->hasDrawedEntireMap = 0;
 
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
-	generateMap(map->height - 1, map->width - 1, map);
+
+	x = 1 + rand() % (map->width - 1);
+	y = 1 + rand() % (map->height - 1);
+	if (x % 2 == 0)
+		x--;
+	if (y % 2 == 0)
+		y--;
+	generateMap(y, x, map);
 }
 
 static void initSamplePlayer(Player* player)
@@ -82,7 +91,7 @@ static void renderIntroHeader()
 {
 	textcolor(BLACK, GRAY);
 
-	goto2xy(0, 14);
+	goto2xy(0, 15);
 	Sleep(150);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 40);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 38);
@@ -219,7 +228,7 @@ IntroMenu showIntroScreen()
 	MobHandler mobHandler;
 	Player samplePlayer;
 
-	system("mode con cols=150 lines=40 | title Maze game");
+	system("mode con cols=150 lines=41 | title Maze game");
 
 	initSampleMap(&sampleMap);
 	initSamplePlayer(&samplePlayer);
@@ -242,7 +251,7 @@ IntroMenu showIntroScreen()
 		updateMob(&mobHandler, &sampleMap);
 		renderMob(&mobHandler, &samplePlayer, &sampleMap);
 
-		Sleep(32);
+		Sleep(50);
 	}
 
 	playTransitionSound();

@@ -13,6 +13,7 @@ int main()
 	IntroMenu selectedMenu;
 
 	removeCursor();
+	srand((unsigned int)time(NULL));
 
 	while (1)
 	{
