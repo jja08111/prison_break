@@ -28,8 +28,6 @@ typedef struct {
 
 int getStageStartScore(const Stage* const stage);
 
-static int _getMinimumScore(const Stage* const stage);
-
 void decreaseScore(Stage* stage);
 
 #endif

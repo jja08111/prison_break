@@ -48,15 +48,11 @@ typedef struct {
 	COORD topLeftPosition;
 } Map;
 
-static int getMapLineLength(const Stage* const stage);
-static void setMapTopLeftPosition(Map* map);
 void setMapSize(
 	Map* map,
 	const Stage* const stage
 );
 
-static void _shuffleArray(int array[], int size);
-static int _inRange(int y, int x, const Map* const map);
 void generateMap(int y, int x, Map* const map);
 
 // 맵의 grid에 아이템 flag를 무작위 위치에 저장한다.

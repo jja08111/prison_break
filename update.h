@@ -19,49 +19,10 @@ Direction updatePositionByInput(
 	unsigned char		keybdInput
 );
 
-static void _setNextStage(
-	Stage*		stage, 
-	Player*		player, 
-	Map*		map,
-	MobHandler* mobHandler
-);
-
-
-static void _updateStage(
-	Stage*			 stage,
-	Player*			 player,
-	COORD*			 newPosition,
-	Map*			 map,
-	MobHandler*		 mobHandler,
-	SoundController* soundController
-);
-
-static void _updatePlayer(
-	Player*			 player,
-	COORD*			 newPosition,
-	Direction*		 newDirection,
-	Map*			 map,
-	SoundController* soundController
-);
-
 void updateMobPosition(
 	Mob*			 mob,
 	const Map* const map
 );
-
-static void _updateMobVisionFlagToMap(
-	const Mob* const mob,
-	const Map* const map
-);
-
-static void _updateMob(
-	MobHandler*			mobHandler,
-	const Player* const player,
-	const Map* const	map,
-	SoundController*	soundController
-);
-
-static void _updateSound(SoundController* controller);
 
 void update(
 	Stage*			 stage,

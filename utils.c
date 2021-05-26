@@ -1,6 +1,6 @@
 #include "utils.h"
 
-static void _gotoxy(int x, int y)
+void gotoxy(int x, int y)
 {
 	COORD pos = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
@@ -16,7 +16,7 @@ void removeCursor(void) {
 
 void goto2xy(int x, int y)
 {
-	_gotoxy(2 * x, y);
+	gotoxy(2 * x, y);
 }
 
 void gotoPosition(COORD position)
@@ -32,7 +32,7 @@ void gotoCenterForAlignString(
 	int x = (rect.Left + rect.Right) - (strlen(str) / 2);
 	int y = (rect.Top + rect.Bottom) / 2;
 
-	_gotoxy(x, y);
+	gotoxy(x, y);
 }
 
 int samePosition(COORD a, COORD b)

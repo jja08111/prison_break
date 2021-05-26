@@ -41,12 +41,6 @@ typedef struct {
 
 } MobHandler;
 
-
-static COORD _getRandomMobPosition(
-	const Map* const	map,
-	const Player* const player
-);
-
 int getMobCountPer(const Stage* const stage);
 
 int getMobMoveDelayPer(const Stage* const stage);

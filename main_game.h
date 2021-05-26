@@ -12,12 +12,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-static void _handleKeybdHit(
-	COORD*			 newPosition,
-	Direction*		 newDirection,
-	const Map* const map
-);
-
 // 미로 게임을 실행한다.
 void runMainGame();
 
