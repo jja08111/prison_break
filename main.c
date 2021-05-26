@@ -14,8 +14,8 @@ int main()
 
 	removeCursor();
 	srand((unsigned int)time(NULL));
-	// 기본 배경 색상을 검정으로 설정
-	system("color 01");
+	// 화면 크기: 151 X 41(SCREEN_WIDTH, SCREEN_HIEGHT), 배경색상: 검정
+	system("mode con cols=150 lines=41 | title Maze game | color 01");
 
 	while (1)
 	{
@@ -23,7 +23,7 @@ int main()
 		
 		switch (selectedMenu)
 		{
-		case INTRO_MENU_PLAY_GAME: 
+		case INTRO_MENU_PLAY_GAME:
 			runMainGame();
 			break;
 		case INTRO_MENU_SHOW_SCORE:
@@ -34,7 +34,6 @@ int main()
 		default:
 			assert(0);
 		}
-		
 	}
 
 	return 0;

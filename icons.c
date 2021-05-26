@@ -66,12 +66,12 @@ void drawEmptyIconWithNoColor()
 
 void drawVisionItemIcon()
 {
-	textcolor(GREEN, SURFACE_COLOR);
+	textcolor(DARK_GREEN, SURFACE_COLOR);
 	printf("%s", ICON_VISION_ITEM);
 }
 
 void drawVisionItemIconWith(int backgroundColor)
 {
-	textcolor(GREEN, backgroundColor);
+	textcolor(DARK_GREEN, backgroundColor);
 	printf("%s", ICON_VISION_ITEM);
 }

@@ -89,7 +89,7 @@ static void renderSampleMap(const Map* const map)
 
 static void renderIntroHeader()
 {
-	textcolor(BLACK, GRAY);
+	textcolor(ON_SURFACE_COLOR, SURFACE_COLOR);
 
 	goto2xy(0, 15);
 	Sleep(150);
@@ -110,7 +110,7 @@ static void drawPlayGameText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_PLAY_GAME;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BACKGROUND_COLOR);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS);
 	if (isSelected)
 		printf(">  게임 시작  <");
@@ -122,7 +122,7 @@ static void drawShowScoreText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_SHOW_SCORE;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BACKGROUND_COLOR);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS + 2);
 	if (isSelected)
 		printf(">  점수 보기  <");
@@ -134,7 +134,7 @@ static void drawExitGameText(IntroMenu selectedMenu)
 {
 	int isSelected = selectedMenu == INTRO_MENU_EXIT;
 
-	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BLACK);
+	textcolor(isSelected ? PRIMARY_COLOR : GRAY, BACKGROUND_COLOR);
 	goto2xy(ACTION_LEFT_X_POS, ACTION_TOP_Y_POS + 4);
 	if (isSelected)
 		printf(">  게임 종료  <");
@@ -227,8 +227,6 @@ IntroMenu showIntroScreen()
 	MobHandler mobHandler;
 	Player samplePlayer;
 
-	system("mode con cols=150 lines=41 | title Maze game");
-
 	initSampleMap(&sampleMap);
 	initSamplePlayer(&samplePlayer);
 	initSampleMob(&mobHandler, &sampleMap);
@@ -257,6 +255,7 @@ IntroMenu showIntroScreen()
 	}
 
 	playTransitionSound();
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 	system("cls");
 
 	return selectedMenu;

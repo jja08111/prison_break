@@ -1,15 +1,32 @@
 #include "map.h"
 
-int getMapLineLength(const Stage* const stage)
+static int getMapLineLength(const Stage* const stage)
 {
 	switch (stage->level) {
-	case 0: return 20;
-	case 1: return 30;
-	case 2: return 40;
-	case 3: return 50;
-	case MAX_LEVEL: return 60;
+	case 0: return 16;
+	case 1: return 20;
+	case 2: return 26;
+	case 3: return 32;
+	case MAX_LEVEL: return 38;
 	}
 	return 0;
+}
+
+static void setMapTopLeftPosition(Map* map)
+{
+	int x = (SCREEN_WIDTH / 4 - map->width / 2);
+	int y = SCREEN_HEIGHT / 2 - map->height / 2;
+
+	map->topLeftPosition = (COORD) { x, y };
+}
+
+void setMapSize(
+	Map*			   map,
+	const Stage* const stage
+)
+{
+	map->height = map->width = getMapLineLength(stage);
+	setMapTopLeftPosition(map);
 }
 
 // 상, 하, 좌, 우 이때 벽을 고려하여 2칸씩으로 설정한다.

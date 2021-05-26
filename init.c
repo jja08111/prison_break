@@ -12,8 +12,8 @@ void initMap(
 	const Stage* const  stage
 )
 {
-	map->topLeftPosition = (COORD){ 0,0 };
-	map->height = map->width = getMapLineLength(stage);
+	setMapSize(map, stage);
+
 	map->hasInitRendered = 0;
 	map->hasDrawedEntireMap = 0;
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));

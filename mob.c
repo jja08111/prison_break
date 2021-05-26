@@ -27,8 +27,8 @@ int getMobCountPer(const Stage* const stage)
 {
 	switch (stage->level)
 	{
-	case 0: return 4;
-	case 1: return 6;
+	case 0: return 2;
+	case 1: return 4;
 	case 2: return 8;
 	case 3: return 10;
 	case MAX_LEVEL: return 12;

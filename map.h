@@ -3,11 +3,12 @@
 
 #include "stage.h"
 #include "utils.h"
+#include "constants.h"
 
 #include <Windows.h>
 
-#define MAP_MAX_HEIGHT		65
-#define MAP_MAX_WIDTH		65
+#define MAP_MAX_HEIGHT		42
+#define MAP_MAX_WIDTH		42
 
 #define OBJECT_GEN_PADDING	3
 
@@ -47,7 +48,12 @@ typedef struct {
 	COORD topLeftPosition;
 } Map;
 
-int getMapLineLength(const Stage* const stage);
+static int getMapLineLength(const Stage* const stage);
+static void setMapTopLeftPosition(const Map* const map);
+void setMapSize(
+	Map* map,
+	const Stage* const stage
+);
 
 static void _shuffleArray(int array[], int size);
 static int _inRange(int y, int x, const Map* const map);

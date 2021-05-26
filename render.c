@@ -29,6 +29,12 @@ static void _drawBox(SMALL_RECT rect)
 	}
 }
 
+static void _drawInGameBackgroundBox()
+{
+	textcolor(DARK_GRAY, DARK_GRAY);
+	_drawBox((SMALL_RECT) { INTERFACE_WIDTH, 0, SCREEN_WIDTH/2 - INTERFACE_WIDTH-1, SCREEN_HEIGHT-1 });
+}
+
 static void _drawEmptyIconAt(COORD position)
 {
 	gotoPosition(position);
@@ -218,7 +224,7 @@ static void _renderMobVision(
 {
 	COORD position = getMovedCoordInDirection(mob->position, mob->direction);
 	
-	textcolor(PRIMARY_COLOR, MOB_VISION_COLOR);
+	textcolor(PRIMARY_COLOR, SECONDARY_COLOR);
 	drawMobVisionInPlayerRange(position, mob->direction, map, player);
 
 	// 이전 방향과 다르면 이전 시야를 지운다.
@@ -327,20 +333,16 @@ static void _renderInterface(
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 
 	_drawCenterAlignedText(
-		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, 
+		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y },
 		"총 획득 점수 : %5d", stage->totalScore);
 
-	y += 4;
 	_drawCenterAlignedText(
-		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y }, 
+		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y  + 4},
 		"이번 단계 점수 : %5d", stage->score);
 
-	y += 4;
 	_drawCenterAlignedText(
-		(SMALL_RECT) { map->width, y, CONSOLE_MAX_WIDTH / 2, y },
+		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y + 8},
 		"단계 : %d", stage->level + 1);
-
-	
 }
 
 static void _renderDialogAtMapCenter(
@@ -395,6 +397,8 @@ void render(
 	// 초기 렌더링
 	if (!map->hasInitRendered)
 	{
+		_drawInGameBackgroundBox();
+
 		_drawDarknessFromRect(map, getMapRect(map));
 		_renderTargetSpace(map);
 
