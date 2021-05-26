@@ -18,11 +18,25 @@ static const unsigned short* getSoundPath(Sounds name)
 		return TEXT(SOUND_EARNING_ITEM_PATH);
 	case SOUND_BONE_CRUSHING:
 		return TEXT(SOUND_BONE_CRUSHING_PATH);
+	case SOUND_BUTTON:
+		return TEXT(SOUND_BUTTON_PATH);
+	case SOUND_TRANSITION:
+		return TEXT(SOUND_TRANSITION_PATH);
 	default:
 		assert(0);
 		break;
 	}
 	return NULL;
+}
+
+void playTransitionSound()
+{
+	PlaySound(TEXT(SOUND_TRANSITION_PATH), NULL, PLAY_MODE_SYNC);
+}
+
+void playButtonSound()
+{
+	PlaySound(TEXT(SOUND_BUTTON_PATH), NULL, PLAY_MODE_ASYNC);
 }
 
 void playSound(const SoundController* const controller)

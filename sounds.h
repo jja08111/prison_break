@@ -12,10 +12,13 @@
 #define SOUND_ALL_CLEAR_PATH		"assets\\background_track.wav"
 #define SOUND_EARNING_ITEM_PATH		"assets\\earning_item.wav"
 #define SOUND_BONE_CRUSHING_PATH	"assets\\bone_crushing.wav"
+#define SOUND_BUTTON_PATH			"assets\\button.wav"
+#define SOUND_TRANSITION_PATH		"assets\\transition.wav"
 
 #define SOUND_EARNING_ITEM_DURATION		1000
 #define SOUND_BONE_CRUSHING_DURATION	1000
 
+#define PLAY_MODE_SYNC		SND_FILENAME | SND_SYNC
 #define PLAY_MODE_ASYNC		SND_FILENAME | SND_ASYNC
 #define PLAY_MODE_LOOP		SND_FILENAME | SND_ASYNC | SND_LOOP
 
@@ -27,7 +30,9 @@ typedef enum {
 	SOUND_SUCCES,
 	SOUND_ALL_CLEAR,	
 	SOUND_EARNING_ITEM,	
-	SOUND_BONE_CRUSHING
+	SOUND_BONE_CRUSHING,
+	SOUND_BUTTON,
+	SOUND_TRANSITION
 } Sounds;
 
 typedef struct _SoundController {
@@ -39,6 +44,8 @@ typedef struct _SoundController {
 	clock_t nextSoundTime;
 	DWORD nextPlayMode;
 } SoundController;
+
+void playButtonSound();
 
 void playSound(const SoundController* const controller);
 

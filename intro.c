@@ -6,6 +6,7 @@
 #include "icons.h"
 #include "render.h"
 #include "update.h"
+#include "sounds.h"
 
 #include <conio.h>
 #include <windows.h>
@@ -13,11 +14,11 @@
 #include <string.h>
 
 #define ACTION_TOP_Y_POS 30
-#define ACTION_LEFT_X_POS 35
+#define ACTION_LEFT_X_POS 34
 
 static void initSampleMap(Map* map)
 {
-	map->topLeftPosition = (COORD){ 28,2 };
+	map->topLeftPosition = (COORD){ 27,2 };
 	map->height = 8;
 	map->width = 20;
 	map->hasInitRendered = 0;
@@ -75,22 +76,26 @@ static void renderSampleMap(const Map* const map)
 	}
 }
 
+#define PIVOT_SLEEP_DURATION 30
+
 static void renderIntroHeader()
 {
 	textcolor(BLACK, GRAY);
 
 	goto2xy(0, 14);
+	Sleep(150);
+	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 40);
+	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 38);
+	printf("     бсбсбсбс    бсбсбсбс     бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бсбсбсбс         бсбс       бсбсбсбс    бс    бс     \n");Sleep(PIVOT_SLEEP_DURATION + 35);
+	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бсбс    бс        бс     бс    бс     бс       бс  бс      бс          бс   бс      \n");Sleep(PIVOT_SLEEP_DURATION + 32);
+	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бс бс   бс        бс     бс    бс     бс      бс    бс     бс          бс  бс       \n");Sleep(PIVOT_SLEEP_DURATION + 28);
+	printf("     бсбсбсбс    бсбсбсбс       бс      бсбсбсбс    бс      бс   бс  бс  бс        бсбсбсбс     бсбсбсбс       бсбсбсбс     бсбсбсбс    бсбс         \n");Sleep(PIVOT_SLEEP_DURATION + 24);
+	printf("     бс          бс    бс       бс             бс   бс      бс   бс   бс бс        бс     бс    бс    бс      бс      бс    бс          бс  бс       \n");Sleep(PIVOT_SLEEP_DURATION + 20);
+	printf("     бс          бс     бс      бс             бс   бс      бс   бс    бсбс        бс     бс    бс     бс    бс        бс   бс          бс   бс      \n");Sleep(PIVOT_SLEEP_DURATION + 15);
+	printf("     бс          бс      бс   бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бс      бс   бс        бс   бсбсбсбс    бс    бс     \n");Sleep(PIVOT_SLEEP_DURATION + 10);
+	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 4);
 	printf("                                                                                                                                                     \n");
-	printf("                                                                                                                                                     \n");
-	printf("     бсбсбсбс    бсбсбсбс     бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бсбсбсбс         бсбс       бсбсбсбс    бс    бс     \n");
-	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бсбс    бс        бс     бс    бс     бс       бс  бс      бс          бс   бс      \n");
-	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бс бс   бс        бс     бс    бс     бс      бс    бс     бс          бс  бс       \n");
-	printf("     бсбсбсбс    бсбсбсбс       бс      бсбсбсбс    бс      бс   бс  бс  бс        бсбсбсбс     бсбсбсбс       бсбсбсбс     бсбсбсбс    бсбс         \n");
-	printf("     бс          бс    бс       бс             бс   бс      бс   бс   бс бс        бс     бс    бс    бс      бс      бс    бс          бс  бс       \n");
-	printf("     бс          бс     бс      бс             бс   бс      бс   бс    бсбс        бс     бс    бс     бс    бс        бс   бс          бс   бс      \n");
-	printf("     бс          бс      бс   бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бс      бс   бс        бс   бсбсбсбс    бс    бс     \n");
-	printf("                                                                                                                                                     \n");
-	printf("                                                                                                                                                     \n");
+	Sleep(150);
 }
 
 static void drawPlayGameText(IntroMenu selectedMenu)
@@ -195,9 +200,11 @@ static int handleKbhit(IntroMenu* selectedMenu)
 	{
 	case KEYBD_UP:
 		decreaseIntroMenu(selectedMenu);
+		playButtonSound();
 		break;
 	case KEYBD_DOWN:
 		increaseIntroMenu(selectedMenu);
+		playButtonSound();
 		break;
 	case KEYBD_ENTER:
 		return 1;
@@ -238,6 +245,7 @@ IntroMenu showIntroScreen()
 		Sleep(32);
 	}
 
+	playTransitionSound();
 	system("cls");
 
 	return selectedMenu;
