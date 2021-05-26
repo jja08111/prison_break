@@ -140,6 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="big_number.c" />
+    <ClCompile Include="big_number.h" />
     <ClCompile Include="intro.c" />
     <ClCompile Include="mob.c" />
     <ClCompile Include="colors.c" />

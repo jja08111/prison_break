@@ -20,7 +20,7 @@ static int _ensureToBeWithinRange(
 
 
 
-static void _drawBox(SMALL_RECT rect);
+static void drawBox(SMALL_RECT rect);
 
 static void _drawEmptyIconAt(COORD position);
 

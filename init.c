@@ -39,7 +39,6 @@ static void _initPlayer(
 static void _initStage(Stage* stage)
 {
 	stage->level = 0;
-	stage->timeLimit = getStageTimeLimit(stage);
 	stage->score = getStageStartScore(stage);
 	stage->scoreUpdateTime = clock();
 	stage->totalScore = 0;

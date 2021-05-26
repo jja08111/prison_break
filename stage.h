@@ -24,17 +24,7 @@ typedef struct {
 	clock_t scoreUpdateTime;
 
 	int totalScore;
-
-	// 시간 제한이다.
-	int timeLimit;
 } Stage;
-
-// 0단계 60
-// 1단계 80
-// 2단계 100
-// 3단계 120
-// 4단계 140 
-int getStageTimeLimit(const Stage* const stage);
 
 int getStageStartScore(const Stage* const stage);
 

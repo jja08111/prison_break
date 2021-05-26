@@ -1,4 +1,5 @@
 #include "render.h"
+#include "big_number.h"
 
 static int _ensureToBeWithinRange(
 	const Map* const map,
@@ -17,7 +18,7 @@ static int _ensureToBeWithinRange(
 	return 1;
 }
 
-static void _drawBox(SMALL_RECT rect)
+static void drawBox(SMALL_RECT rect)
 {
 	int y, x;
 
@@ -32,7 +33,7 @@ static void _drawBox(SMALL_RECT rect)
 static void _drawInGameBackgroundBox()
 {
 	textcolor(DARK_GRAY, DARK_GRAY);
-	_drawBox((SMALL_RECT) { INTERFACE_WIDTH, 0, SCREEN_WIDTH/2 - INTERFACE_WIDTH-1, SCREEN_HEIGHT-1 });
+	drawBox((SMALL_RECT) { INTERFACE_WIDTH, 0, SCREEN_WIDTH/2 - INTERFACE_WIDTH-1, SCREEN_HEIGHT-1 });
 }
 
 static void _drawEmptyIconAt(COORD position)
@@ -55,7 +56,7 @@ static void _drawDarknessFromRect(
 		return;
 
 	textcolor(ON_SURFACE_COLOR, ON_SURFACE_COLOR);
-	_drawBox((SMALL_RECT) {
+	drawBox((SMALL_RECT) {
 		rect.Left + pivotX,
 		rect.Top + pivotY,
 		rect.Right + pivotX,
@@ -329,20 +330,21 @@ static void _renderInterface(
 )
 {
 	int y = 4;
-	
+
+	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, GRAY);
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-
-	_drawCenterAlignedText(
-		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y },
-		"총 획득 점수 : %5d", stage->totalScore);
-
-	_drawCenterAlignedText(
-		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y  + 4},
-		"이번 단계 점수 : %5d", stage->score);
-
 	_drawCenterAlignedText(
 		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y + 8},
-		"단계 : %d", stage->level + 1);
+		"단계", stage->level + 1);
+
+
+	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, GRAY);
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	_drawCenterAlignedText(
+		(SMALL_RECT) {
+		0, y, INTERFACE_WIDTH, y + 8
+	},
+		"단계", stage->level + 1);
 }
 
 static void _renderDialogAtMapCenter(
@@ -370,7 +372,7 @@ static void _renderDialogAtMapCenter(
 
 	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
 
-	_drawBox(boxRect);
+	drawBox(boxRect);
 	_drawCenterAlignedText(boxRect, _Buffer);
 	Sleep(DIALOG_DURATION);
 }

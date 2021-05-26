@@ -49,7 +49,7 @@ typedef struct {
 } Map;
 
 static int getMapLineLength(const Stage* const stage);
-static void setMapTopLeftPosition(const Map* const map);
+static void setMapTopLeftPosition(Map* map);
 void setMapSize(
 	Map* map,
 	const Stage* const stage

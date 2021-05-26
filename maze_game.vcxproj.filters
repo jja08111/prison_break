@@ -81,6 +81,12 @@
     <ClCompile Include="intro.c">
       <Filter>소스 파일\ui</Filter>
     </ClCompile>
+    <ClCompile Include="big_number.c">
+      <Filter>소스 파일\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="big_number.h">
+      <Filter>헤더 파일\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">

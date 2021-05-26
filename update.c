@@ -46,7 +46,6 @@ static void _setNextStage(
 {
 	stage->level++;
 
-	stage->timeLimit = getStageTimeLimit(stage);
 	stage->totalScore += stage->score;
 	stage->score = getStageStartScore(stage);
 

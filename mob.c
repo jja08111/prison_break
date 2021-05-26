@@ -57,7 +57,6 @@ void generateMob(
 	const Map* const	map
 )
 {
-	SMALL_RECT mapRect = getMapRect(map);
 	Mob newMob;
 	Direction direction;
 	COORD position;

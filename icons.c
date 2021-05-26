@@ -75,3 +75,4 @@ void drawVisionItemIconWith(int backgroundColor)
 	textcolor(DARK_GREEN, backgroundColor);
 	printf("%s", ICON_VISION_ITEM);
 }
+
