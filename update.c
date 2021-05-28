@@ -263,7 +263,8 @@ static void _removeMob(
 
 static void _updateMob(
 	MobHandler*			mobHandler,
-	const Player* const player,
+	Player*				player,
+	Stage*				stage,
 	const Map* const	map,
 	SoundController*	soundController
 ) 
@@ -282,6 +283,9 @@ static void _updateMob(
 		{
 			_removeMob(currentMob, player, map);
 			currentMob->wasKilled = 1;
+
+			player->killCount++;
+			stage->totalScore += MOB_KILLING_SCORE;
 
 			setBoneCrushingSound(soundController);
 			continue;
@@ -332,7 +336,7 @@ void update(
 {
 	_updateStage(stage, player, newPlayerPosition, map, mobHandler, soundController);
 	_updatePlayer(player, newPlayerPosition, newDirection, map, soundController);
-	_updateMob(mobHandler, player, map, soundController);
+	_updateMob(mobHandler, player, stage, map, soundController);
 
 	_updateSound(soundController);
 }

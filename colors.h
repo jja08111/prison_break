@@ -3,7 +3,6 @@
 
 #include <Windows.h>
 
-//색상
 typedef enum _Colors {
     BLACK,
     DARK_BLUE,
@@ -26,17 +25,17 @@ typedef enum _Colors {
 #define BACKGROUND_COLOR	BLACK	
 #define ON_BACKGROUND_COLOR WHITE	
 
-#define SURFACE_COLOR		GRAY	// 회색
-#define ON_SURFACE_COLOR	BLACK	// 검정
+#define SURFACE_COLOR		GRAY	
+#define ON_SURFACE_COLOR	BLACK	
 
-#define DIALOG_COLOR		WHITE	// 하양
-#define ON_DIALOG_COLOR		BLACK	// 검정
+#define DIALOG_COLOR		WHITE	
+#define ON_DIALOG_COLOR		BLACK	
 
-#define PRIMARY_COLOR		VIOLET	// 보라
-#define ACCENT_COLOR		RED		// 빨강
-#define SECONDARY_COLOR		YELLOW	// 노랑
+#define PRIMARY_COLOR		VIOLET	
+#define ACCENT_COLOR		RED		
+#define SECONDARY_COLOR		YELLOW	
 
 // 문자의 (foreground, background) 색상 설정
-void textcolor(int color, int bgcolor);
+void textcolor(int foreground, int background);
 
 #endif

@@ -206,8 +206,12 @@ void drawBigNumber(int number, COORD centerPosition)
 		int digit2 = number / 10;
 		int digit1 = number % 10;
 
-		drawSingleDigitNumber(digit2, (COORD) { centerPosition.X - 2, centerPosition.Y });
-		drawSingleDigitNumber(digit1, (COORD) { centerPosition.X + 2, centerPosition.Y });
+		drawSingleDigitNumber(
+			digit2, 
+			(COORD) { centerPosition.X - 2, centerPosition.Y });
+		drawSingleDigitNumber(
+			digit1,
+			(COORD) { centerPosition.X + 2, centerPosition.Y });
 	}
 	else
 	{
@@ -215,9 +219,15 @@ void drawBigNumber(int number, COORD centerPosition)
 		int digit2 = (number / 10) % 10;
 		int digit1 = number % 10;
 
-		drawSingleDigitNumber(digit3, (COORD) { centerPosition.X - 4, centerPosition.Y });
-		drawSingleDigitNumber(digit2, (COORD) { centerPosition.X, centerPosition.Y });
-		drawSingleDigitNumber(digit1, (COORD) { centerPosition.X + 4, centerPosition.Y });
+		drawSingleDigitNumber(
+			digit3, 
+			(COORD) { centerPosition.X - 4, centerPosition.Y });
+		drawSingleDigitNumber(
+			digit2, 
+			(COORD) { centerPosition.X, centerPosition.Y });
+		drawSingleDigitNumber(
+			digit1, 
+			(COORD) { centerPosition.X + 4, centerPosition.Y });
 	}
 }
 

@@ -1,5 +1,6 @@
 #include "render.h"
 #include "big_number.h"
+#include "gage_bar.h"
 
 static int _ensureToBeWithinRange(
 	const Map* const map,
@@ -323,7 +324,21 @@ static void _drawCenterAlignedText(
 	printf(_Buffer);
 }
 
+
 #define RIGHT_INTERFACE_X (SCREEN_WIDTH/2 - INTERFACE_WIDTH)
+
+#define LEFT_CENTER_X	(INTERFACE_WIDTH / 2)
+#define RIGHT_CENTER_X	((SCREEN_WIDTH / 2 + RIGHT_INTERFACE_X) / 2)
+
+static void _drawTextAtLeft(const char* _Format, int y)
+{
+	_drawCenterAlignedText((SMALL_RECT) { 0, y, INTERFACE_WIDTH, y }, _Format);
+}
+
+static void _drawTextAtRight(const char* _Format, int y)
+{
+	_drawCenterAlignedText((SMALL_RECT) { RIGHT_INTERFACE_X, y, SCREEN_WIDTH / 2, y }, _Format);
+}
 
 static void _renderInterface(
 	const Stage* const	stage,
@@ -332,48 +347,85 @@ static void _renderInterface(
 )
 {
 	static int prevScore = 0;
+	static int prevKillCount = 0;
+	static int prevTotalScore = 0;
 	int y = 5;
 	int visionItemPct;
 
 	// 왼쪽 인터페이스 시작
-	drawBigNumberWithColor(stage->level + 1, (COORD) { INTERFACE_WIDTH / 2, y }, DARK_GRAY);
+	drawBigNumberWithColor(stage->level + 1, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawCenterAlignedText(
-		(SMALL_RECT) { 0, y, INTERFACE_WIDTH, y},
-		"단계", stage->level + 1);
+	_drawTextAtLeft("단계", y);
 
 
 	y += 10;
 	if (prevScore != stage->score)
 	{
 		prevScore = stage->score;
-		removeBigNumberWithColor((COORD) { INTERFACE_WIDTH / 2, y }, BACKGROUND_COLOR);
+		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
 	}
-	drawBigNumberWithColor(stage->score, (COORD) { INTERFACE_WIDTH / 2, y }, DARK_GRAY);
+	drawBigNumberWithColor(stage->score, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawCenterAlignedText(
-		(SMALL_RECT) {0, y, INTERFACE_WIDTH, y},
-		"이번 단계 점수", stage->level + 1);
-
+	_drawTextAtLeft("이번 단계 점수", y);
 
 	y += 10;
-	drawBigNumberWithColor(stage->totalScore, (COORD) { INTERFACE_WIDTH / 2, y }, ON_BACKGROUND_COLOR);
+	if (prevKillCount != player->killCount)
+	{
+		prevKillCount = player->killCount;
+		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
+	}
+	drawBigNumberWithColor(player->killCount, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawCenterAlignedText(
-		(SMALL_RECT) {0, y, INTERFACE_WIDTH, y},
-		"총점", stage->level + 1);
+	_drawTextAtLeft("교도관 제압", y);
 	// ~왼쪽 인터페이스 종료
 
 
 	// 오른쪽 인터페이스 시작
-	y = 8;
+	y = 5;
+	if (prevScore != stage->totalScore)
+	{
+		prevScore = stage->totalScore;
+		removeBigNumberWithColor((COORD) { RIGHT_CENTER_X, y }, BACKGROUND_COLOR);
+	}
+	drawBigNumberWithColor(stage->totalScore, (COORD) { RIGHT_CENTER_X, y }, ON_BACKGROUND_COLOR);
+	y += 4;
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	_drawTextAtRight("총점", y);
+
+	y = 31;
+	
+	goto2xy(RIGHT_INTERFACE_X + 2, y);
+	textcolor(DARK_GRAY, BACKGROUND_COLOR);
+	printf("─────────────");
+
+	y += 2;
 	visionItemPct = getVisionItemLeftTimePercent(player);
-	_drawCenterAlignedText(
-		(SMALL_RECT) {RIGHT_INTERFACE_X, y, SCREEN_WIDTH/2, y},
-		"시야 아이템 %2d", visionItemPct);
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	_drawTextAtRight("♣ 시야 아이템", y);
+	y++;
+	drawGageBar(
+		visionItemPct,
+		(COORD) {
+		RIGHT_CENTER_X, y
+	},
+		visionItemPct != 0
+			? GREEN
+			: DARK_GRAY);
+
+	y += 3;
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	_drawTextAtRight("♣ 시야 아이템", y);
+	y++;
+	drawGageBar(
+		visionItemPct,
+		(COORD) { RIGHT_CENTER_X, y },
+		visionItemPct != 0 
+			? GREEN 
+			: DARK_GRAY);
+	
 }
 
 static void _renderDialogAtMapCenter(

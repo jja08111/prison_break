@@ -14,7 +14,7 @@ int main()
 
 	removeCursor();
 	srand((unsigned int)time(NULL));
-	// 화면 크기: 151 X 41(SCREEN_WIDTH, SCREEN_HIEGHT), 배경색상: 검정
+	// 화면 크기: 150 X 41(SCREEN_WIDTH, SCREEN_HIEGHT), 배경색상: 검정
 	system("mode con cols=150 lines=41 | title Maze game | color 01");
 
 	while (1)

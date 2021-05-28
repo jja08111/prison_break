@@ -1,10 +1,10 @@
 #ifndef __CONSTANTS_H__
 #define __CONSTANTS_H__
 
-#define SCREEN_WIDTH 150
-#define SCREEN_HEIGHT 41
+#define SCREEN_WIDTH	150
+#define SCREEN_HEIGHT	41
 
-#define INTERFACE_WIDTH 34 / 2
+#define INTERFACE_WIDTH (34 / 2)
 
 #define KEYBD_ENTER 0x0d
 #define KEYBD_ESC	0x1b

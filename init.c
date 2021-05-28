@@ -34,6 +34,7 @@ static void _initPlayer(
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
+	player->killCount = 0;
 }
 
 static void _initStage(Stage* stage)

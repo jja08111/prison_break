@@ -87,6 +87,9 @@
     <ClCompile Include="big_number.h">
       <Filter>헤더 파일\assets</Filter>
     </ClCompile>
+    <ClCompile Include="gage_bar.c">
+      <Filter>소스 파일\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="intro.h">
       <Filter>헤더 파일\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="gage_bar.h">
+      <Filter>헤더 파일\assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

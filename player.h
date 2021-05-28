@@ -11,6 +11,8 @@
 #define INIT_PLAYER_POS			1
 #define TARGET_VISION_RANGE		1
 
+#define MOB_KILLING_SCORE		10
+
 typedef enum {
 	STATE_NORMAL,
 	STATE_SUCCESS,
@@ -38,6 +40,8 @@ typedef struct {
 	// 제한 시간은 UNLIMIT_VISION_DURATION(5)초 이며, 아이템이 
 	// 없는 경우 이 값은 -1이다.
 	clock_t visionItemAcquiredTime;
+
+	int killCount;
 } Player;
 
 
