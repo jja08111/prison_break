@@ -5,6 +5,5 @@
 #include "stage.h"
 #include "player.h"
 #include "mob.h"
-#include "items.h"
 
 #endif // !__MODELS_H__

@@ -3,7 +3,6 @@
 
 #include "map.h"
 #include "utils.h"
-#include "items.h"
 
 #include <time.h>
 
@@ -42,7 +41,6 @@ typedef struct {
 	clock_t visionItemAcquiredTime;
 
 	int killingCount;
-	int prevKillingCount;
 } Player;
 
 

@@ -14,13 +14,18 @@ typedef enum _Direction {
 
 void gotoxy(int x, int y);
 
-void removeCursor(void);
+void removeCursor();
+
+void showCursor();
 
 // 커서를 (2x, y) 좌표로 이동시킨다.
 void goto2xy(int x, int y);
 
+// 커서를 (position.X, position.Y) 좌표로 이동시킨다.
+void gotoxyPosition(COORD position);
+
 // 커서를 (2 * position.X, position.Y) 좌표로 이동시킨다.
-void gotoPosition(COORD position);
+void goto2xyPosition(COORD position);
 
 // x 값은 2칸을 한 칸으로 두어 계산한다.
 void gotoCenterForAlignString(
@@ -49,5 +54,7 @@ Direction reverseDirection(Direction direction);
 
 // coord 위치를 direction 방향으로 이동시킨 값을 반환한다.
 COORD getMovedCoordInDirection(COORD coord, Direction direction);
+
+int hasSpace(const char* str, int len);
 
 #endif

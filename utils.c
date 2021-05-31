@@ -6,12 +6,22 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-void removeCursor(void) { 
-
+static void setCursor(int visible)
+{
 	CONSOLE_CURSOR_INFO curInfo;
 	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-	curInfo.bVisible = 0;
+	curInfo.bVisible = visible;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+}
+
+void removeCursor() { 
+
+	setCursor(0);
+}
+
+void showCursor()
+{
+	setCursor(1);
 }
 
 void goto2xy(int x, int y)
@@ -19,7 +29,12 @@ void goto2xy(int x, int y)
 	gotoxy(2 * x, y);
 }
 
-void gotoPosition(COORD position)
+void gotoxyPosition(COORD position)
+{
+	gotoxy(position.X, position.Y);
+}
+
+void goto2xyPosition(COORD position)
 {
 	goto2xy(position.X, position.Y);
 }
@@ -101,4 +116,12 @@ COORD getMovedCoordInDirection(COORD coord, Direction direction)
 		coord.Y++;
 	}
 	return coord;
+}
+
+int hasSpace(const char* str, int len)
+{
+	for (int i = 0;i < len;++i)
+		if (*str++ == ' ')
+			return 1;
+	return 0;
 }

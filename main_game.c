@@ -53,5 +53,10 @@ void runMainGame()
 		Sleep(16);
 	}
 
-	renderScoreInputDialog(&map, &stage);
+	renderScoreInputDialog(&map, &stage, &player);
+	
+	removeCursor();
+
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	system("cls");
 }

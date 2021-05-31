@@ -5,6 +5,7 @@
 
 #include "main_game.h"
 #include "intro.h"
+#include "record.h"
 
 #include <assert.h>
 
@@ -27,6 +28,7 @@ int main()
 			runMainGame();
 			break;
 		case INTRO_MENU_SHOW_SCORE:
+			showRecordScreen();
 			break;
 		case INTRO_MENU_EXIT:
 			exit(0);

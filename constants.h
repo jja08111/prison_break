@@ -6,8 +6,9 @@
 
 #define INTERFACE_WIDTH (34 / 2)
 
-#define KEYBD_ENTER 0x0d
-#define KEYBD_ESC	0x1b
+#define KEYBD_BACK_SPACE 0x08
+#define KEYBD_ENTER		 0x0d
+#define KEYBD_ESC		 0x1b
 
 #define KEYBD_UP	0x48 
 #define KEYBD_DOWN	0x50

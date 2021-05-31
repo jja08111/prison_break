@@ -90,6 +90,9 @@
     <ClCompile Include="gage_bar.c">
       <Filter>소스 파일\assets</Filter>
     </ClCompile>
+    <ClCompile Include="record.c">
+      <Filter>소스 파일\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -125,9 +128,6 @@
     <ClInclude Include="init.h">
       <Filter>헤더 파일\ui\game</Filter>
     </ClInclude>
-    <ClInclude Include="items.h">
-      <Filter>헤더 파일\models</Filter>
-    </ClInclude>
     <ClInclude Include="colors.h">
       <Filter>헤더 파일\assets</Filter>
     </ClInclude>
@@ -142,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="gage_bar.h">
       <Filter>헤더 파일\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="record.h">
+      <Filter>헤더 파일\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

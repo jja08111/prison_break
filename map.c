@@ -161,7 +161,7 @@ SMALL_RECT getMapScreenRect(const Map* const map)
 	return (SMALL_RECT) { x, y, map->width + x, map->height + y };
 }
 
-COORD getMapCenterPoint(const Map* const map)
+COORD getMapCenterCoord(const Map* const map)
 {
 	return (COORD) { map->width / 2, map->height / 2 };
 }

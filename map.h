@@ -12,6 +12,9 @@
 
 #define OBJECT_GEN_PADDING	3
 
+#define VISION_ITEM_DURATION	5000 // 5초
+#define VISION_ITEM_EMPTY		-1	 // -1
+
 typedef enum _MapFlag {
 	FLAG_WALL,
 	FLAG_EMPTY,
@@ -81,7 +84,7 @@ SMALL_RECT getMapRect(const Map* const map);
 
 SMALL_RECT getMapScreenRect(const Map* const map);
 
-COORD getMapCenterPoint(const Map* const map);
+COORD getMapCenterCoord(const Map* const map);
 
 COORD getMapScreenCenterPoint(const Map* const map);
 

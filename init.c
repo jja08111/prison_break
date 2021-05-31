@@ -36,7 +36,6 @@ static void _initPlayer(
 	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
 
 	player->killingCount = 0;
-	player->prevKillingCount = -1;
 }
 
 static void _initStage(Stage* stage)
@@ -44,12 +43,10 @@ static void _initStage(Stage* stage)
 	stage->level = 0;
 
 	stage->score = getStageStartScore(stage);
-	stage->prevScore = -1;
 
 	stage->scoreUpdateTime = clock();
 
 	stage->totalScore = 0;
-	stage->prevTotalScore = -1;
 }
 
 static void _initMob(

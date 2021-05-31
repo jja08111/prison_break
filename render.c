@@ -1,8 +1,11 @@
 #include "render.h"
 #include "big_number.h"
 #include "gage_bar.h"
+#include "record.h"
 
-#define BUFFUER_SIZE 60
+#include <string.h>
+
+#define MAX_DIALOG_BUFFUER_SIZE 60
 
 static int _ensureToBeWithinRange(
 	const Map* const map,
@@ -41,7 +44,7 @@ static void _drawInGameBackgroundBox()
 
 static void _drawEmptyIconAt(COORD position)
 {
-	gotoPosition(position);
+	goto2xyPosition(position);
 	drawEmptyIcon();
 }
 
@@ -183,7 +186,7 @@ void renderPlayer(
 		_drawMapWith(map, getPlayerVisionRect(player, map), GRAY);
 	}
 
-	gotoPosition(screenPosition);
+	goto2xyPosition(screenPosition);
 	drawPlayerIcon(player);
 }
 
@@ -203,12 +206,12 @@ void drawMobVisionInPlayerRange(
 		if (hasPlayerVisionItem(player)
 			|| inRangeRect(position, getPlayerVisionRect(player, map)))
 		{
-			gotoPosition(screenPosition);
+			goto2xyPosition(screenPosition);
 			drawEmptyIconWithNoColor();
 
 			if (samePosition(position, player->position))
 			{
-				gotoPosition(screenPosition);
+				goto2xyPosition(screenPosition);
 				drawPlayerIconWithNoColor(player);
 			}
 		}
@@ -300,7 +303,7 @@ void renderMob(
 			if (hasPlayerVisionItem(player)
 				|| inRangeRect(position, playerVision))
 			{
-				gotoPosition(screenPosition);
+				goto2xyPosition(screenPosition);
 				drawMobIcon(currentMob);
 			}
 		}
@@ -314,7 +317,7 @@ static void _drawCenterAlignedText(
 	...
 )
 {
-	char _Buffer[BUFFUER_SIZE];
+	char _Buffer[MAX_DIALOG_BUFFUER_SIZE];
 
 	// _Buffer에 _ArgList을 포멧팅한다.
 	va_list _ArgList;
@@ -343,26 +346,40 @@ static void _drawTextAtRight(const char* _Format, int y)
 }
 
 static void _renderInterface(
-	Stage*	stage,
-	Player* player,
-	Map*	map
+	const Stage* const	stage,
+	const Player* const player,
+	const Map* const	map
 )
 {
+	static int prevScore;
+	static int prevKillingCount;
+	static int prevTotalScore;
+	static int prevStageLevel;
 	int y;
 	int visionItemPct;
 
-	// 왼쪽 인터페이스 시작
-	y = 5;
-	drawBigNumberWithColor(stage->level + 1, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
-	y += 4;
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtLeft("단계", y);
-
-
-	y = 19;
-	if (stage->prevScore != stage->score)
+	if (!map->hasInitRendered)
 	{
-		stage->prevScore = stage->score;
+		prevScore = -1;
+		prevKillingCount = -1;
+		prevTotalScore = -1;
+		prevStageLevel = -1;
+	}
+
+	// 왼쪽 인터페이스 시작
+	if (prevStageLevel != stage->level)
+	{
+		y = 5;
+		drawBigNumberWithColor(stage->level + 1, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
+		y += 4;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtLeft("단계", y);
+	}
+
+	if (prevScore != stage->score || prevStageLevel != stage->level)
+	{
+		y = 19;
+		prevScore = stage->score;
 		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
 		drawBigNumberWithColor(stage->score, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 
@@ -371,11 +388,10 @@ static void _renderInterface(
 		_drawTextAtLeft("이번 단계 점수", y);
 	}
 	
-
-	y = 33;
-	if (player->prevKillingCount != player->killingCount)
+	if (prevKillingCount != player->killingCount || prevStageLevel != stage->level)
 	{
-		player->prevKillingCount = player->killingCount;
+		y = 33;
+		prevKillingCount = player->killingCount;
 		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
 		drawBigNumberWithColor(player->killingCount, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 
@@ -383,15 +399,14 @@ static void _renderInterface(
 		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 		_drawTextAtLeft("교도관 제압", y);
 	}
-	
 	// ~왼쪽 인터페이스 종료
 
 
 	// 오른쪽 인터페이스 시작
-	y = 5;
-	if (stage->prevTotalScore != stage->totalScore)
+	if (prevTotalScore != stage->totalScore || prevStageLevel != stage->level)
 	{
-		stage->prevTotalScore = stage->totalScore;
+		y = 5;
+		prevTotalScore = stage->totalScore;
 		removeBigNumberWithColor((COORD) { RIGHT_CENTER_X, y }, BACKGROUND_COLOR);
 		drawBigNumberWithColor(stage->totalScore, (COORD) { RIGHT_CENTER_X, y }, ON_BACKGROUND_COLOR);
 		y += 4;
@@ -400,16 +415,20 @@ static void _renderInterface(
 		_drawTextAtRight("점수", y);
 	}
 	
-	y = 31;
-	goto2xy(RIGHT_INTERFACE_X + 2, y);
-	textcolor(DARK_GRAY, BACKGROUND_COLOR);
-	printf("─────────────");
+	if (prevStageLevel != stage->level)
+	{
+		y = 31;
+		goto2xy(RIGHT_INTERFACE_X + 2, y);
+		textcolor(DARK_GRAY, BACKGROUND_COLOR);
+		printf("─────────────");
 
-	y += 2;
+		y = 33;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtRight("♣ 시야 아이템", y);
+	}
+	
 	visionItemPct = getVisionItemLeftTimePercent(player);
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtRight("♣ 시야 아이템", y);
-	y++;
+	y = 34;
 	drawGageBar(
 		visionItemPct,
 		(COORD) {
@@ -418,6 +437,9 @@ static void _renderInterface(
 		visionItemPct != 0
 			? GREEN
 			: DARK_GRAY);
+	// ~오른쪽 인터페이스 종료
+
+	prevStageLevel = stage->level;
 }
 
 #define DIALOG_WIDTH 30
@@ -431,7 +453,7 @@ static void _renderDialogAtCenter(
 	SMALL_RECT boxRect = getMapScreenRect(map);
 	COORD centerPoint = getMapScreenCenterPoint(map);
 	int halfWidth = map->width/2;
-	char _Buffer[BUFFUER_SIZE];
+	char _Buffer[MAX_DIALOG_BUFFUER_SIZE];
 
 	boxRect = (SMALL_RECT){
 		centerPoint.X - DIALOG_WIDTH/2,
@@ -464,13 +486,41 @@ static void _renderFailDialog(const Map* const map)
 
 void renderScoreInputDialog(
 	const Map* const	map,
-	const Stage* const	stage
+	const Stage* const	stage,
+	const Player* const player
 )
 {
+	Record record;
+	COORD cusorPosition = getMapCenterCoord(map);
+	char name[MAX_NAME_LENGTH];
+
 	_renderDialogAtCenter(map, "점수는 %d점 입니다! 저장할 닉네임을 입력하세요.", stage->totalScore);
+	showCursor();
+
 	while (1)
 	{
+		fgets(name, MAX_NAME_LENGTH, stdin);
+		// 개행 문자 제거
+		name[strlen(name) - 1] = '\0';
 
+		if (hasSpace(name, MAX_NAME_LENGTH))
+		{
+
+			continue;
+		}
+		else
+		{
+			strcpy(record.name, name);
+			record.killingCount = player->killingCount;
+			record.reachedStageLevel = stage->level;
+			record.totalScore = stage->totalScore;
+
+			if (writeRecordFile(&record))
+				return;
+
+			Sleep(500);
+			break;
+		}
 	}
 }
 
