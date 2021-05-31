@@ -50,6 +50,17 @@ static int _inRange(int y, int x, const Map* const map)
 	return (y <= map->height && y >= 0) && (x <= map->width && x >= 0);
 }
 
+COORD getGeneratingStartPoint(const Map* const map)
+{
+	int x = 1 + rand() % (map->width - 1);
+	int y = 1 + rand() % (map->height - 1);
+	if (x % 2 == 0)
+		x--;
+	if (y % 2 == 0)
+		y--;
+	return (COORD) { x, y };
+}
+
 // (x,y)부터 깊이우선탐색을 하며 맵을 형성한다.
 //
 // 초기에는 모두 벽으로 되어있다. 방문하지 않은 정점을 탐색하며 방문한 정점을 

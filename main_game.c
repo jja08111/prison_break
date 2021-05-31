@@ -47,6 +47,11 @@ void runMainGame()
 
 		render(&stage, &player, &mobHandler, &map);
 
+		if (player.state == STATE_CAUGHTED)
+			break;
+
 		Sleep(16);
 	}
+
+	renderScoreInputDialog(&map, &stage);
 }

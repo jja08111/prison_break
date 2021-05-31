@@ -41,7 +41,8 @@ typedef struct {
 	// 없는 경우 이 값은 -1이다.
 	clock_t visionItemAcquiredTime;
 
-	int killCount;
+	int killingCount;
+	int prevKillingCount;
 } Player;
 
 

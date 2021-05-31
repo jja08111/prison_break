@@ -53,6 +53,8 @@ void setMapSize(
 	const Stage* const stage
 );
 
+COORD getGeneratingStartPoint(const Map* const map);
+
 void generateMap(int y, int x, Map* const map);
 
 // 맵의 grid에 아이템 flag를 무작위 위치에 저장한다.

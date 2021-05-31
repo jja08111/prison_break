@@ -40,6 +40,11 @@ void renderMob(
 	const Map* const		map
 );
 
+void renderScoreInputDialog(
+	const Map* const	map,
+	const Stage* const	stage
+);
+
 void render(
 	const Stage* const		stage,
 	const Player* const		player,

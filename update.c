@@ -54,6 +54,8 @@ static void _setNextStage(
 	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 
+	stage->prevScore = stage->prevTotalScore = player->prevKillingCount = -1;
+
 	initMap(map, stage);
 
 	clearMob(mobHandler);
@@ -284,7 +286,7 @@ static void _updateMob(
 			_removeMob(currentMob, player, map);
 			currentMob->wasKilled = 1;
 
-			player->killCount++;
+			player->killingCount++;
 			stage->totalScore += MOB_KILLING_SCORE;
 
 			setBoneCrushingSound(soundController);

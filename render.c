@@ -2,6 +2,8 @@
 #include "big_number.h"
 #include "gage_bar.h"
 
+#define BUFFUER_SIZE 60
+
 static int _ensureToBeWithinRange(
 	const Map* const map,
 	SMALL_RECT*		 rect
@@ -312,7 +314,7 @@ static void _drawCenterAlignedText(
 	...
 )
 {
-	char _Buffer[40];
+	char _Buffer[BUFFUER_SIZE];
 
 	// _Buffer에 _ArgList을 포멧팅한다.
 	va_list _ArgList;
@@ -341,62 +343,64 @@ static void _drawTextAtRight(const char* _Format, int y)
 }
 
 static void _renderInterface(
-	const Stage* const	stage,
-	const Player* const player,
-	const Map* const	map
+	Stage*	stage,
+	Player* player,
+	Map*	map
 )
 {
-	static int prevScore = 0;
-	static int prevKillCount = 0;
-	static int prevTotalScore = 0;
-	int y = 5;
+	int y;
 	int visionItemPct;
 
 	// 왼쪽 인터페이스 시작
+	y = 5;
 	drawBigNumberWithColor(stage->level + 1, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 	y += 4;
 	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 	_drawTextAtLeft("단계", y);
 
 
-	y += 10;
-	if (prevScore != stage->score)
+	y = 19;
+	if (stage->prevScore != stage->score)
 	{
-		prevScore = stage->score;
+		stage->prevScore = stage->score;
 		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
-	}
-	drawBigNumberWithColor(stage->score, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
-	y += 4;
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtLeft("이번 단계 점수", y);
+		drawBigNumberWithColor(stage->score, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
 
-	y += 10;
-	if (prevKillCount != player->killCount)
-	{
-		prevKillCount = player->killCount;
-		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
+		y += 4;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtLeft("이번 단계 점수", y);
 	}
-	drawBigNumberWithColor(player->killCount, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
-	y += 4;
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtLeft("교도관 제압", y);
+	
+
+	y = 33;
+	if (player->prevKillingCount != player->killingCount)
+	{
+		player->prevKillingCount = player->killingCount;
+		removeBigNumberWithColor((COORD) { LEFT_CENTER_X, y }, BACKGROUND_COLOR);
+		drawBigNumberWithColor(player->killingCount, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
+
+		y += 4;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtLeft("교도관 제압", y);
+	}
+	
 	// ~왼쪽 인터페이스 종료
 
 
 	// 오른쪽 인터페이스 시작
 	y = 5;
-	if (prevScore != stage->totalScore)
+	if (stage->prevTotalScore != stage->totalScore)
 	{
-		prevScore = stage->totalScore;
+		stage->prevTotalScore = stage->totalScore;
 		removeBigNumberWithColor((COORD) { RIGHT_CENTER_X, y }, BACKGROUND_COLOR);
-	}
-	drawBigNumberWithColor(stage->totalScore, (COORD) { RIGHT_CENTER_X, y }, ON_BACKGROUND_COLOR);
-	y += 4;
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtRight("총점", y);
+		drawBigNumberWithColor(stage->totalScore, (COORD) { RIGHT_CENTER_X, y }, ON_BACKGROUND_COLOR);
+		y += 4;
 
-	y = 31;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtRight("점수", y);
+	}
 	
+	y = 31;
 	goto2xy(RIGHT_INTERFACE_X + 2, y);
 	textcolor(DARK_GRAY, BACKGROUND_COLOR);
 	printf("─────────────");
@@ -414,21 +418,11 @@ static void _renderInterface(
 		visionItemPct != 0
 			? GREEN
 			: DARK_GRAY);
-
-	y += 3;
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	_drawTextAtRight("♣ 시야 아이템", y);
-	y++;
-	drawGageBar(
-		visionItemPct,
-		(COORD) { RIGHT_CENTER_X, y },
-		visionItemPct != 0 
-			? GREEN 
-			: DARK_GRAY);
-	
 }
 
-static void _renderDialogAtMapCenter(
+#define DIALOG_WIDTH 30
+
+static void _renderDialogAtCenter(
 	const Map* const map, 
 	const char*		 _Format, 
 	...
@@ -437,12 +431,12 @@ static void _renderDialogAtMapCenter(
 	SMALL_RECT boxRect = getMapScreenRect(map);
 	COORD centerPoint = getMapScreenCenterPoint(map);
 	int halfWidth = map->width/2;
-	char _Buffer[40];
+	char _Buffer[BUFFUER_SIZE];
 
 	boxRect = (SMALL_RECT){
-		centerPoint.X - halfWidth + 2,
+		centerPoint.X - DIALOG_WIDTH/2,
 		centerPoint.Y - 1,
-		centerPoint.X + halfWidth - 2,
+		centerPoint.X + DIALOG_WIDTH/2,
 		centerPoint.Y + 1 };
 
 	// _Buffer에 _ArgList을 포멧팅한다.
@@ -460,12 +454,24 @@ static void _renderDialogAtMapCenter(
 
 static void _renderSuccessDialog(const Map* const map)
 {
-	_renderDialogAtMapCenter(map, "성공! 다음 단계에 진입합니다.");
+	_renderDialogAtCenter(map, "성공! 다음 단계에 진입합니다.");
 }
 
 static void _renderFailDialog(const Map* const map)
 {
-	_renderDialogAtMapCenter(map, "교도관에게 적발되었습니다!");
+	_renderDialogAtCenter(map, "교도관에게 적발되었습니다!");
+}
+
+void renderScoreInputDialog(
+	const Map* const	map,
+	const Stage* const	stage
+)
+{
+	_renderDialogAtCenter(map, "점수는 %d점 입니다! 저장할 닉네임을 입력하세요.", stage->totalScore);
+	while (1)
+	{
+
+	}
 }
 
 void render(

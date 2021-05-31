@@ -20,10 +20,12 @@ typedef struct {
 	//
 	// 시간이 지날수록 감소하며 최소 값은 100이다.
 	int score;
+	int prevScore;
 
 	clock_t scoreUpdateTime;
 
 	int totalScore;
+	int prevTotalScore;
 } Stage;
 
 int getStageStartScore(const Stage* const stage);

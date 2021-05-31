@@ -18,7 +18,7 @@
 
 static void initSampleMap(Map* map)
 {
-	int x, y;
+	COORD startPoint;
 	
 	map->topLeftPosition = (COORD){ 27,3 };
 	map->height = 8;
@@ -28,13 +28,8 @@ static void initSampleMap(Map* map)
 
 	memset(map->grid, FLAG_WALL, sizeof(map->grid));
 
-	x = 1 + rand() % (map->width - 1);
-	y = 1 + rand() % (map->height - 1);
-	if (x % 2 == 0)
-		x--;
-	if (y % 2 == 0)
-		y--;
-	generateMap(y, x, map);
+	startPoint = getGeneratingStartPoint(map);
+	generateMap(startPoint.Y, startPoint.X, map);
 }
 
 static void initSamplePlayer(Player* player)

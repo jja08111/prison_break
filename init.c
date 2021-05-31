@@ -34,15 +34,22 @@ static void _initPlayer(
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
-	player->killCount = 0;
+
+	player->killingCount = 0;
+	player->prevKillingCount = -1;
 }
 
 static void _initStage(Stage* stage)
 {
 	stage->level = 0;
+
 	stage->score = getStageStartScore(stage);
+	stage->prevScore = -1;
+
 	stage->scoreUpdateTime = clock();
+
 	stage->totalScore = 0;
+	stage->prevTotalScore = -1;
 }
 
 static void _initMob(

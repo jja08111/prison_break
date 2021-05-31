@@ -41,10 +41,10 @@ int getMobMoveDelayPer(const Stage* const stage)
 	switch (stage->level) 
 	{
 	case 0: return 600;
-	case 1: return 460;
-	case 2: return 340;
-	case 3: return 260;
-	case MAX_LEVEL: return 200;
+	case 1: return 550;
+	case 2: return 500;
+	case 3: return 400;
+	case MAX_LEVEL: return 300;
 	}
 	return 0;
 }
