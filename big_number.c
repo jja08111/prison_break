@@ -171,8 +171,8 @@ static void drawNine(const COORD* const centerPosition)
 	printf("      ");
 	goto2xy(cx + 1, cy + 1);
 	printf("  ");
-	goto2xy(cx + 1, cy + +2);
-	printf("  ");
+	goto2xy(cx - 1, cy + +2);
+	printf("      ");
 }
 
 static void drawSingleDigitNumber(int number, COORD centerPosition)
