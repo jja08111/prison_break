@@ -40,7 +40,7 @@ typedef enum {
 typedef struct _SoundController {
 	int isUpdated;
 	Sounds currentSound;
-	DWORD currentPlayMode; // [PLAY_MODE_ASYNC] or [PLAY_MODE_LOOP]
+	DWORD currentPlayMode; // [PLAY_MODE_SYNC] or [PLAY_MODE_ASYNC] or [PLAY_MODE_LOOP]
 
 	Sounds nextSound;
 	clock_t nextSoundTime;

@@ -1,7 +1,7 @@
 #ifndef __RECORD_H__
 #define __RECORD_H__
 
-#define MAX_NAME_LENGTH 40
+#define MAX_NAME_LENGTH 14
 
 #define RECORD_FILE_NAME "record.bin"
 

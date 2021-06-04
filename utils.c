@@ -6,6 +6,11 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+void goto2xy(int x, int y)
+{
+	gotoxy(2 * x, y);
+}
+
 static void setCursor(int visible)
 {
 	CONSOLE_CURSOR_INFO curInfo;
@@ -22,11 +27,6 @@ void removeCursor() {
 void showCursor()
 {
 	setCursor(1);
-}
-
-void goto2xy(int x, int y)
-{
-	gotoxy(2 * x, y);
 }
 
 void gotoxyPosition(COORD position)
@@ -124,4 +124,14 @@ int hasSpace(const char* str, int len)
 		if (*str++ == ' ')
 			return 1;
 	return 0;
+}
+
+int isLowerAlpha(unsigned char ch)
+{
+	return ('a' <= ch && ch <= 'z');
+}
+
+int isDigit(unsigned char ch)
+{
+	return  '0' <= ch && ch <= '9';
 }

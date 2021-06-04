@@ -10,6 +10,8 @@
 #include <assert.h>
 #include <string.h>
 
+void drawBox(SMALL_RECT rect);
+
 void drawEntireMapWith(
 	const Map* const map,
 	int				 backgroundColor

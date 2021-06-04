@@ -90,13 +90,13 @@ static void renderIntroHeader()
 	Sleep(150);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 40);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 38);
-	printf("     бсбсбсбс    бсбсбсбс     бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бсбсбсбс         бсбс       бсбсбсбс    бс    бс     \n");Sleep(PIVOT_SLEEP_DURATION + 35);
-	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бсбс    бс        бс     бс    бс     бс       бс  бс      бс          бс   бс      \n");Sleep(PIVOT_SLEEP_DURATION + 32);
-	printf("     бс     бс   бс     бс      бс     бс           бс      бс   бс бс   бс        бс     бс    бс     бс      бс    бс     бс          бс  бс       \n");Sleep(PIVOT_SLEEP_DURATION + 28);
-	printf("     бсбсбсбс    бсбсбсбс       бс      бсбсбсбс    бс      бс   бс  бс  бс        бсбсбсбс     бсбсбсбс       бсбсбсбс     бсбсбсбс    бсбс         \n");Sleep(PIVOT_SLEEP_DURATION + 24);
-	printf("     бс          бс    бс       бс             бс   бс      бс   бс   бс бс        бс     бс    бс    бс      бс      бс    бс          бс  бс       \n");Sleep(PIVOT_SLEEP_DURATION + 20);
-	printf("     бс          бс     бс      бс             бс   бс      бс   бс    бсбс        бс     бс    бс     бс    бс        бс   бс          бс   бс      \n");Sleep(PIVOT_SLEEP_DURATION + 15);
-	printf("     бс          бс      бс   бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс        бсбсбсбс     бс      бс   бс        бс   бсбсбсбс    бс    бс     \n");Sleep(PIVOT_SLEEP_DURATION + 10);
+	printf("      бсбсбсбс    бсбсбсбс    бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс          бсбсбсбс    бсбсбсбс        бсбс       бсбсбсбс   бс    бс      \n");Sleep(PIVOT_SLEEP_DURATION + 35);
+	printf("      бс     бс   бс     бс     бс     бс           бс      бс   бсбс    бс          бс     бс   бс     бс      бс  бс      бс         бс   бс       \n");Sleep(PIVOT_SLEEP_DURATION + 32);
+	printf("      бс     бс   бс     бс     бс     бс           бс      бс   бс бс   бс          бс     бс   бс     бс     бс    бс     бс         бс  бс        \n");Sleep(PIVOT_SLEEP_DURATION + 28);
+	printf("      бсбсбсбс    бсбсбсбс      бс      бсбсбсбс    бс      бс   бс  бс  бс          бсбсбсбс    бсбсбсбс      бсбсбсбс     бсбсбсбс   бсбс          \n");Sleep(PIVOT_SLEEP_DURATION + 24);
+	printf("      бс          бс    бс      бс             бс   бс      бс   бс   бс бс          бс     бс   бс    бс     бс      бс    бс         бс  бс        \n");Sleep(PIVOT_SLEEP_DURATION + 20);
+	printf("      бс          бс     бс     бс             бс   бс      бс   бс    бсбс          бс     бс   бс     бс   бс        бс   бс         бс   бс       \n");Sleep(PIVOT_SLEEP_DURATION + 15);
+	printf("      бс          бс     бс   бсбсбс    бсбсбсбс     бсбсбсбс    бс      бс          бсбсбсбс    бс     бс   бс        бс   бсбсбсбс   бс    бс      \n");Sleep(PIVOT_SLEEP_DURATION + 10);
 	printf("                                                                                                                                                     \n");Sleep(PIVOT_SLEEP_DURATION + 4);
 	printf("                                                                                                                                                     \n");
 }

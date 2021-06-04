@@ -1,4 +1,8 @@
 #include "record.h"
+#include "utils.h"
+#include "constants.h"
+#include "render.h"
+#include "colors.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,8 +12,14 @@
 
 #define MAX_COUNT 256
 
-// 내림차순
-static int compareRecord(Record* a, Record* b)
+#define HEADER_X_POS (SCREEN_WIDTH / 2 - 19)
+#define HEADER_Y_POS 2
+
+#define BODY_HORIZONTAL_PADDING 10
+#define BODY_Y_POS				9
+
+// 점수 기준으로 내림차순 정렬 비교
+static int compareRecord(const Record* a, const Record* b)
 {
 	if (a->totalScore == b->totalScore)
 	{
@@ -23,6 +33,87 @@ static int compareRecord(Record* a, Record* b)
 		return a->reachedStageLevel > b->reachedStageLevel ? -1 : 1;
 	}
 	return a->totalScore > b->totalScore ? -1 : 1;
+}
+
+static int countRecordFiles(FILE* fp)
+{
+	int filesize;
+	int n = 0;
+
+	fseek(fp, 0, SEEK_END);
+	filesize = ftell(fp);
+	n = filesize / sizeof(Record);
+	return n;
+}
+
+static size_t getRecordArray(Record arrRecord[MAX_COUNT])
+{
+	FILE* fp;
+	size_t count;
+
+	fp = fopen(RECORD_FILE_NAME, "r+b");
+	if (fp == NULL)
+	{
+		return 0;
+	}
+
+	count = countRecordFiles(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	for (size_t i = 0;i < count;++i)
+	{
+		fread(&arrRecord[i], sizeof(Record), 1, fp);
+	}
+	fclose(fp);
+
+	qsort(arrRecord, count, sizeof(Record), compareRecord);
+
+	return count;
+}
+
+static void drawRankingHeader()
+{
+	gotoxy(HEADER_X_POS, HEADER_Y_POS);		printf("■■■     ■■    ■    ■  ■    ■\n");
+	gotoxy(HEADER_X_POS, HEADER_Y_POS + 1); printf("■   ■   ■  ■   ■■  ■  ■  ■  \n");
+	gotoxy(HEADER_X_POS, HEADER_Y_POS + 2); printf("■■■   ■■■■  ■ ■ ■  ■■    \n");
+	gotoxy(HEADER_X_POS, HEADER_Y_POS + 3); printf("■   ■  ■    ■  ■  ■■  ■  ■  \n");
+	gotoxy(HEADER_X_POS, HEADER_Y_POS + 4); printf("■   ■  ■    ■  ■    ■  ■    ■\n");
+}
+
+static void drawRankingBody(
+	const Record arrRecord[MAX_COUNT],
+	size_t		 count
+)
+{
+	size_t maxCount = min(count, 20);
+	
+	textcolor(BLACK, GRAY);
+
+	drawBox((SMALL_RECT) {
+		BODY_HORIZONTAL_PADDING / 2, 
+		BODY_Y_POS, 
+		(SCREEN_WIDTH - BODY_HORIZONTAL_PADDING) / 2,
+		SCREEN_HEIGHT - 4
+	});
+
+	if (count == 0)
+	{
+		gotoxy(HEADER_X_POS, BODY_Y_POS + 2);
+		printf("아직 기록이 없습니다.");
+		return;
+	}
+	
+	for (size_t i = 0;i < maxCount;++i)
+	{
+		gotoxy(HEADER_X_POS - 6, BODY_Y_POS + 2 + i);
+		printf("%2d등 - %14s %3d점, %d단계, %2d 제압 \n",
+			i + 1,
+			arrRecord[i].name,
+			arrRecord[i].totalScore,
+			arrRecord[i].reachedStageLevel,
+			arrRecord[i].killingCount);
+	}
+		
 }
 
 int writeRecordFile(const Record* const record)
@@ -47,60 +138,28 @@ int writeRecordFile(const Record* const record)
 	return 0;
 }
 
-int countRecordFiles(FILE* fp)
-{
-	int filesize;
-	int n;
-	fseek(fp, 0, SEEK_END); 
-	filesize = ftell(fp); 
-	n = filesize / sizeof(Record);
-	return n;
-}
-
 void showRecordScreen()
 {
-	FILE* fp;
+
 	Record arrRecord[MAX_COUNT];
-	int count;
+	size_t count;
 
 	system("cls");
 
-	fp = fopen(RECORD_FILE_NAME, "r+b");
-	if (fp == NULL)
-	{
-		perror("fopen");
-		Sleep(2000);
-		return;
-	}
-	
-	count = countRecordFiles(fp);
-	fseek(fp, 0, SEEK_SET);
-
-	for (int i = 0;i < count;++i)
-	{
-		fread(&arrRecord[i], sizeof(Record), 1, fp);
-	}
-
-	qsort(arrRecord, count, sizeof(Record), compareRecord);
-
-	for (int i = 0;i < count;++i)
-		printf("%d등 : %s - %d점, %d 단계, %d 제압 \n",
-			i + 1,
-			arrRecord[i].name,
-			arrRecord[i].totalScore,
-			arrRecord[i].reachedStageLevel,
-			arrRecord[i].killingCount);
+	count = getRecordArray(arrRecord);
+	drawRankingHeader();
+	drawRankingBody(arrRecord, count);
 
 	while (1)
 	{
 		if (_kbhit())
 		{
-			getch();
+			_getch();
 			break;
 		}
 			
 	}
 
-	fclose(fp);
+	textcolor(BLACK, BLACK);
 	system("cls");
 }

@@ -57,4 +57,8 @@ COORD getMovedCoordInDirection(COORD coord, Direction direction);
 
 int hasSpace(const char* str, int len);
 
+int isLowerAlpha(unsigned char ch);
+
+int isDigit(unsigned char ch);
+
 #endif

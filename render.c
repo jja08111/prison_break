@@ -3,6 +3,7 @@
 #include "gage_bar.h"
 #include "record.h"
 
+#include <conio.h>
 #include <string.h>
 
 #define MAX_DIALOG_BUFFUER_SIZE 60
@@ -24,7 +25,7 @@ static int _ensureToBeWithinRange(
 	return 1;
 }
 
-static void drawBox(SMALL_RECT rect)
+void drawBox(SMALL_RECT rect)
 {
 	int y, x;
 
@@ -450,9 +451,8 @@ static void _renderDialogAtCenter(
 	...
 )
 {
-	SMALL_RECT boxRect = getMapScreenRect(map);
+	SMALL_RECT boxRect;
 	COORD centerPoint = getMapScreenCenterPoint(map);
-	int halfWidth = map->width/2;
 	char _Buffer[MAX_DIALOG_BUFFUER_SIZE];
 
 	boxRect = (SMALL_RECT){
@@ -491,37 +491,77 @@ void renderScoreInputDialog(
 )
 {
 	Record record;
-	COORD cusorPosition = getMapCenterCoord(map);
 	char name[MAX_NAME_LENGTH];
+	unsigned char ch = ' ';
+	int nameLength = 0;
+	int isoverflow;
+	SMALL_RECT boxRect, titleRect, actionRect;
+	COORD centerPoint = getMapScreenCenterPoint(map);
 
-	_renderDialogAtCenter(map, "점수는 %d점 입니다! 저장할 닉네임을 입력하세요.", stage->totalScore);
+	boxRect = titleRect = actionRect = (SMALL_RECT){
+		centerPoint.X - DIALOG_WIDTH / 2,
+		centerPoint.Y - 2,
+		centerPoint.X + DIALOG_WIDTH / 2,
+		centerPoint.Y + 2};
+
+	titleRect.Bottom = centerPoint.Y;
+
+	actionRect.Top = centerPoint.Y;
+	actionRect.Bottom = centerPoint.Y + 2;
+	actionRect.Right = centerPoint.X + 2,
+
+	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
+	drawBox(boxRect);
+	_drawCenterAlignedText(titleRect, "점수는 %d점 입니다!", stage->totalScore);
+	_drawCenterAlignedText(actionRect, "닉네임(영어, 숫자) : ", stage->totalScore);
 	showCursor();
 
-	while (1)
-	{
-		fgets(name, MAX_NAME_LENGTH, stdin);
-		// 개행 문자 제거
-		name[strlen(name) - 1] = '\0';
+	while (ch != EOF) {
+		ch = _getch();
 
-		if (hasSpace(name, MAX_NAME_LENGTH))
+		if (nameLength > 0 && ch == KEYBD_ENTER)
+			break;
+		else if (ch == KEYBD_BACK_SPACE)
 		{
+			if (nameLength == 0)
+				continue;
 
+			gotoxy(actionRect.Right * 2 + nameLength - 7, actionRect.Bottom - 1);
+			printf(" ");
+			gotoxy(actionRect.Right * 2 + nameLength - 7, actionRect.Bottom - 1);
+
+			name[--nameLength] = '\0';
 			continue;
 		}
-		else
+
+		if (!(isLowerAlpha(ch) || isDigit(ch)))
+			continue;
+
+		isoverflow = 0;
+		if (MAX_NAME_LENGTH - 2 < nameLength)
 		{
-			strcpy(record.name, name);
-			record.killingCount = player->killingCount;
-			record.reachedStageLevel = stage->level;
-			record.totalScore = stage->totalScore;
-
-			if (writeRecordFile(&record))
-				return;
-
-			Sleep(500);
-			break;
+			isoverflow = 1;
+			nameLength--;
 		}
+
+		name[nameLength++] = ch;
+		name[nameLength] = '\0';
+
+		gotoxy(actionRect.Right*2 + nameLength - 7, actionRect.Bottom - 1);
+		printf("%c", ch);
+		if(isoverflow)
+			gotoxy(actionRect.Right * 2 + nameLength - 7, actionRect.Bottom - 1);
 	}
+
+	strcpy(record.name, name);
+	record.killingCount = player->killingCount;
+	record.reachedStageLevel = stage->level;
+	record.totalScore = stage->totalScore;
+
+	if (writeRecordFile(&record))
+		return;
+
+	Sleep(500);
 }
 
 void render(
