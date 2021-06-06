@@ -2,6 +2,8 @@
 #include "utils.h"
 #include "colors.h"
 
+#include <stdio.h>
+
 #define BAR_WIDTH 13
 
 #define DISABLED_COLOR DARK_GRAY

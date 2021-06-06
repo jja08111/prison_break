@@ -1,6 +1,5 @@
-/*	Maze game
-*	
-*	version: 0.0.1
+/*	
+*	The Prison Break game made by Minseong Kim
 */
 
 #include "main_game.h"

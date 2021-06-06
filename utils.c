@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "colors.h"
 
 void gotoxy(int x, int y)
 {
@@ -134,4 +135,10 @@ int isLowerAlpha(unsigned char ch)
 int isDigit(unsigned char ch)
 {
 	return  '0' <= ch && ch <= '9';
+}
+
+void clearScreen()
+{
+	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+	system("cls");
 }

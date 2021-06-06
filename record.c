@@ -80,6 +80,11 @@ static void drawRankingHeader()
 	gotoxy(HEADER_X_POS, HEADER_Y_POS + 4); printf("■   ■  ■    ■  ■    ■  ■    ■\n");
 }
 
+static void drawExitHelpText()
+{
+	gotoxy(HEADER_X_POS + 65, HEADER_Y_POS + 4); printf("(Q,q)를 눌러 뒤로가기");
+}
+
 static void drawRankingBody(
 	const Record arrRecord[MAX_COUNT],
 	size_t		 count
@@ -95,6 +100,8 @@ static void drawRankingBody(
 		(SCREEN_WIDTH - BODY_HORIZONTAL_PADDING) / 2,
 		SCREEN_HEIGHT - 4
 	});
+	gotoxy(HEADER_X_POS + 5, BODY_Y_POS + 2);
+	printf("닉네임      점수    최고단계    제압횟수");
 
 	if (count == 0)
 	{
@@ -105,8 +112,15 @@ static void drawRankingBody(
 	
 	for (size_t i = 0;i < maxCount;++i)
 	{
-		gotoxy(HEADER_X_POS - 6, BODY_Y_POS + 2 + i);
-		printf("%2d등 - %14s %3d점, %d단계, %2d 제압 \n",
+		switch (i)
+		{
+		case 0: textcolor(DARK_VIOLET, GRAY); break;
+		case 1: textcolor(DARK_GREEN, GRAY); break;
+		case 2: textcolor(DARK_BLUE, GRAY); break;
+		default:textcolor(BLACK, GRAY);
+		}
+		gotoxy(HEADER_X_POS - 11, BODY_Y_POS + 4 + i);
+		printf("%2d등    %14s     %3d점       %d단계        %2d회\n",
 			i + 1,
 			arrRecord[i].name,
 			arrRecord[i].totalScore,
@@ -140,26 +154,28 @@ int writeRecordFile(const Record* const record)
 
 void showRecordScreen()
 {
-
+	char ch;
 	Record arrRecord[MAX_COUNT];
 	size_t count;
 
-	system("cls");
+	clearScreen();
 
 	count = getRecordArray(arrRecord);
+
 	drawRankingHeader();
+	drawExitHelpText();
 	drawRankingBody(arrRecord, count);
 
 	while (1)
 	{
 		if (_kbhit())
 		{
-			_getch();
-			break;
+			ch = _getch();
+			if(ch == 'q' || ch == 'Q')
+				break;
 		}
 			
 	}
 
-	textcolor(BLACK, BLACK);
-	system("cls");
+	clearScreen();
 }

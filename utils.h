@@ -61,4 +61,6 @@ int isLowerAlpha(unsigned char ch);
 
 int isDigit(unsigned char ch);
 
+void clearScreen();
+
 #endif

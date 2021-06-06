@@ -250,8 +250,8 @@ IntroMenu showIntroScreen()
 	}
 
 	playTransitionSound();
-	textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
-	system("cls");
+
+	clearScreen();
 
 	return selectedMenu;
 }
