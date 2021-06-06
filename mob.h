@@ -45,10 +45,10 @@ int getMobCountPer(const Stage* const stage);
 
 int getMobMoveDelayPer(const Stage* const stage);
 
-// num 개수 만큼 추가로 봇을 생성한다.
+// count 개수 만큼 봇을 생성한다.
 void generateMob(
 	MobHandler*			mobHandler,
-	int					num,
+	int					count,
 	const Player* const player,
 	const Stage* const	stage,
 	const Map* const	map

@@ -145,13 +145,23 @@ static void _updatePlayer(
 	}
 }
 
+static int canPlaceMob(
+	COORD position,
+	Map*  map
+)
+{
+	int* ptrCell = getMapCellPtrFrom(position, map);
+
+	return canPlace(position, map) && *ptrCell != FLAG_TARGET;
+}
+
 // 몹을 이동시긴다. 
 //
 // 주로 현재 향하고 있는 방향 혹은 그 방향의 좌우로 움직이며
 // 뒤로 가끔 이동한다. 막다른 길에 도달한 경우 뒤로 이동한다.
 void updateMobPosition(
-	Mob*			 mob,
-	const Map* const map
+	Mob* mob,
+	Map* map
 ) 
 {
 	int randomNum, randomForGoBack;
@@ -163,15 +173,15 @@ void updateMobPosition(
 	COORD rightPosition = getMovedCoordInDirection(mob->position, turnRightDirection(mob->direction));
 	COORD backPosition = getMovedCoordInDirection(mob->position, reverseDirection(mob->direction));
 
-	if (canPlace(forwardPosition, map))
+	if (canPlaceMob(forwardPosition, map))
 	{
 		highPriorityPosition[highPriorityPositionCount++] = forwardPosition;
 	}
-	if (canPlace(leftPosition, map))
+	if (canPlaceMob(leftPosition, map))
 	{
 		highPriorityPosition[highPriorityPositionCount++] = leftPosition;
 	}
-	if (canPlace(rightPosition, map))
+	if (canPlaceMob(rightPosition, map))
 	{
 		highPriorityPosition[highPriorityPositionCount++] = rightPosition;
 	}
@@ -198,10 +208,10 @@ void updateMobPosition(
 // position 위치부터 direction 방향으로 벽을 만날 때까지 
 // 반복하여 flag를 칸에 초기화한다.
 static void _setVisionFlagToMap(
-	COORD				position,
-	Direction			direction,
-	MapFlag				flag,
-	const Map* const	map
+	COORD		position,
+	Direction	direction,
+	MapFlag		flag,
+	Map*		map
 )
 {
 	int* ptrCell;
@@ -209,16 +219,17 @@ static void _setVisionFlagToMap(
 	while (canPlace(position, map))
 	{
 		ptrCell = getMapCellPtrFrom(position, map);
-		*ptrCell = flag;
+		if(*ptrCell != FLAG_TARGET)
+			*ptrCell = flag;
 
 		position = getMovedCoordInDirection(position, direction);
 	}
 }
 
 static void _clearVisionFlagToMap(
-	COORD			 position,
-	Direction		 direction,
-	const Map* const map
+	COORD		position,
+	Direction	direction,
+	Map*		map
 )
 {
 	_setVisionFlagToMap(position, direction, FLAG_EMPTY, map);
@@ -226,7 +237,7 @@ static void _clearVisionFlagToMap(
 
 static void _updateMobVisionFlagToMap(
 	const Mob* const mob,
-	const Map* const map
+	Map*			 map
 )
 {
 	int* ptrCell = getMapCellPtrFrom(mob->prevPosition, map);
@@ -244,7 +255,7 @@ static void _updateMobVisionFlagToMap(
 static void _removeMob(
 	const Mob* const	mob,
 	const Player* const player,
-	const Map* const	map
+	Map*				map
 )
 {
 	COORD startPosition = getMovedCoordInDirection(mob->position, mob->direction);
@@ -259,7 +270,7 @@ static void _updateMob(
 	MobHandler*			mobHandler,
 	Player*				player,
 	Stage*				stage,
-	const Map* const	map,
+	Map* 				map,
 	SoundController*	soundController
 ) 
 {

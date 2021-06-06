@@ -180,8 +180,8 @@ static void decreaseIntroMenu(IntroMenu* menu)
 }
 
 static void updateMob(
-	MobHandler*		 mobHandler,
-	const Map* const map
+	MobHandler*	mobHandler,
+	Map*		map
 )
 {
 	clock_t now = clock();

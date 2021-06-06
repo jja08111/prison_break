@@ -51,7 +51,7 @@ int getMobMoveDelayPer(const Stage* const stage)
 
 void generateMob(
 	MobHandler*			mobHandler,
-	int					num,
+	int					count,
 	const Player* const player,
 	const Stage* const	stage,
 	const Map* const	map
@@ -63,7 +63,7 @@ void generateMob(
 	int speed = getMobMoveDelayPer(stage);
 	int i;
 
-	for (i = 0;i < num;++i)
+	for (i = 0;i < count;++i)
 	{
 		direction = rand() % 4;
 		position = _getRandomMobPosition(map, player);

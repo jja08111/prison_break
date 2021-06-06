@@ -21,6 +21,7 @@ typedef enum _MapFlag {
 	FLAG_VISITED, 
 
 	FLAG_TARGET,
+
 	FLAG_MOB_VISION,
 
 	FLAG_UNLIMIT_VISION_ITEM
@@ -74,9 +75,11 @@ void generateItem(
 int canPlace(COORD position, const Map* const map);
 
 int* getMapCellPtrFrom(
-	COORD			 position,
-	const Map* const map
+	COORD position,
+	Map*  map
 );
+
+int isTargetPoint(COORD position, const Map* const map);
 
 COORD getTargetPosition(const Map* const map);
 

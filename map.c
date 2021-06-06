@@ -137,11 +137,17 @@ int canPlace(COORD position, const Map* const map)
 }
 
 int* getMapCellPtrFrom(
-	COORD			 position,
-	const Map* const map
+	COORD position,
+	Map*  map
 )
 {
 	return &map->grid[position.Y][position.X];
+}
+
+int isTargetPoint(COORD position, const Map* const map)
+{
+	int* ptrCell = getMapCellPtrFrom(position, map);
+	return *ptrCell == FLAG_TARGET;
 }
 
 COORD getTargetPosition(const Map* const map)

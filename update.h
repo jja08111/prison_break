@@ -20,8 +20,8 @@ Direction updatePositionByInput(
 );
 
 void updateMobPosition(
-	Mob*			 mob,
-	const Map* const map
+	Mob* mob,
+	Map* map
 );
 
 void update(

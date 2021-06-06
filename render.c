@@ -199,13 +199,16 @@ void drawMobVisionInPlayerRange(
 )
 {
 	COORD screenPosition;
+	int inPlayerVision;
 
 	while (canPlace(position, map))
 	{
 		screenPosition = getScreenPostion(position, map);
 
-		if (hasPlayerVisionItem(player)
-			|| inRangeRect(position, getPlayerVisionRect(player, map)))
+		inPlayerVision = hasPlayerVisionItem(player)
+			|| inRangeRect(position, getPlayerVisionRect(player, map));
+		
+		if (inPlayerVision && !isTargetPoint(position, map))
 		{
 			goto2xyPosition(screenPosition);
 			drawEmptyIconWithNoColor();
@@ -434,16 +437,19 @@ static void _renderInterface(
 		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 		y = 15;
 		_drawTextAtRight("게임 방법", y);
+
 		y += 3;
 		_drawTextAtRight("교도관을 피해", y);
 		y += 1;
 		_drawTextAtRight("감옥을 탈출하세요!!", y);
+
 		y += 2;
 		_drawTextAtRight("5단계가 마지막 단계이며", y);
 		y += 1;
 		_drawTextAtRight("단계가 올라갈 수록", y);
 		y += 1;
 		_drawTextAtRight("교도관의 속도가 빨라집니다.", y);
+
 		y += 3;
 		_drawTextAtRight("이동", y);
 		y += 2;
