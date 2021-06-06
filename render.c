@@ -336,14 +336,20 @@ static void _drawCenterAlignedText(
 #define LEFT_CENTER_X	(INTERFACE_WIDTH / 2)
 #define RIGHT_CENTER_X	((SCREEN_WIDTH / 2 + RIGHT_INTERFACE_X) / 2)
 
-static void _drawTextAtLeft(const char* _Format, int y)
+static void _drawTextAtLeft(const char* text, int y)
 {
-	_drawCenterAlignedText((SMALL_RECT) { 0, y, INTERFACE_WIDTH, y }, _Format);
+	_drawCenterAlignedText((SMALL_RECT) { 0, y, INTERFACE_WIDTH, y }, text);
 }
 
-static void _drawTextAtRight(const char* _Format, int y)
+static void _drawTextAtRight(const char* text, int y)
 {
-	_drawCenterAlignedText((SMALL_RECT) { RIGHT_INTERFACE_X, y, SCREEN_WIDTH / 2, y }, _Format);
+	_drawCenterAlignedText((SMALL_RECT) { RIGHT_INTERFACE_X, y, SCREEN_WIDTH / 2, y }, text);
+}
+
+static void _drawDivider()
+{
+	textcolor(DARK_GRAY, BACKGROUND_COLOR);
+	printf("─────────────");
 }
 
 static void _renderInterface(
@@ -358,6 +364,7 @@ static void _renderInterface(
 	static int prevStageLevel;
 	int y;
 	int visionItemPct;
+	int hasLevelUpped;
 
 	if (!map->hasInitRendered)
 	{
@@ -367,8 +374,10 @@ static void _renderInterface(
 		prevStageLevel = -1;
 	}
 
+	hasLevelUpped = prevStageLevel != stage->level;
+
 	// 왼쪽 인터페이스 시작
-	if (prevStageLevel != stage->level)
+	if (hasLevelUpped)
 	{
 		y = 5;
 		drawBigNumberWithColor(stage->level + 1, (COORD) { LEFT_CENTER_X, y }, DARK_GRAY);
@@ -377,7 +386,7 @@ static void _renderInterface(
 		_drawTextAtLeft("단계", y);
 	}
 
-	if (prevScore != stage->score || prevStageLevel != stage->level)
+	if (prevScore != stage->score || hasLevelUpped)
 	{
 		y = 19;
 		prevScore = stage->score;
@@ -389,7 +398,7 @@ static void _renderInterface(
 		_drawTextAtLeft("이번 단계 점수", y);
 	}
 	
-	if (prevKillingCount != player->killingCount || prevStageLevel != stage->level)
+	if (prevKillingCount != player->killingCount || hasLevelUpped)
 	{
 		y = 33;
 		prevKillingCount = player->killingCount;
@@ -404,7 +413,7 @@ static void _renderInterface(
 
 
 	// 오른쪽 인터페이스 시작
-	if (prevTotalScore != stage->totalScore || prevStageLevel != stage->level)
+	if (prevTotalScore != stage->totalScore || hasLevelUpped)
 	{
 		y = 5;
 		prevTotalScore = stage->totalScore;
@@ -415,13 +424,34 @@ static void _renderInterface(
 		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 		_drawTextAtRight("점수", y);
 	}
-	
-	if (prevStageLevel != stage->level)
+
+	if (hasLevelUpped)
 	{
+		y = 13;
+		goto2xy(RIGHT_INTERFACE_X + 2, y);
+		_drawDivider();
+
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		y = 15;
+		_drawTextAtRight("게임 방법", y);
+		y += 3;
+		_drawTextAtRight("교도관을 피해", y);
+		y += 1;
+		_drawTextAtRight("감옥을 탈출하세요!!", y);
+		y += 2;
+		_drawTextAtRight("5단계가 마지막 단계이며", y);
+		y += 1;
+		_drawTextAtRight("단계가 올라갈 수록", y);
+		y += 1;
+		_drawTextAtRight("교도관의 속도가 빨라집니다.", y);
+		y += 3;
+		_drawTextAtRight("이동", y);
+		y += 2;
+		_drawTextAtRight("[←↑↓→]", y);
+
 		y = 31;
 		goto2xy(RIGHT_INTERFACE_X + 2, y);
-		textcolor(DARK_GRAY, BACKGROUND_COLOR);
-		printf("─────────────");
+		_drawDivider();
 
 		y = 33;
 		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
@@ -513,7 +543,7 @@ void renderScoreInputDialog(
 	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
 	drawBox(boxRect);
 	_drawCenterAlignedText(titleRect, "점수는 %d점 입니다!", stage->totalScore);
-	_drawCenterAlignedText(actionRect, "닉네임(영어, 숫자) : ", stage->totalScore);
+	_drawCenterAlignedText(actionRect, "닉네임(영어,숫자) : ", stage->totalScore);
 	showCursor();
 
 	while (ch != EOF) {

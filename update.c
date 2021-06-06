@@ -156,29 +156,24 @@ void updateMobPosition(
 {
 	int randomNum, randomForGoBack;
 	int highPriorityPositionCount = 0;
-	int canGoBack = 0;
 	COORD highPriorityPosition[3];
 
-	COORD goStraightPosition = getMovedCoordInDirection(mob->position, mob->direction);
-	COORD goLeftPosition = getMovedCoordInDirection(mob->position, turnLeftDirection(mob->direction));
-	COORD goRightPosition = getMovedCoordInDirection(mob->position, turnRightDirection(mob->direction));
-	COORD goBackPosition = getMovedCoordInDirection(mob->position, reverseDirection(mob->direction));
+	COORD forwardPosition = getMovedCoordInDirection(mob->position, mob->direction);
+	COORD leftPosition = getMovedCoordInDirection(mob->position, turnLeftDirection(mob->direction));
+	COORD rightPosition = getMovedCoordInDirection(mob->position, turnRightDirection(mob->direction));
+	COORD backPosition = getMovedCoordInDirection(mob->position, reverseDirection(mob->direction));
 
-	if (canPlace(goStraightPosition, map))
+	if (canPlace(forwardPosition, map))
 	{
-		highPriorityPosition[highPriorityPositionCount++] = goStraightPosition;
+		highPriorityPosition[highPriorityPositionCount++] = forwardPosition;
 	}
-	if (canPlace(goLeftPosition, map))
+	if (canPlace(leftPosition, map))
 	{
-		highPriorityPosition[highPriorityPositionCount++] = goLeftPosition;
+		highPriorityPosition[highPriorityPositionCount++] = leftPosition;
 	}
-	if (canPlace(goRightPosition, map))
+	if (canPlace(rightPosition, map))
 	{
-		highPriorityPosition[highPriorityPositionCount++] = goRightPosition;
-	}
-	if (canPlace(goBackPosition, map))
-	{
-		canGoBack = 1;
+		highPriorityPosition[highPriorityPositionCount++] = rightPosition;
 	}
 
 	if (highPriorityPositionCount > 0)
@@ -188,13 +183,13 @@ void updateMobPosition(
 
 		// 1% 확률로 뒤로 돌아 이동한다.
 		if(randomForGoBack < 1)
-			moveMobTo(mob, goBackPosition);
+			moveMobTo(mob, backPosition);
 		else 
 			moveMobTo(mob, highPriorityPosition[randomNum]);
 	}
 	else
 	{
-		moveMobTo(mob, goBackPosition);
+		moveMobTo(mob, backPosition);
 	}
 }
 
