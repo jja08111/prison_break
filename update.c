@@ -50,6 +50,7 @@ static void _setNextStage(
 	stage->score = getStageStartScore(stage);
 
 	player->visionItemAcquiredTime = EMPTY_ITEM;
+	player->exhaustItemAcquiredTime = EMPTY_ITEM;
 	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 

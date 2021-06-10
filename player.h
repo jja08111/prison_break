@@ -43,7 +43,7 @@ typedef struct {
 
 	// 교도관 탈진 아이템을 얻은 시간이다.
 	//
-	// 제한 시간은 3초 이며, 아이템이 없는 경우 이 값은 -1이다.
+	// 제한 시간은 7초 이며, 아이템이 없는 경우 이 값은 -1이다.
 	clock_t exhaustItemAcquiredTime;
 
 	int killingCount;
