@@ -432,7 +432,7 @@ static void _renderInterface(
 
 	if (hasLevelUpped)
 	{
-		y = 13;
+		y = 12;
 		goto2xy(RIGHT_INTERFACE_X + 2, y);
 		_drawDivider();
 
@@ -454,10 +454,10 @@ static void _renderInterface(
 
 		y += 3;
 		_drawTextAtRight("¿Ãµø", y);
-		y += 2;
+		y += 1;
 		_drawTextAtRight("[°Á°Ë°È°Ê]", y);
 
-		y = 31;
+		y = 30;
 		goto2xy(RIGHT_INTERFACE_X + 2, y);
 		_drawDivider();
 
