@@ -64,15 +64,15 @@ void drawEmptyIconWithNoColor()
 	printf("%s", ICON_EMPTY);
 }
 
-void drawVisionItemIcon()
-{
-	textcolor(DARK_GREEN, SURFACE_COLOR);
-	printf("%s", ICON_VISION_ITEM);
-}
-
 void drawVisionItemIconWith(int backgroundColor)
 {
 	textcolor(DARK_GREEN, backgroundColor);
 	printf("%s", ICON_VISION_ITEM);
+}
+
+void drawExhaustItemIconWith(int backgroundColor)
+{
+	textcolor(DARK_RED, backgroundColor);
+	printf("%s", ICON_EXHAUST_ITEM);
 }
 

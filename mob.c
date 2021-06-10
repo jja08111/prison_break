@@ -134,3 +134,18 @@ int onKilledByPlayer(
 	}
 	return 0;
 }
+
+int isTimeToMoveMob(
+	const Mob* const	mob,
+	const Player* const player,
+	clock_t				time
+)
+{
+	int delay = mob->moveDelay;
+
+	if (hasPlayerExhaustItem(player))
+	{
+		delay *= 3;
+	}
+	return time - mob->updatedClock >= delay;
+}

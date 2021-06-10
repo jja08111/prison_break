@@ -13,6 +13,7 @@
 #define ICON_PLAYER_RIGHT			"¢º"
 
 #define ICON_VISION_ITEM			"¢À"
+#define ICON_EXHAUST_ITEM			"¢Í"
 #define ICON_TARGET					"¡ß"
 #define ICON_WALL					"¡á"
 #define ICON_EMPTY					"  "
@@ -25,7 +26,7 @@ void drawWallIcon();
 void drawWallIconWith(int backgroundColor);
 void drawEmptyIcon();
 void drawEmptyIconWithNoColor();
-void drawVisionItemIcon();
 void drawVisionItemIconWith(int backgroundColor);
+void drawExhaustItemIconWith(int backgroundColor);
 
 #endif

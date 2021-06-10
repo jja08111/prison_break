@@ -117,8 +117,9 @@ void generateItem(
 		if (y % 2 == 0)
 			y--;
 
-		// 이미 해당 위치에 동일한 아이템이 있는 경우 
-		if (map->grid[y][x] == itemFlag)
+		// 이미 해당 위치에 아이템이 있는 경우 
+		if (map->grid[y][x] == FLAG_VISION_ITEM || 
+			map->grid[y][x] == FLAG_EXHAUST_ITEM)
 		{
 			--i;
 			continue;

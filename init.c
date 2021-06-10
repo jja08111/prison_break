@@ -22,7 +22,8 @@ void initMap(
 	generateMap(map->height - 1, map->width - 1, map);
 	map->grid[map->height - 1][map->width - 1] = FLAG_TARGET;
 
-	generateItem(map, FLAG_UNLIMIT_VISION_ITEM, 4);
+	generateItem(map, FLAG_VISION_ITEM, 4);
+	generateItem(map, FLAG_EXHAUST_ITEM, 4);
 }
 
 static void _initPlayer(
@@ -33,7 +34,8 @@ static void _initPlayer(
 	player->state = STATE_NORMAL;
 	player->direction = player->prevDirection = INIT_PLAYER_DIRECTION;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
-	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
+	player->visionItemAcquiredTime = EMPTY_ITEM;
+	player->exhaustItemAcquiredTime = EMPTY_ITEM;
 
 	player->killingCount = 0;
 }

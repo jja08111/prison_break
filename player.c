@@ -97,7 +97,12 @@ SMALL_RECT getPlayerVisionRect(
 
 int hasPlayerVisionItem(const Player* const player)
 {
-	return player->visionItemAcquiredTime != VISION_ITEM_EMPTY;
+	return player->visionItemAcquiredTime != EMPTY_ITEM;
+}
+
+int hasPlayerExhaustItem(const Player* const player)
+{
+	return player->exhaustItemAcquiredTime != EMPTY_ITEM;
 }
 
 int getVisionItemLeftTimePercent(const Player* const player)
@@ -108,4 +113,14 @@ int getVisionItemLeftTimePercent(const Player* const player)
 	int leftTime = (VISION_ITEM_DURATION - (clock() - player->visionItemAcquiredTime));
 
 	return max(0, leftTime * 100 / VISION_ITEM_DURATION);
+}
+
+int getExhaustItemLeftTimePercent(const Player* const player)
+{
+	if (!hasPlayerExhaustItem(player))
+		return 0;
+
+	int leftTime = (EXHAUST_ITEM_DURATION - (clock() - player->exhaustItemAcquiredTime));
+
+	return max(0, leftTime * 100 / EXHAUST_ITEM_DURATION);
 }

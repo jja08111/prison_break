@@ -49,7 +49,7 @@ static void _setNextStage(
 	stage->totalScore += stage->score;
 	stage->score = getStageStartScore(stage);
 
-	player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
+	player->visionItemAcquiredTime = EMPTY_ITEM;
 	player->state = STATE_NORMAL;
 	player->position = player->prevPosition = (COORD){ INIT_PLAYER_POS,INIT_PLAYER_POS };
 
@@ -135,18 +135,27 @@ static void _updatePlayer(
 	if (hasPlayerVisionItem(player) && 
 		now - player->visionItemAcquiredTime > VISION_ITEM_DURATION)
 	{
-		player->visionItemAcquiredTime = VISION_ITEM_EMPTY;
+		player->visionItemAcquiredTime = EMPTY_ITEM;
 		map->hasDrawedEntireMap = 0;
 		drawEntireMapWith(map, DARK_GRAY);
 		renderPlayer(player, map);
-
-		setHeartBeatLoopSound(soundController);
+	}
+	else if (hasPlayerExhaustItem(player) &&
+		now - player->exhaustItemAcquiredTime > EXHAUST_ITEM_DURATION)
+	{
+		player->exhaustItemAcquiredTime = EMPTY_ITEM;
 	}
 
-	// 시야 무제한 아이템을 먹은 경우
-	if(map->grid[newPosition->Y][newPosition->X] == FLAG_UNLIMIT_VISION_ITEM) 
+	if (map->grid[newPosition->Y][newPosition->X] == FLAG_VISION_ITEM)
 	{
 		player->visionItemAcquiredTime = now;
+		map->grid[newPosition->Y][newPosition->X] = FLAG_EMPTY;
+
+		setEarningItemSound(soundController);
+	}
+	else if (map->grid[newPosition->Y][newPosition->X] == FLAG_EXHAUST_ITEM)
+	{
+		player->exhaustItemAcquiredTime = now;
 		map->grid[newPosition->Y][newPosition->X] = FLAG_EMPTY;
 
 		setEarningItemSound(soundController);
@@ -306,7 +315,7 @@ static void _updateMob(
 
 		_updateMobVisionFlagToMap(currentMob, map);
 
-		if (now - currentMob->updatedClock > currentMob->moveDelay)
+		if (isTimeToMoveMob(currentMob, player, now))
 		{
 			updateMobPosition(currentMob, map);
 			

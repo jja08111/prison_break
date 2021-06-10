@@ -12,8 +12,10 @@
 
 #define OBJECT_GEN_PADDING	3
 
+#define EMPTY_ITEM			-1	 // -1
+
 #define VISION_ITEM_DURATION	5000 // 5초
-#define VISION_ITEM_EMPTY		-1	 // -1
+#define EXHAUST_ITEM_DURATION	7000 // 7초
 
 typedef enum _MapFlag {
 	FLAG_WALL,
@@ -24,7 +26,11 @@ typedef enum _MapFlag {
 
 	FLAG_MOB_VISION,
 
-	FLAG_UNLIMIT_VISION_ITEM
+	// 유저의 시야를 밝히는 아이템이다. 모든 맵을 볼 수 있다.
+	FLAG_VISION_ITEM,
+
+	// 교도관의 이동 속도를 3배 느리게 하는 아이템이다.
+	FLAG_EXHAUST_ITEM
 } MapFlag;
 
 // 맵 데이터 구조이다. 
@@ -38,7 +44,7 @@ typedef struct {
 
 	// 전체 맵이 렌더링 되면 1을 저장한다.
 	//
-	// unlimit_vision_item을 위해 사용한다.
+	// vision_item을 위해 사용한다.
 	int hasDrawedEntireMap;
 
 	// 맵 데이터를 [y][x]로 가진 배열이다.

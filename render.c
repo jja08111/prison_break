@@ -84,8 +84,11 @@ static void _drawMapCellWith(
 	case FLAG_TARGET: 
 		drawTargetIcon();
 		break;
-	case FLAG_UNLIMIT_VISION_ITEM:
+	case FLAG_VISION_ITEM:
 		drawVisionItemIconWith(backgroundColor);
+		break;
+	case FLAG_EXHAUST_ITEM:
+		drawExhaustItemIconWith(backgroundColor);
 		break;
 	default: 
 		textcolor(backgroundColor, backgroundColor);
@@ -366,7 +369,6 @@ static void _renderInterface(
 	static int prevTotalScore;
 	static int prevStageLevel;
 	int y;
-	int visionItemPct;
 	int hasLevelUpped;
 
 	if (!map->hasInitRendered)
@@ -462,18 +464,23 @@ static void _renderInterface(
 		y = 33;
 		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
 		_drawTextAtRight("♣ 시야 아이템", y);
+
+		y = 36;
+		textcolor(ON_BACKGROUND_COLOR, BACKGROUND_COLOR);
+		_drawTextAtRight("♨ 교도관 탈진 아이템", y);
 	}
 	
-	visionItemPct = getVisionItemLeftTimePercent(player);
 	y = 34;
 	drawGageBar(
-		visionItemPct,
-		(COORD) {
-		RIGHT_CENTER_X, y
-	},
-		visionItemPct != 0
-			? GREEN
-			: DARK_GRAY);
+		getVisionItemLeftTimePercent(player),
+		(COORD) {RIGHT_CENTER_X, y},
+		GREEN);
+
+	y = 37;
+	drawGageBar(
+		getExhaustItemLeftTimePercent(player),
+		(COORD) {RIGHT_CENTER_X, y},
+		RED);
 	// ~오른쪽 인터페이스 종료
 
 	prevStageLevel = stage->level;

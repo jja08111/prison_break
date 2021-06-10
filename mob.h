@@ -75,4 +75,10 @@ int onKilledByPlayer(
 	const Mob* const	mob
 );
 
+int isTimeToMoveMob(
+	const Mob* const	mob,
+	const Player* const player,
+	clock_t				time
+);
+
 #endif // !__BOT_H__
