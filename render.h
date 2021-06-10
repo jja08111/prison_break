@@ -39,7 +39,7 @@ void drawMobVisionInPlayerRange(
 void renderMob(
 	const MobHandler* const mobHandler,
 	const Player* const		player,
-	const Map* const		map
+	Map* 					map
 );
 
 void renderScoreInputDialog(

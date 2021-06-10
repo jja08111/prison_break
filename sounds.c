@@ -117,6 +117,11 @@ void setSuccessSound(SoundController* controller)
 	setSound(controller, SOUND_SUCCES, PLAY_MODE_ASYNC);
 }
 
+void setAllClearSound(SoundController* controller)
+{
+	setSound(controller, SOUND_ALL_CLEAR, PLAY_MODE_ASYNC);
+}
+
 void clearNextSound(SoundController* controller)
 {
 	controller->nextSound = EMPTY_NEXT_SOUND;

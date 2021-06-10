@@ -106,8 +106,8 @@ void moveMobTo(
 }
 
 int onCaughtedPlayer(
-	const Player* const		player,
-	const Map* const		map
+	const Player* const	player,
+	Map* 				map
 )
 {
 	int* ptrCell = getMapCellPtrFrom(player->position, map);

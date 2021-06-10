@@ -15,6 +15,7 @@
 typedef enum {
 	STATE_NORMAL,
 	STATE_SUCCESS,
+	STATE_ALL_CLEAR,
 	STATE_CAUGHTED
 } PlayerState;
 

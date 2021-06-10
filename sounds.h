@@ -9,7 +9,7 @@
 #define SOUND_HEART_BEAT_PATH		"assets\\heart_beat.wav"
 #define SOUND_SUCCESS_PATH			"assets\\success.wav"
 #define SOUND_SIREN_PATH			"assets\\siren.wav"
-#define SOUND_ALL_CLEAR_PATH		"assets\\background_track.wav"
+#define SOUND_ALL_CLEAR_PATH		"assets\\all_clear.wav"
 #define SOUND_EARNING_ITEM_PATH		"assets\\earning_item.wav"
 #define SOUND_BONE_CRUSHING_PATH	"assets\\bone_crushing.wav"
 #define SOUND_BUTTON_PATH			"assets\\button.wav"
@@ -65,6 +65,7 @@ void setSirenSound(SoundController* controller);
 void setEarningItemSound(SoundController* controller);
 void setBoneCrushingSound(SoundController* controller);
 void setSuccessSound(SoundController* controller);
+void setAllClearSound(SoundController* controller);
 
 void stopSound();
 

@@ -252,7 +252,7 @@ static void _renderMobVision(
 void renderMob(
 	const MobHandler* const mobHandler,
 	const Player* const		player,
-	const Map* const		map
+	Map*					map
 )
 {
 	COORD position, prevPosition;
@@ -293,7 +293,7 @@ void renderMob(
 
 		if (!samePosition(prevPosition, position))
 		{
-			int* ptrPreviousCell = getMapCellPtrFrom(prevPosition, map);
+			const int* ptrPreviousCell = getMapCellPtrFrom(prevPosition, map);
 
 			if ((hasPlayerVisionItem(player) || inRangeRect(currentMob->prevPosition, playerVision))
 				&& *ptrPreviousCell != FLAG_MOB_VISION
@@ -483,13 +483,11 @@ static void _renderInterface(
 
 static void _renderDialogAtCenter(
 	const Map* const map, 
-	const char*		 _Format, 
-	...
+	const char*		 _Format
 )
 {
 	SMALL_RECT boxRect;
 	COORD centerPoint = getMapScreenCenterPoint(map);
-	char _Buffer[MAX_DIALOG_BUFFUER_SIZE];
 
 	boxRect = (SMALL_RECT){
 		centerPoint.X - DIALOG_WIDTH/2,
@@ -497,27 +495,27 @@ static void _renderDialogAtCenter(
 		centerPoint.X + DIALOG_WIDTH/2,
 		centerPoint.Y + 1 };
 
-	// _Buffer에 _ArgList을 포멧팅한다.
-	va_list _ArgList;
-	__crt_va_start(_ArgList, _Format);
-	_vsprintf_l(_Buffer, _Format, NULL, _ArgList);
-	__crt_va_end(_ArgList);
-
-	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
-
 	drawBox(boxRect);
-	_drawCenterAlignedText(boxRect, _Buffer);
+	_drawCenterAlignedText(boxRect, _Format);
 	Sleep(DIALOG_DURATION);
 }
 
 static void _renderSuccessDialog(const Map* const map)
 {
+	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
 	_renderDialogAtCenter(map, "성공! 다음 단계에 진입합니다.");
 }
 
 static void _renderFailDialog(const Map* const map)
 {
+	textcolor(ON_DIALOG_COLOR, DIALOG_COLOR);
 	_renderDialogAtCenter(map, "교도관에게 적발되었습니다!");
+}
+
+static void _renderAllClearDialog(const Map* const map)
+{
+	textcolor(DARK_VIOLET, DIALOG_COLOR);
+	_renderDialogAtCenter(map, "축하드립니다! 탈옥에 성공했습니다!");
 }
 
 void renderScoreInputDialog(
@@ -637,6 +635,9 @@ void render(
 		break;
 	case STATE_SUCCESS:
 		_renderSuccessDialog(map);
+		break;
+	case STATE_ALL_CLEAR:
+		_renderAllClearDialog(map);
 		break;
 	default:
 		break;

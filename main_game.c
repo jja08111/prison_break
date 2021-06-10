@@ -47,7 +47,7 @@ void runMainGame()
 
 		render(&stage, &player, &mobHandler, &map);
 
-		if (player.state == STATE_CAUGHTED)
+		if (player.state == STATE_CAUGHTED || player.state == STATE_ALL_CLEAR)
 			break;
 
 		Sleep(16);
@@ -56,6 +56,5 @@ void runMainGame()
 	renderScoreInputDialog(&map, &stage, &player);
 	
 	removeCursor();
-
 	clearScreen();
 }

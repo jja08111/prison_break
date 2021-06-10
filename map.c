@@ -146,7 +146,7 @@ int* getMapCellPtrFrom(
 
 int isTargetPoint(COORD position, const Map* const map)
 {
-	int* ptrCell = getMapCellPtrFrom(position, map);
+	const int* ptrCell = getMapCellPtrFrom(position, map);
 	return *ptrCell == FLAG_TARGET;
 }
 

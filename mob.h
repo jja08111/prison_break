@@ -65,8 +65,8 @@ void moveMobTo(
 
 // 몹의 시야에 들어서 플레이어가 잡혔는지 반환한다.
 int onCaughtedPlayer(
-	const Player* const		player,
-	const Map* const		map
+	const Player* const	player,
+	Map*				map
 );
 
 // 유저가 뒤에서 접근하는 경우 몹은 죽는다.

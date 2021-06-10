@@ -75,8 +75,6 @@ static void _updateStage(
 
 	switch (player->state)
 	{
-	case STATE_CAUGHTED:
-		// TODO: Implement this
 	case STATE_SUCCESS:
 		_setNextStage(stage, player, map, mobHandler);
 		setHeartBeatLoopSound(soundController);
@@ -94,11 +92,12 @@ static void _updateStage(
 }
 
 static void _updatePlayer(
-	Player*			 player,
-	COORD*			 newPosition,
-	Direction*		 newDirection,
-	Map*			 map,
-	SoundController* soundController
+	Player*				player,
+	COORD*				newPosition,
+	Direction*			newDirection,
+	Map*				map,
+	Stage* 				stage,
+	SoundController*	soundController
 )
 {
 	clock_t now = clock();
@@ -108,10 +107,19 @@ static void _updatePlayer(
 		player->state = STATE_CAUGHTED;
 		setSirenSound(soundController);
 	}
-	if (onReachedTargetPoint(player, map))
+	else if (onReachedTargetPoint(player, map))
 	{
-		player->state = STATE_SUCCESS;
-		setSuccessSound(soundController);
+		if (stage->level == MAX_LEVEL)
+		{
+			stage->totalScore += stage->score;
+			player->state = STATE_ALL_CLEAR;
+			setAllClearSound(soundController);
+		}
+		else
+		{
+			player->state = STATE_SUCCESS;
+			setSuccessSound(soundController);
+		}
 	}
 
 	player->prevDirection = player->direction;
@@ -150,7 +158,7 @@ static int canPlaceMob(
 	Map*  map
 )
 {
-	int* ptrCell = getMapCellPtrFrom(position, map);
+	const int* ptrCell = getMapCellPtrFrom(position, map);
 
 	return canPlace(position, map) && *ptrCell != FLAG_TARGET;
 }
@@ -340,7 +348,7 @@ void update(
 )
 {
 	_updateStage(stage, player, newPlayerPosition, map, mobHandler, soundController);
-	_updatePlayer(player, newPlayerPosition, newDirection, map, soundController);
+	_updatePlayer(player, newPlayerPosition, newDirection, map, stage, soundController);
 	_updateMob(mobHandler, player, stage, map, soundController);
 
 	_updateSound(soundController);
