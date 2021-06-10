@@ -100,8 +100,6 @@ static void drawRankingBody(
 		(SCREEN_WIDTH - BODY_HORIZONTAL_PADDING) / 2,
 		SCREEN_HEIGHT - 4
 	});
-	gotoxy(HEADER_X_POS + 5, BODY_Y_POS + 2);
-	printf("닉네임      점수    최고단계    제압횟수");
 
 	if (count == 0)
 	{
@@ -109,6 +107,9 @@ static void drawRankingBody(
 		printf("아직 기록이 없습니다.");
 		return;
 	}
+
+	gotoxy(HEADER_X_POS + 5, BODY_Y_POS + 2);
+	printf("닉네임      점수    최고단계    제압횟수");
 	
 	for (size_t i = 0;i < maxCount;++i)
 	{
