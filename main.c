@@ -1,5 +1,7 @@
 /*	
-*	The Prison Break game made by Minseong Kim
+*	The Prison Break game made by Minseong Kim.
+* 
+*   This source will be opened on my Github(https://github.com/jja08111).
 */
 
 #include "main_game.h"
@@ -15,7 +17,7 @@ int main()
 	removeCursor();
 	srand((unsigned int)time(NULL));
 	// 화면 크기: 150 X 41(SCREEN_WIDTH, SCREEN_HIEGHT), 배경색상: 검정
-	system("mode con cols=150 lines=41 | title Maze game | color 01");
+	system("mode con cols=150 lines=41 | title Prison Break | color 01");
 
 	while (1)
 	{
