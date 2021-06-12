@@ -1,7 +1,7 @@
 /*	
 *	The Prison Break game made by Minseong Kim.
 * 
-*   This source will be opened on my Github(https://github.com/jja08111).
+*   This source opened on my Github(https://github.com/jja08111).
 */
 
 #include "main_game.h"
