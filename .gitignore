@@ -17,9 +17,7 @@
 mono_crash.*
 
 # Build results
-![Dd]ebug/
-[Dd]ebug/*
-![Dd]ebug/assets/*.wav
+[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/

@@ -5,16 +5,15 @@
 #include <time.h>
 #pragma comment (lib, "winmm.lib")
 
-#define SOUND_INTRO_PATH			"assets\\intro.wav"
-#define SOUND_HEART_BEAT_PATH		"assets\\heart_beat.wav"
-#define SOUND_SUCCESS_PATH			"assets\\success.wav"
-#define SOUND_SIREN_PATH			"assets\\siren.wav"
-#define SOUND_ALL_CLEAR_PATH		"assets\\all_clear.wav"
-#define SOUND_EARNING_ITEM_PATH		"assets\\earning_item.wav"
-#define SOUND_BONE_CRUSHING_PATH	"assets\\bone_crushing.wav"
-#define SOUND_BUTTON_PATH			"assets\\button.wav"
-#define SOUND_TRANSITION_PATH		"assets\\transition.wav"
-#define SOUND_INTRO_PATH			"assets\\intro.wav"
+#define SOUND_INTRO_PATH			"assets\\sounds\\intro.wav"
+#define SOUND_HEART_BEAT_PATH		"assets\\sounds\\heart_beat.wav"
+#define SOUND_SUCCESS_PATH			"assets\\sounds\\success.wav"
+#define SOUND_SIREN_PATH			"assets\\sounds\\siren.wav"
+#define SOUND_ALL_CLEAR_PATH		"assets\\sounds\\all_clear.wav"
+#define SOUND_EARNING_ITEM_PATH		"assets\\sounds\\earning_item.wav"
+#define SOUND_BONE_CRUSHING_PATH	"assets\\sounds\\bone_crushing.wav"
+#define SOUND_BUTTON_PATH			"assets\\sounds\\button.wav"
+#define SOUND_TRANSITION_PATH		"assets\\sounds\\transition.wav"
 
 #define SOUND_EARNING_ITEM_DURATION		1000
 #define SOUND_BONE_CRUSHING_DURATION	1000
