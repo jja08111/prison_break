@@ -19,3 +19,5 @@
 
 ![](assets/images/screenshot3.png)
 
+## Maze generating algorithm
+미로 생성 알고리즘은 깊이우선탐색을 이용하였습니다. [Buckblog - Maze Generation: Recursive Backtracking](https://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking) 문서를 참고하여 구현했습니다.
